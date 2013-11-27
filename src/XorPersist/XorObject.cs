@@ -206,133 +206,150 @@ namespace LateNightStupidities.XorPersist
 
         private void LoadObjectContents(XElement objectElement, XorController controller)
         {
-            foreach (var propertyElement in objectElement.Elements(XorXsd.Property))
+            foreach (var propertyElement in objectElement.Elements().Where(IsPropertyElement))
             {
-                XorMultiplicity multiplicity;
-                string memberName;
-                propertyElement.GetNameAndMultiplicity(out memberName, out multiplicity);
+                string memberName = propertyElement.GetMemberName();
 
                 var member = GetType().GetXorPropertyMembers().Single(tuple => tuple.Attr.Name == memberName);
 
-                LoadPropertyContents(propertyElement, member, multiplicity, controller);
+                switch (propertyElement.Name.LocalName)
+                {
+                    case XorXsd.Property:
+                        LoadSimpleProperty(propertyElement, member);
+                        break;
+                    case XorXsd.XProperty:
+                        LoadXorTypeProperty(propertyElement, member, controller);
+                        break;
+                    case XorXsd.PropertyList:
+                        LoadSimplePropertyList(propertyElement, member);
+                        break;
+                    case XorXsd.XPropertyList:
+                        LoadXorTypePropertyList(propertyElement, member, controller);
+                        break;
+                }
             }
 
-            foreach (var referenceElement in objectElement.Elements(XorXsd.Reference))
+            foreach (var referenceElement in objectElement.Elements().Where(IsReferenceElement))
             {
-                XorMultiplicity multiplicity;
-                string memberName;
-                referenceElement.GetNameAndMultiplicity(out memberName, out multiplicity);
+                string memberName = referenceElement.GetMemberName();
 
                 var member = GetType().GetXorReferenceMembers().Single(tuple => tuple.Attr.Name == memberName);
 
-                LoadReferenceContents(referenceElement, member, multiplicity);
+                switch (referenceElement.Name.LocalName)
+                {
+                    case XorXsd.Reference:
+                        LoadReference(referenceElement, member);
+                        break;
+                    case XorXsd.ReferenceList:
+                        LoadReferenceList(referenceElement, member);
+                        break;
+                }
+
                 this.referenceInformation.Add(member);
             }
         }
 
-        private void LoadPropertyContents(XElement propertyElement, XorPropertyTuple member, XorMultiplicity multiplicity, XorController controller)
+        private bool IsReferenceElement(XElement arg)
         {
-            if (propertyElement.Name.LocalName != XorXsd.Property)
-                throw new ArgumentException();
-
-            if (multiplicity == XorMultiplicity.Single)
+            switch (arg.Name.LocalName)
             {
-                var type = member.Info.GetMemberInfoType();
+                case XorXsd.Reference:
+                case XorXsd.ReferenceList:
+                    return true;
+                default:
+                    return false;
+            }
+        }
 
-                if (type.IsSupportedSimpleType())
+        private bool IsPropertyElement(XElement arg)
+        {
+            switch (arg.Name.LocalName)
+            {
+                case XorXsd.Property:
+                case XorXsd.PropertyList:
+                case XorXsd.XProperty:
+                case XorXsd.XPropertyList:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        private void LoadXorTypePropertyList(XElement propertyElement, XorPropertyTuple member, XorController controller)
+        {
+            var list = new List<XorObject>(propertyElement.Elements().Count());
+
+            foreach (var itemElement in propertyElement.Elements())
+            {
+                if (itemElement.Name.LocalName == XorXsd.ListItemNull)
                 {
-                    var value = propertyElement.ConvertToType(type);
-                    member.Info.SetMemberValue(this, value);
+                    list.Add(null);
                 }
-                else if (type.IsSupportedXorType() || type.IsInterface) // TODO Produce warning
+                else if (itemElement.Name.LocalName == XorXsd.ListItemNonNull)
                 {
-                    var objectElement = propertyElement.Element(XorXsd.Object);
+                    var objectElement = itemElement.Element(XorXsd.Object);
                     XorObject childObject = LoadFromElement(objectElement, controller);
-                    member.Info.SetMemberValue(this, childObject);
-                }
-                else
-                {
-                    // TODO Custom exception
-                    throw new Exception(string.Format("Property type ({0}) is not supported. Class: {1}. Property: {2}.", type, GetType(), member.Attr.Name));
+                    list.Add(childObject);
                 }
             }
-            else if (multiplicity == XorMultiplicity.List)
+
+            member.Info.SetMemberValue(this, list);
+        }
+
+        private void LoadSimplePropertyList(XElement propertyElement, XorPropertyTuple member)
+        {
+            var list = new List<object>(propertyElement.Elements().Count());
+
+            foreach (var itemElement in propertyElement.Elements())
             {
-                var type = member.Attr.ListItemType;
-                int itemCount = propertyElement.Elements().Count();
-
-                if (type.IsSupportedSimpleType())
+                if (itemElement.Name.LocalName == XorXsd.ListItemNull)
                 {
-                    var list = new List<object>(itemCount);
-
-                    foreach (var itemElement in propertyElement.Elements())
-                    {
-                        if (itemElement.Name.LocalName == XorXsd.ListItemNull)
-                        {
-                            list.Add(null);
-                        }
-                        else if (itemElement.Name.LocalName == XorXsd.ListItemNonNull)
-                        {
-                            var value = itemElement.ConvertToType(type);
-                            list.Add(value);
-                        }
-                    }
-
-                    member.Info.SetMemberValue(this, list);
+                    list.Add(null);
                 }
-                else if (type.IsSupportedXorType() || type.IsInterface) // TODO Produce warning
+                else if (itemElement.Name.LocalName == XorXsd.ListItemNonNull)
                 {
-                    var list = new List<XorObject>(itemCount);
-
-                    foreach (var itemElement in propertyElement.Elements())
-                    {
-                        if (itemElement.Name.LocalName == XorXsd.ListItemNull)
-                        {
-                            list.Add(null);
-                        }
-                        else if (itemElement.Name.LocalName == XorXsd.ListItemNonNull)
-                        {
-                            var objectElement = itemElement.Element(XorXsd.Object);
-                            XorObject childObject = LoadFromElement(objectElement, controller);
-                            list.Add(childObject);
-                        }
-                    }
-
-                    member.Info.SetMemberValue(this, list);
+                    var value = itemElement.ConvertToType(member.Attr.ListItemType);
+                    list.Add(value);
                 }
-                else
+            }
+
+            member.Info.SetMemberValue(this, list);
+        }
+
+        private void LoadXorTypeProperty(XElement propertyElement, XorPropertyTuple member, XorController controller)
+        {
+            var objectElement = propertyElement.Element(XorXsd.Object);
+            XorObject childObject = LoadFromElement(objectElement, controller);
+            member.Info.SetMemberValue(this, childObject);
+        }
+
+        private void LoadSimpleProperty(XElement propertyElement, XorPropertyTuple member)
+        {
+            var type = member.Info.GetMemberInfoType();
+            var value = propertyElement.ConvertToType(type);
+            member.Info.SetMemberValue(this, value);
+        }
+
+        private static void LoadReferenceList(XElement referenceElement, XorReferenceTuple member)
+        {
+            foreach (var itemElement in referenceElement.Elements())
+            {
+                if (itemElement.Name.LocalName == XorXsd.ListItemNull)
                 {
-                    // TODO Custom exception
-                    throw new Exception(string.Format("Property type ({0}) is not supported. Class: {1}. Property: {2}.", type, GetType(), member.Attr.Name));
+                    member.Attr.AddId(default(Guid));
+                }
+                else if (itemElement.Name.LocalName == XorXsd.ListItemNonNull)
+                {
+                    var xorId = Guid.Parse(itemElement.Value);
+                    member.Attr.AddId(xorId);
                 }
             }
         }
 
-        private static void LoadReferenceContents(XElement referenceElement, XorReferenceTuple member, XorMultiplicity multiplicity)
+        private static void LoadReference(XElement referenceElement, XorReferenceTuple member)
         {
-            if (referenceElement.Name.LocalName != XorXsd.Reference)
-                throw new ArgumentException();
-
-            if (multiplicity == XorMultiplicity.Single)
-            {
-                var xorId = Guid.Parse(referenceElement.Value);
-                member.Attr.AddId(xorId);
-            }
-            else if (multiplicity == XorMultiplicity.List)
-            {
-                foreach (var itemElement in referenceElement.Elements())
-                {
-                    if (itemElement.Name.LocalName == XorXsd.ListItemNull)
-                    {
-                        member.Attr.AddId(default(Guid));
-                    }
-                    else if (itemElement.Name.LocalName == XorXsd.ListItemNonNull)
-                    {
-                        var xorId = Guid.Parse(itemElement.Value);
-                        member.Attr.AddId(xorId);
-                    }
-                }
-            }
+            var xorId = Guid.Parse(referenceElement.Value);
+            member.Attr.AddId(xorId);
         }
 
         #endregion
@@ -442,32 +459,34 @@ namespace LateNightStupidities.XorPersist
                     var list = (IEnumerable)member.Info.GetMemberValue(this);
                     if (list == null) continue; // Skip null lists
 
-                    var listElement = CreateListElement(member);
                     var listItemType = member.Attr.ListItemType;
                     
                     bool supportedSimpleType = listItemType.IsSupportedSimpleType();
                     bool supportedXorType = !supportedSimpleType && (listItemType.IsSupportedXorType() || listItemType.IsInterface); // TODO Produce warning for interface
 
+                    XElement listElement;
+                    if (supportedSimpleType)
+                    {
+                        listElement = CreateSimpleListElement(member);
+                    }
+                    else if (supportedXorType)
+                    {
+                        listElement = CreateXorTypeListElement(member);
+                    }
+                    else
+                    {
+                        // TODO Custom exception
+                        throw new Exception(
+                            string.Format("Property type ({0}) is not supported. Class: {1}. Property: {2}.",
+                                member.Info.GetMemberInfoType(), GetType(), member.Attr.Name));
+                    }
+
                     foreach (object listItem in list)
                     {
-                        XElement listItemElement;
-
-                        if (supportedSimpleType)
-                        {
-                            listItemElement = CreateSimpleListItemElement(listItem);
-                        }
-                        else if (supportedXorType)
-                        {
-                            listItemElement = CreateXorTypeListItemElement((XorObject)listItem);
-                        }
-                        else
-                        {
-                            // TODO Custom exception
-                            throw new Exception(
-                                string.Format("Property type ({0}) is not supported. Class: {1}. Property: {2}.",
-                                    member.Info.GetMemberInfoType(), GetType(), member.Attr.Name));
-                        }
-
+                        XElement listItemElement = supportedSimpleType
+                            ? CreateSimpleListItemElement(listItem)
+                            : CreateXorTypeListItemElement((XorObject) listItem);
+                        
                         listElement.Add(listItemElement);
                     }
 
@@ -489,10 +508,6 @@ namespace LateNightStupidities.XorPersist
         {
             var refElement = new XElement(XorXsd.Reference, referencedObject.XorId.ToString());
             refElement.SetAttributeValue(XorXsd.MemberName, member.Attr.Name);
-            if (member.Attr.Multiplicity != XorMultiplicity.Single)
-            {
-                refElement.SetAttributeValue(XorXsd.Multiplicity, member.Attr.Multiplicity);
-            }
 
             return refElement;
         }
@@ -503,12 +518,8 @@ namespace LateNightStupidities.XorPersist
         /// <param name="member">The member.</param>
         private static XElement CreateReferenceListElement(XorReferenceTuple member)
         {
-            var refListElement = new XElement(XorXsd.Reference);
+            var refListElement = new XElement(XorXsd.ReferenceList);
             refListElement.SetAttributeValue(XorXsd.MemberName, member.Attr.Name);
-            if (member.Attr.Multiplicity != XorMultiplicity.Single)
-            {
-                refListElement.SetAttributeValue(XorXsd.Multiplicity, member.Attr.Multiplicity);
-            }
 
             return refListElement;
         }
@@ -520,13 +531,8 @@ namespace LateNightStupidities.XorPersist
         /// <param name="member">The member.</param>
         private static XElement CreateSimplePropertyElement(object propertyContent, XorPropertyTuple member)
         {
-            // TODO unify this
             var propertyElement = new XElement(XorXsd.Property, propertyContent);
             propertyElement.SetAttributeValue(XorXsd.MemberName, member.Attr.Name);
-            if (member.Attr.Multiplicity != XorMultiplicity.Single)
-            {
-                propertyElement.SetAttributeValue(XorXsd.Multiplicity, member.Attr.Multiplicity);
-            }
 
             return propertyElement;
         }
@@ -538,31 +544,33 @@ namespace LateNightStupidities.XorPersist
         /// <param name="member">The member.</param>
         private static XElement CreateXorTypePropertyElement(XorObject obj, XorPropertyTuple member)
         {
-            // TODO unify this
-            var propertyElement = new XElement(XorXsd.Property);
+            var propertyElement = new XElement(XorXsd.XProperty);
             propertyElement.SetAttributeValue(XorXsd.MemberName, member.Attr.Name);
-            if (member.Attr.Multiplicity != XorMultiplicity.Single)
-            {
-                propertyElement.SetAttributeValue(XorXsd.Multiplicity, member.Attr.Multiplicity);
-            }
             obj.SaveTo(propertyElement);
 
             return propertyElement;
         }
 
         /// <summary>
-        /// Creates an XElement that can store a simple-type or XorObject list.
+        /// Creates an XElement that can store a simple-type list.
         /// </summary>
         /// <param name="member">The member.</param>
-        private static XElement CreateListElement(XorPropertyTuple member)
+        private static XElement CreateSimpleListElement(XorPropertyTuple member)
         {
-            // TODO unify this
-            var listElement = new XElement(XorXsd.Property);
+            var listElement = new XElement(XorXsd.PropertyList);
             listElement.SetAttributeValue(XorXsd.MemberName, member.Attr.Name);
-            if (member.Attr.Multiplicity != XorMultiplicity.Single)
-            {
-                listElement.SetAttributeValue(XorXsd.Multiplicity, member.Attr.Multiplicity);
-            }
+
+            return listElement;
+        }
+
+        /// <summary>
+        /// Creates an XElement that can store a XorObject list.
+        /// </summary>
+        /// <param name="member">The member.</param>
+        private static XElement CreateXorTypeListElement(XorPropertyTuple member)
+        {
+            var listElement = new XElement(XorXsd.XPropertyList);
+            listElement.SetAttributeValue(XorXsd.MemberName, member.Attr.Name);
 
             return listElement;
         }

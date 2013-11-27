@@ -155,17 +155,34 @@ namespace LateNightStupidities.XorPersist
         public static void GetNameAndMultiplicity(this XElement propertyElement, out string memberName, out XorMultiplicity multiplicity)
         {
             memberName = propertyElement.Attribute(XorXsd.MemberName).Value;
-            if (propertyElement.Attribute(XorXsd.Multiplicity) != null)
+
+            switch (propertyElement.Name.LocalName)
             {
-                if (!Enum.TryParse(propertyElement.Attribute(XorXsd.Multiplicity).Value, out multiplicity))
-                {
+                case XorXsd.Property:
+                case XorXsd.XProperty:
+                case XorXsd.Reference:
                     multiplicity = XorMultiplicity.Single;
-                }
+                    break;
+                case XorXsd.PropertyList:
+                case XorXsd.XPropertyList:
+                case XorXsd.ReferenceList:
+                    multiplicity = XorMultiplicity.List;
+                    break;
+                default:
+                    throw new Exception("GetNameAndMultiplicity: Unknown element name'" + propertyElement.Name + "'.");
             }
-            else
-            {
-                multiplicity = XorMultiplicity.Single;
-            }
+        }
+
+        /// <summary>
+        /// Gets the member name of a property XElement.
+        /// </summary>
+        /// <param name="propertyElement">The property element.</param>
+        public static string GetMemberName(this XElement propertyElement)
+        {
+            XorMultiplicity multiplicity;
+            string memberName;
+            propertyElement.GetNameAndMultiplicity(out memberName, out multiplicity);
+            return memberName;
         }
 
         /// <summary>

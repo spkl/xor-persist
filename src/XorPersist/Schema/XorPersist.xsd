@@ -66,54 +66,91 @@
 		<xs:annotation>
 			<xs:documentation>An Xor property that can also be a list. This can contain one or many values.</xs:documentation>
 		</xs:annotation>
-		<xs:sequence>
+		<xs:choice>
 			<xs:element name="prop">
-				<xs:complexType mixed="true">
-					<xs:choice>
-						<xs:group ref="Object" minOccurs="0"/>
-						<xs:choice minOccurs="0" maxOccurs="unbounded">
-							<xs:annotation>
-								<xs:documentation>A list of objects or values.</xs:documentation>
-							</xs:annotation>
-							<xs:element name="item">
-								<xs:complexType mixed="true">
-									<xs:group ref="Object" minOccurs="0"/>
-								</xs:complexType>
-							</xs:element>
-							<xs:group ref="Null"/>
-						</xs:choice>
-					</xs:choice>
-					<xs:attribute ref="mn" use="required"/>
-					<xs:attribute ref="mul" use="optional"/>
+				<xs:annotation>
+					<xs:documentation>A value.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute ref="mn" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
 				</xs:complexType>
 			</xs:element>
-		</xs:sequence>
+			<xs:element name="proplist">
+				<xs:annotation>
+					<xs:documentation>A list of values.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:choice minOccurs="0" maxOccurs="unbounded">
+						<xs:element name="item" type="xs:string"/>
+						<xs:group ref="Null"/>
+					</xs:choice>
+					<xs:attribute ref="mn" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="xprop">
+				<xs:annotation>
+					<xs:documentation>An object.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:group ref="Object"/>
+					<xs:attribute ref="mn" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="xproplist">
+				<xs:annotation>
+					<xs:documentation>A list of objects.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:choice minOccurs="0" maxOccurs="unbounded">
+						<xs:element name="item">
+							<xs:complexType>
+								<xs:group ref="Object"/>
+							</xs:complexType>
+						</xs:element>
+						<xs:group ref="Null"/>
+					</xs:choice>
+					<xs:attribute ref="mn" use="required"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
 	</xs:group>
 	<xs:group name="Reference">
 		<xs:annotation>
 			<xs:documentation>An Xor reference to one or many other objects.</xs:documentation>
 		</xs:annotation>
-		<xs:sequence>
+		<xs:choice>
 			<xs:element name="ref">
-				<xs:complexType mixed="true">
+				<xs:annotation>
+					<xs:documentation>A reference.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="ReferenceType">
+							<xs:attribute ref="mn" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="reflist">
+				<xs:annotation>
+					<xs:documentation>A list of references.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
 					<xs:choice minOccurs="0" maxOccurs="unbounded">
 						<xs:annotation>
 							<xs:documentation>A list of references.</xs:documentation>
 						</xs:annotation>
-						<xs:element name="item">
-							<xs:simpleType>
-								<xs:restriction base="xs:string">
-									<xs:pattern value="[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}"/>
-								</xs:restriction>
-							</xs:simpleType>
-						</xs:element>
+						<xs:element name="item" type="ReferenceType"/>
 						<xs:group ref="Null"/>
 					</xs:choice>
 					<xs:attribute ref="mn" use="required"/>
-					<xs:attribute ref="mul" use="optional"/>
 				</xs:complexType>
 			</xs:element>
-		</xs:sequence>
+		</xs:choice>
 	</xs:group>
 	<xs:group name="Null">
 		<xs:annotation>
@@ -129,15 +166,6 @@
 			</xs:element>
 		</xs:sequence>
 	</xs:group>
-	<xs:simpleType name="Multiplicity">
-		<xs:annotation>
-			<xs:documentation>Multiplicity enum</xs:documentation>
-		</xs:annotation>
-		<xs:restriction base="xs:string">
-			<xs:enumeration value="Single"/>
-			<xs:enumeration value="List"/>
-		</xs:restriction>
-	</xs:simpleType>
 	<xs:attribute name="mn">
 		<xs:annotation>
 			<xs:documentation>Member name</xs:documentation>
@@ -147,11 +175,6 @@
 				<xs:minLength value="1"/>
 			</xs:restriction>
 		</xs:simpleType>
-	</xs:attribute>
-	<xs:attribute name="mul" type="Multiplicity" default="Single">
-		<xs:annotation>
-			<xs:documentation>Member multiplicity</xs:documentation>
-		</xs:annotation>
 	</xs:attribute>
 	<xs:attribute name="cn">
 		<xs:annotation>
@@ -163,4 +186,12 @@
 			</xs:restriction>
 		</xs:simpleType>
 	</xs:attribute>
+	<xs:simpleType name="ReferenceType">
+		<xs:annotation>
+			<xs:documentation>Element type for references and reference list items.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}"/>
+		</xs:restriction>
+	</xs:simpleType>
 </xs:schema>
