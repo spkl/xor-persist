@@ -1,0 +1,247 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Xml.Linq;
+using LateNightStupidities.XorPersist.Attributes;
+using LateNightStupidities.XorPersist.Schema;
+
+namespace LateNightStupidities.XorPersist
+{
+    internal static class XorExtensions
+    {
+        private const BindingFlags XorBindingFlags =
+            BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
+
+        /// <summary>
+        /// Gets the XorReference members (fields and properties).
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns></returns>
+        public static IEnumerable<XorReferenceTuple> GetXorReferenceMembers(this Type type)
+        {
+            var fields = type.GetFields(XorBindingFlags);
+            var properties = type.GetProperties(XorBindingFlags);
+            var members = fields.Concat<MemberInfo>(properties);
+
+            foreach (var memberInfo in members)
+            {
+                var attribute = (XorReferenceAttribute)Attribute.GetCustomAttribute(memberInfo, typeof(XorReferenceAttribute), true);
+                if (attribute != null)
+                {
+                    yield return new XorReferenceTuple(memberInfo, attribute);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the XorProperty members.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns></returns>
+        public static IEnumerable<XorPropertyTuple> GetXorPropertyMembers(this Type type)
+        {
+            var properties = type.GetProperties(XorBindingFlags);
+            var fields = type.GetFields(XorBindingFlags);
+            var members = properties.Concat<MemberInfo>(fields);
+
+            foreach (var memberInfo in members)
+            {
+                var attribute = (XorPropertyAttribute)Attribute.GetCustomAttribute(memberInfo, typeof(XorPropertyAttribute), true);
+                if (attribute != null)
+                {
+                    yield return new XorPropertyTuple(memberInfo, attribute);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Determines whether this type is a supported simple type (primitives, string, Guid, DateTime, TimeSpan, decimal).
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>
+        ///   <c>true</c> if this is a supported simple type; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsSupportedSimpleType(this Type type)
+        {
+            return type.IsPrimitive || type == typeof (string) || type == typeof (Guid) || type == typeof (DateTime) ||
+                   type == typeof (TimeSpan) || type == typeof (decimal);
+        }
+
+        /// <summary>
+        /// Determines whether this is derived from XorObject.
+        /// Attention: The type can be an interface that is not supported, 
+        /// but a class implementing the interface may be supported!
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>
+        ///   <c>true</c> if this is derived from XorObject; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsSupportedXorType(this Type type)
+        {
+            return typeof(XorObject).IsAssignableFrom(type);
+        }
+
+        /// <summary>
+        /// Gets the value of a field or property info from an object.
+        /// </summary>
+        /// <param name="memberInfo">The member info.</param>
+        /// <param name="obj">The object.</param>
+        /// <param name="index">The index.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentOutOfRangeException">Only fields and properties are supported.</exception>
+        public static object GetMemberValue(this MemberInfo memberInfo, object obj, object[] index = null)
+        {
+            switch (memberInfo.MemberType)
+            {
+                case MemberTypes.Field:
+                    return ((FieldInfo) memberInfo).GetValue(obj);
+                case MemberTypes.Property:
+                    return ((PropertyInfo) memberInfo).GetValue(obj, index);
+                default:
+                    throw new ArgumentOutOfRangeException("memberInfo", "Only fields and properties are supported.");
+            }
+        }
+
+        /// <summary>
+        /// Sets the value of a field or property.
+        /// </summary>
+        /// <param name="memberInfo">The member info.</param>
+        /// <param name="obj">The obj.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="index">The index.</param>
+        /// <exception cref="System.ArgumentOutOfRangeException">Only fields and properties are supported.</exception>
+        public static void SetMemberValue(this MemberInfo memberInfo, object obj, object value, object[] index = null)
+        {
+            switch (memberInfo.MemberType)
+            {
+                case MemberTypes.Field:
+                    ((FieldInfo)memberInfo).SetValue(obj, value);
+                    break;
+                case MemberTypes.Property:
+                    ((PropertyInfo)memberInfo).SetValue(obj, value, index);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException("memberInfo", "Only fields and properties are supported.");
+            }
+        }
+
+        /// <summary>
+        /// Gets the type of the member info.
+        /// </summary>
+        /// <param name="memberInfo">The member info.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentOutOfRangeException">Only fields and properties are supported.</exception>
+        public static Type GetMemberInfoType(this MemberInfo memberInfo)
+        {
+            switch (memberInfo.MemberType)
+            {
+                case MemberTypes.Field:
+                    return ((FieldInfo)memberInfo).FieldType;
+                case MemberTypes.Property:
+                    return ((PropertyInfo)memberInfo).PropertyType;
+                default:
+                    throw new ArgumentOutOfRangeException("memberInfo", "Only fields and properties are supported.");
+            }
+        }
+
+        /// <summary>
+        /// Gets the name and multiplicity of a property XElement.
+        /// </summary>
+        /// <param name="propertyElement">The property element.</param>
+        /// <param name="memberName">Name of the member.</param>
+        /// <param name="multiplicity">The multiplicity.</param>
+        public static void GetNameAndMultiplicity(this XElement propertyElement, out string memberName, out XorMultiplicity multiplicity)
+        {
+            memberName = propertyElement.Attribute(XorXsd.MemberName).Value;
+            if (propertyElement.Attribute(XorXsd.Multiplicity) != null)
+            {
+                if (!Enum.TryParse(propertyElement.Attribute(XorXsd.Multiplicity).Value, out multiplicity))
+                {
+                    multiplicity = XorMultiplicity.Single;
+                }
+            }
+            else
+            {
+                multiplicity = XorMultiplicity.Single;
+            }
+        }
+
+        /// <summary>
+        /// Converts an XElement to the supplied type.
+        /// </summary>
+        /// <param name="propertyElement">The property element.</param>
+        /// <param name="type">The type.</param>
+        /// <exception cref="System.Exception"></exception>
+        public static object ConvertToType(this XElement propertyElement, Type type)
+        {
+            if (type == typeof(Boolean))
+            {
+                return (bool)propertyElement;
+            }
+            if (type == typeof(Byte))
+            {
+                return byte.Parse(propertyElement.Value);
+            }
+            if (type == typeof(SByte))
+            {
+                return sbyte.Parse(propertyElement.Value);
+            }
+            if (type == typeof(Int16))
+            {
+                return short.Parse(propertyElement.Value);
+            }
+            if (type == typeof(Int32))
+            {
+                return (int)propertyElement;
+            }
+            if (type == typeof(Int64))
+            {
+                return (long)propertyElement;
+            }
+            if (type == typeof(UInt16))
+            {
+                return ushort.Parse(propertyElement.Value);
+            }
+            if (type == typeof(UInt32))
+            {
+                return (uint)propertyElement;
+            }
+            if (type == typeof(UInt64))
+            {
+                return (ulong)propertyElement;
+            }
+            if (type == typeof(Single))
+            {
+                return (float)propertyElement;
+            }
+            if (type == typeof(Double))
+            {
+                return (double)propertyElement;
+            }
+            if (type == typeof(string))
+            {
+                return (string)propertyElement;
+            }
+            if (type == typeof(Guid))
+            {
+                return (Guid)propertyElement;
+            }
+            if (type == typeof(DateTime))
+            {
+                return (DateTime)propertyElement;
+            }
+            if (type == typeof(TimeSpan))
+            {
+                return (TimeSpan)propertyElement;
+            }
+            if (type == typeof(decimal))
+            {
+                return (decimal)propertyElement;
+            }
+
+            throw new Exception("Unsupported property type: " + type); // TODO Custom exception
+        }
+    }
+}

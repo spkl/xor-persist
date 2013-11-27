@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2014 (x64) (http://www.altova.com) by Sebastian Fischer (-) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" elementFormDefault="qualified" attributeFormDefault="unqualified" vc:minVersion="1.1">
+	<xs:element name="XorPersist">
+		<xs:annotation>
+			<xs:documentation>Root element of the file.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="StaticInfo">
+					<xs:annotation>
+						<xs:documentation>Static information about the file.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="info" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:simpleContent>
+										<xs:extension base="xs:string">
+											<xs:attribute name="key" use="required">
+												<xs:simpleType>
+													<xs:restriction base="xs:string">
+														<xs:minLength value="1"/>
+													</xs:restriction>
+												</xs:simpleType>
+											</xs:attribute>
+										</xs:extension>
+									</xs:simpleContent>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Content">
+					<xs:annotation>
+						<xs:documentation>The XorObject data structure content of the file.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:group ref="Object">
+							<xs:annotation>
+								<xs:documentation>Root object the data structure.</xs:documentation>
+							</xs:annotation>
+						</xs:group>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:group name="Object">
+		<xs:annotation>
+			<xs:documentation>An XorObject.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="obj">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:group ref="Property" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:group ref="Reference" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+					<xs:attribute ref="cn" use="required"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="Property">
+		<xs:annotation>
+			<xs:documentation>An Xor property that can also be a list. This can contain one or many values.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="prop">
+				<xs:complexType mixed="true">
+					<xs:choice>
+						<xs:group ref="Object" minOccurs="0"/>
+						<xs:choice minOccurs="0" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>A list of objects or values.</xs:documentation>
+							</xs:annotation>
+							<xs:element name="item">
+								<xs:complexType mixed="true">
+									<xs:group ref="Object" minOccurs="0"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:group ref="Null"/>
+						</xs:choice>
+					</xs:choice>
+					<xs:attribute ref="mn" use="required"/>
+					<xs:attribute ref="mul" use="optional"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="Reference">
+		<xs:annotation>
+			<xs:documentation>An Xor reference to one or many other objects.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ref">
+				<xs:complexType mixed="true">
+					<xs:choice minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>A list of references.</xs:documentation>
+						</xs:annotation>
+						<xs:element name="item">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:pattern value="[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:group ref="Null"/>
+					</xs:choice>
+					<xs:attribute ref="mn" use="required"/>
+					<xs:attribute ref="mul" use="optional"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="Null">
+		<xs:annotation>
+			<xs:documentation>The "null" list element.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="null">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="0"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+	<xs:simpleType name="Multiplicity">
+		<xs:annotation>
+			<xs:documentation>Multiplicity enum</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Single"/>
+			<xs:enumeration value="List"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:attribute name="mn">
+		<xs:annotation>
+			<xs:documentation>Member name</xs:documentation>
+		</xs:annotation>
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:minLength value="1"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:attribute>
+	<xs:attribute name="mul" type="Multiplicity" default="Single">
+		<xs:annotation>
+			<xs:documentation>Member multiplicity</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:attribute name="cn">
+		<xs:annotation>
+			<xs:documentation>Class name</xs:documentation>
+		</xs:annotation>
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:minLength value="1"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:attribute>
+</xs:schema>
