@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("XorPersistSample")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("XorPersistExample")]
+[assembly: AssemblyDescription("Example for the XorPersist library")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("XorPersistSample")]
-[assembly: AssemblyCopyright("Copyright ©  2013")]
+[assembly: AssemblyCompany("LateNightStupidities")]
+[assembly: AssemblyProduct("XorPersistExample")]
+[assembly: AssemblyCopyright("Copyright © Sebastian Fischer 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
