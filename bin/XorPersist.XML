@@ -43,23 +43,87 @@
             </summary>
             <param name="objects">The known objects.</param>
         </member>
+        <member name="M:LateNightStupidities.XorPersist.XorObject.LoadFromElement(System.Xml.Linq.XElement,LateNightStupidities.XorPersist.XorController)">
+            <summary>
+            Deserializes an <see cref="T:LateNightStupidities.XorPersist.XorObject"/> from an <see cref="T:System.Xml.Linq.XElement"/>.
+            </summary>
+            <param name="objectElement">The object element.</param>
+            <param name="controller">The controller.</param>
+            <returns>The deserialized <see cref="T:LateNightStupidities.XorPersist.XorObject"/>.</returns>
+            <exception cref="T:System.ArgumentException">Supplied <see cref="T:System.Xml.Linq.XElement"/> is not an <see cref="F:LateNightStupidities.XorPersist.Schema.XorXsd.Object"/> element.</exception>
+            <exception cref="T:System.Exception">Parameterless constructor is missing on type.</exception>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.XorObject.LoadObjectContents(System.Xml.Linq.XElement,LateNightStupidities.XorPersist.XorController)">
+            <summary>
+            Loads the properties and references of this <see cref="T:LateNightStupidities.XorPersist.XorObject"/> 
+            from an <see cref="T:System.Xml.Linq.XElement"/> and sets them on this instance.
+            </summary>
+            <param name="objectElement">The object element.</param>
+            <param name="controller">The controller.</param>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.XorObject.LoadXorTypePropertyList(System.Xml.Linq.XElement,LateNightStupidities.XorPersist.Attributes.XorPropertyTuple,LateNightStupidities.XorPersist.XorController)">
+            <summary>
+            Loads a property list of <see cref="T:LateNightStupidities.XorPersist.XorObject"/>s from an <see cref="T:System.Xml.Linq.XElement"/>.
+            </summary>
+            <param name="propertyElement">The property element.</param>
+            <param name="member">The member.</param>
+            <param name="controller">The controller.</param>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.XorObject.LoadSimplePropertyList(System.Xml.Linq.XElement,LateNightStupidities.XorPersist.Attributes.XorPropertyTuple)">
+            <summary>
+            Loads a property list of simple values from an <see cref="T:System.Xml.Linq.XElement"/>.
+            </summary>
+            <param name="propertyElement">The property element.</param>
+            <param name="member">The member.</param>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.XorObject.LoadXorTypeProperty(System.Xml.Linq.XElement,LateNightStupidities.XorPersist.Attributes.XorPropertyTuple,LateNightStupidities.XorPersist.XorController)">
+            <summary>
+            Loads a property that contains an <see cref="T:LateNightStupidities.XorPersist.XorObject"/> from an <see cref="T:System.Xml.Linq.XElement"/>.
+            </summary>
+            <param name="propertyElement">The property element.</param>
+            <param name="member">The member.</param>
+            <param name="controller">The controller.</param>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.XorObject.LoadSimpleProperty(System.Xml.Linq.XElement,LateNightStupidities.XorPersist.Attributes.XorPropertyTuple)">
+            <summary>
+            Loads a property that contains a simple value from an <see cref="T:System.Xml.Linq.XElement"/>.
+            </summary>
+            <param name="propertyElement">The property element.</param>
+            <param name="member">The member.</param>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.XorObject.LoadReferenceList(System.Xml.Linq.XElement,LateNightStupidities.XorPersist.Attributes.XorReferenceTuple)">
+            <summary>
+            Loads a reference list of <see cref="T:LateNightStupidities.XorPersist.XorObject"/>s from an <see cref="T:System.Xml.Linq.XElement"/>.
+            </summary>
+            <param name="referenceElement">The reference element.</param>
+            <param name="member">The member.</param>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.XorObject.LoadReference(System.Xml.Linq.XElement,LateNightStupidities.XorPersist.Attributes.XorReferenceTuple)">
+            <summary>
+            Loads a reference to an <see cref="T:LateNightStupidities.XorPersist.XorObject"/> from an <see cref="T:System.Xml.Linq.XElement"/>.
+            </summary>
+            <param name="referenceElement">The reference element.</param>
+            <param name="member">The member.</param>
+        </member>
         <member name="M:LateNightStupidities.XorPersist.XorObject.SaveTo(System.Xml.Linq.XElement)">
             <summary>
             Saves this XorObject and all children to the supplied element.
             </summary>
             <param name="contentElement">The content element.</param>
+            <exception cref="T:System.Exception">XorClass attribute is missing on type.</exception>
         </member>
         <member name="M:LateNightStupidities.XorPersist.XorObject.SaveXorReferences(System.Xml.Linq.XElement)">
             <summary>
-            Saves the XorReferences.
+            Saves the XorReferences to the supplied <see cref="F:LateNightStupidities.XorPersist.Schema.XorXsd.Object"/> element.
             </summary>
             <param name="mainElement">The main element.</param>
         </member>
         <member name="M:LateNightStupidities.XorPersist.XorObject.SaveXorProperties(System.Xml.Linq.XElement)">
             <summary>
-            Saves the XorProperties.
+            Saves the XorProperties to the supplied <see cref="F:LateNightStupidities.XorPersist.Schema.XorXsd.Object"/> element.
             </summary>
             <param name="mainElement">The main element.</param>
+            <exception cref="T:System.Exception">Property type is not supported.</exception>
         </member>
         <member name="M:LateNightStupidities.XorPersist.XorObject.CreateReferenceElement(LateNightStupidities.XorPersist.XorObject,LateNightStupidities.XorPersist.Attributes.XorReferenceTuple)">
             <summary>
@@ -395,7 +459,33 @@
             </summary>
             <param name="propertyElement">The property element.</param>
             <param name="type">The type.</param>
-            <exception cref="T:System.Exception"></exception>
+            <exception cref="T:System.Exception">Unsupported property type.</exception>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.XorExtensions.IsReferenceElement(System.Xml.Linq.XElement)">
+            <summary>
+            Determines whether the specified element is a reference element.
+            Element names:
+            * <see cref="F:LateNightStupidities.XorPersist.Schema.XorXsd.Reference"/>
+            * <see cref="F:LateNightStupidities.XorPersist.Schema.XorXsd.ReferenceList"/>
+            </summary>
+            <param name="element">The element.</param>
+            <returns>
+              <c>true</c> if the specified element is a reference element; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.XorExtensions.IsPropertyElement(System.Xml.Linq.XElement)">
+            <summary>
+            Determines whether the specified element is a property element.
+            Element names:
+            * <see cref="F:LateNightStupidities.XorPersist.Schema.XorXsd.Property"/>
+            * <see cref="F:LateNightStupidities.XorPersist.Schema.XorXsd.PropertyList"/>
+            * <see cref="F:LateNightStupidities.XorPersist.Schema.XorXsd.XProperty"/>
+            * <see cref="F:LateNightStupidities.XorPersist.Schema.XorXsd.XPropertyList"/>
+            </summary>
+            <param name="element">The element.</param>
+            <returns>
+              <c>true</c> if the specified element is a property element; otherwise, <c>false</c>.
+            </returns>
         </member>
         <member name="T:LateNightStupidities.XorPersist.Attributes.XorReferenceAttribute">
             <summary>
