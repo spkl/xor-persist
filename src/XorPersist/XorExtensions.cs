@@ -190,7 +190,7 @@ namespace LateNightStupidities.XorPersist
         /// </summary>
         /// <param name="propertyElement">The property element.</param>
         /// <param name="type">The type.</param>
-        /// <exception cref="System.Exception"></exception>
+        /// <exception cref="System.Exception">Unsupported property type.</exception>
         public static object ConvertToType(this XElement propertyElement, Type type)
         {
             if (type == typeof(Boolean))
@@ -199,15 +199,15 @@ namespace LateNightStupidities.XorPersist
             }
             if (type == typeof(Byte))
             {
-                return byte.Parse(propertyElement.Value);
+                return Byte.Parse(propertyElement.Value);
             }
             if (type == typeof(SByte))
             {
-                return sbyte.Parse(propertyElement.Value);
+                return SByte.Parse(propertyElement.Value);
             }
-            if (type == typeof(Int16))
+            if (type == typeof(Int16)) // (short)
             {
-                return short.Parse(propertyElement.Value);
+                return Int16.Parse(propertyElement.Value);
             }
             if (type == typeof(Int32))
             {
@@ -217,9 +217,9 @@ namespace LateNightStupidities.XorPersist
             {
                 return (long)propertyElement;
             }
-            if (type == typeof(UInt16))
+            if (type == typeof(UInt16)) // (ushort)
             {
-                return ushort.Parse(propertyElement.Value);
+                return UInt16.Parse(propertyElement.Value);
             }
             if (type == typeof(UInt32))
             {
@@ -259,6 +259,54 @@ namespace LateNightStupidities.XorPersist
             }
 
             throw new Exception("Unsupported property type: " + type); // TODO Custom exception
+        }
+
+        /// <summary>
+        /// Determines whether the specified element is a reference element.
+        /// Element names:
+        /// * <see cref="XorXsd.Reference"/>
+        /// * <see cref="XorXsd.ReferenceList"/>
+        /// </summary>
+        /// <param name="element">The element.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified element is a reference element; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsReferenceElement(this XElement element)
+        {
+            switch (element.Name.LocalName)
+            {
+                case XorXsd.Reference:
+                case XorXsd.ReferenceList:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        /// <summary>
+        /// Determines whether the specified element is a property element.
+        /// Element names:
+        /// * <see cref="XorXsd.Property"/>
+        /// * <see cref="XorXsd.PropertyList"/>
+        /// * <see cref="XorXsd.XProperty"/>
+        /// * <see cref="XorXsd.XPropertyList"/>
+        /// </summary>
+        /// <param name="element">The element.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified element is a property element; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsPropertyElement(this XElement element)
+        {
+            switch (element.Name.LocalName)
+            {
+                case XorXsd.Property:
+                case XorXsd.PropertyList:
+                case XorXsd.XProperty:
+                case XorXsd.XPropertyList:
+                    return true;
+                default:
+                    return false;
+            }
         }
     }
 }

@@ -181,6 +181,14 @@ namespace LateNightStupidities.XorPersist
 
         #region Load methods
 
+        /// <summary>
+        /// Deserializes an <see cref="XorObject"/> from an <see cref="XElement"/>.
+        /// </summary>
+        /// <param name="objectElement">The object element.</param>
+        /// <param name="controller">The controller.</param>
+        /// <returns>The deserialized <see cref="XorObject"/>.</returns>
+        /// <exception cref="System.ArgumentException">Supplied <see cref="XElement"/> is not an <see cref="XorXsd.Object"/> element.</exception>
+        /// <exception cref="System.Exception">Parameterless constructor is missing on type.</exception>
         internal static XorObject LoadFromElement(XElement objectElement, XorController controller)
         {
             if (objectElement.Name.LocalName != XorXsd.Object)
@@ -204,9 +212,15 @@ namespace LateNightStupidities.XorPersist
             }
         }
 
+        /// <summary>
+        /// Loads the properties and references of this <see cref="XorObject"/> 
+        /// from an <see cref="XElement"/> and sets them on this instance.
+        /// </summary>
+        /// <param name="objectElement">The object element.</param>
+        /// <param name="controller">The controller.</param>
         private void LoadObjectContents(XElement objectElement, XorController controller)
         {
-            foreach (var propertyElement in objectElement.Elements().Where(IsPropertyElement))
+            foreach (var propertyElement in objectElement.Elements().Where(XorExtensions.IsPropertyElement))
             {
                 string memberName = propertyElement.GetMemberName();
 
@@ -229,7 +243,7 @@ namespace LateNightStupidities.XorPersist
                 }
             }
 
-            foreach (var referenceElement in objectElement.Elements().Where(IsReferenceElement))
+            foreach (var referenceElement in objectElement.Elements().Where(XorExtensions.IsReferenceElement))
             {
                 string memberName = referenceElement.GetMemberName();
 
@@ -249,32 +263,12 @@ namespace LateNightStupidities.XorPersist
             }
         }
 
-        private bool IsReferenceElement(XElement arg)
-        {
-            switch (arg.Name.LocalName)
-            {
-                case XorXsd.Reference:
-                case XorXsd.ReferenceList:
-                    return true;
-                default:
-                    return false;
-            }
-        }
-
-        private bool IsPropertyElement(XElement arg)
-        {
-            switch (arg.Name.LocalName)
-            {
-                case XorXsd.Property:
-                case XorXsd.PropertyList:
-                case XorXsd.XProperty:
-                case XorXsd.XPropertyList:
-                    return true;
-                default:
-                    return false;
-            }
-        }
-
+        /// <summary>
+        /// Loads a property list of <see cref="XorObject"/>s from an <see cref="XElement"/>.
+        /// </summary>
+        /// <param name="propertyElement">The property element.</param>
+        /// <param name="member">The member.</param>
+        /// <param name="controller">The controller.</param>
         private void LoadXorTypePropertyList(XElement propertyElement, XorPropertyTuple member, XorController controller)
         {
             var list = new List<XorObject>(propertyElement.Elements().Count());
@@ -296,6 +290,11 @@ namespace LateNightStupidities.XorPersist
             member.Info.SetMemberValue(this, list);
         }
 
+        /// <summary>
+        /// Loads a property list of simple values from an <see cref="XElement"/>.
+        /// </summary>
+        /// <param name="propertyElement">The property element.</param>
+        /// <param name="member">The member.</param>
         private void LoadSimplePropertyList(XElement propertyElement, XorPropertyTuple member)
         {
             var list = new List<object>(propertyElement.Elements().Count());
@@ -316,6 +315,12 @@ namespace LateNightStupidities.XorPersist
             member.Info.SetMemberValue(this, list);
         }
 
+        /// <summary>
+        /// Loads a property that contains an <see cref="XorObject"/> from an <see cref="XElement"/>.
+        /// </summary>
+        /// <param name="propertyElement">The property element.</param>
+        /// <param name="member">The member.</param>
+        /// <param name="controller">The controller.</param>
         private void LoadXorTypeProperty(XElement propertyElement, XorPropertyTuple member, XorController controller)
         {
             var objectElement = propertyElement.Element(XorXsd.Object);
@@ -323,6 +328,11 @@ namespace LateNightStupidities.XorPersist
             member.Info.SetMemberValue(this, childObject);
         }
 
+        /// <summary>
+        /// Loads a property that contains a simple value from an <see cref="XElement"/>.
+        /// </summary>
+        /// <param name="propertyElement">The property element.</param>
+        /// <param name="member">The member.</param>
         private void LoadSimpleProperty(XElement propertyElement, XorPropertyTuple member)
         {
             var type = member.Info.GetMemberInfoType();
@@ -330,6 +340,11 @@ namespace LateNightStupidities.XorPersist
             member.Info.SetMemberValue(this, value);
         }
 
+        /// <summary>
+        /// Loads a reference list of <see cref="XorObject"/>s from an <see cref="XElement"/>.
+        /// </summary>
+        /// <param name="referenceElement">The reference element.</param>
+        /// <param name="member">The member.</param>
         private static void LoadReferenceList(XElement referenceElement, XorReferenceTuple member)
         {
             foreach (var itemElement in referenceElement.Elements())
@@ -346,6 +361,11 @@ namespace LateNightStupidities.XorPersist
             }
         }
 
+        /// <summary>
+        /// Loads a reference to an <see cref="XorObject"/> from an <see cref="XElement"/>.
+        /// </summary>
+        /// <param name="referenceElement">The reference element.</param>
+        /// <param name="member">The member.</param>
         private static void LoadReference(XElement referenceElement, XorReferenceTuple member)
         {
             var xorId = Guid.Parse(referenceElement.Value);
@@ -360,6 +380,7 @@ namespace LateNightStupidities.XorPersist
         /// Saves this XorObject and all children to the supplied element.
         /// </summary>
         /// <param name="contentElement">The content element.</param>
+        /// <exception cref="System.Exception">XorClass attribute is missing on type.</exception>
         internal void SaveTo(XElement contentElement)
         {
             var classAttribute = (XorClassAttribute)Attribute.GetCustomAttribute(GetType(), typeof(XorClassAttribute));
@@ -379,7 +400,7 @@ namespace LateNightStupidities.XorPersist
         }
 
         /// <summary>
-        /// Saves the XorReferences.
+        /// Saves the XorReferences to the supplied <see cref="XorXsd.Object"/> element.
         /// </summary>
         /// <param name="mainElement">The main element.</param>
         private void SaveXorReferences(XElement mainElement)
@@ -389,41 +410,40 @@ namespace LateNightStupidities.XorPersist
                 if (member.Attr.Multiplicity == XorMultiplicity.Single)
                 {
                     var referencedObject = (XorObject) member.Info.GetMemberValue(this);
-                    if (referencedObject != null)
-                    {
-                        var refElement = CreateReferenceElement(referencedObject, member);
-                        mainElement.Add(refElement);
-                    }
+                    if (referencedObject == null) continue; // Skip null references
+
+                    var refElement = CreateReferenceElement(referencedObject, member);
+                    mainElement.Add(refElement);
                 }
                 else if (member.Attr.Multiplicity == XorMultiplicity.List)
                 {
                     var refList = (IEnumerable) member.Info.GetMemberValue(this);
-                    if (refList != null)
+                    if (refList == null) continue; // Skip null reference lists
+
+                    var refListElement = CreateReferenceListElement(member);
+
+                    foreach (XorObject xorObject in refList)
                     {
-                        var refListElement = CreateReferenceListElement(member);
-
-                        foreach (XorObject xorObject in refList)
+                        Guid? id = null;
+                        if (xorObject != null)
                         {
-                            Guid? id = null;
-                            if (xorObject != null)
-                            {
-                                id = xorObject.XorId;
-                            }
-
-                            var refListItemElement = CreateSimpleListItemElement(id);
-                            refListElement.Add(refListItemElement);
+                            id = xorObject.XorId;
                         }
-                        
-                        mainElement.Add(refListElement);
+
+                        var refListItemElement = CreateSimpleListItemElement(id);
+                        refListElement.Add(refListItemElement);
                     }
+                        
+                    mainElement.Add(refListElement);
                 }
             }
         }
 
         /// <summary>
-        /// Saves the XorProperties.
+        /// Saves the XorProperties to the supplied <see cref="XorXsd.Object" /> element.
         /// </summary>
         /// <param name="mainElement">The main element.</param>
+        /// <exception cref="System.Exception">Property type is not supported.</exception>
         private void SaveXorProperties(XElement mainElement)
         {
             foreach (var member in GetType().GetXorPropertyMembers().OrderBy(m => m.Attr.Name))
