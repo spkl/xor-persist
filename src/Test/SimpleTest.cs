@@ -168,6 +168,14 @@ namespace Test
         }
 
         [Test]
+        public void TestIntegrityDoubleRandom([Random(double.MinValue, double.MaxValue, 10)] Double vDouble)
+        {
+            simpleClass.Double = vDouble;
+            var obj = SaveAndLoad();
+            Assert.AreEqual(simpleClass.Double, obj.Double);
+        }
+
+        [Test]
         public void TestIntegrityInt16([Values(short.MinValue, short.MaxValue)] Int16 vInt16)
         {
             simpleClass.Int16 = vInt16;
@@ -208,7 +216,15 @@ namespace Test
         }
 
         [Test]
-        public void TestIntegrityString([Values("Test", ":)", "\n", "\r\n", "\t", "This is a test\n:)\\<~>\r\n\t\t\r\n.")] String vString)
+        public void TestIntegritySingleRandom([Random(float.MinValue, float.MaxValue, 10)] Double vSingle)
+        {
+            simpleClass.Single = (float) vSingle;
+            var obj = SaveAndLoad();
+            Assert.AreEqual(simpleClass.Single, obj.Single);
+        }
+
+        [Test]
+        public void TestIntegrityString([Values("Test", ":)", "\n", "\n\n", "\r\n\r\n", "\r\n", "\t", "This is a test\n:)\\<~>\r\n\t\t\r\n.", " leading and trailing whitespace ")] String vString)
         {
             simpleClass.String = vString;
             var obj = SaveAndLoad();
