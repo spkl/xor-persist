@@ -5,11 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using LateNightStupidities.XorPersist;
 using LateNightStupidities.XorPersist.Attributes;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace Test
 {
-    [TestClass]
+    [TestFixture]
     public class SimpleTest
     {
         private SimpleClass simpleClass;
@@ -78,7 +78,7 @@ namespace Test
             public decimal Decimal { get; set; }
         }
         
-        [TestInitialize]
+        [SetUp]
         public void Init()
         {
             simpleClass = new SimpleClass()
@@ -106,14 +106,14 @@ namespace Test
             };
         }
 
-        [TestMethod]
+        [Test]
         public void TestSave()
         {
             string file = Path.GetTempFileName();
             XorController.Get().Save(simpleClass, file);
         }
 
-        [TestMethod]
+        [Test]
         public void TestLoad()
         {
             string file = Path.GetTempFileName();
@@ -121,7 +121,7 @@ namespace Test
             XorController.Get().Load<SimpleClass>(file);
         }
 
-        [TestMethod]
+        [Test]
         public void TestIntegrity()
         {
             string file = Path.GetTempFileName();
