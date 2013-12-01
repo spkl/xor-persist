@@ -98,7 +98,7 @@ namespace Test
                 SByte = sbyte.MaxValue,
                 Single = float.MaxValue,
                 SEpsilon = float.Epsilon,
-                String = "This is a test :)~",
+                String = "This is a test\n:)\\<~>\r\n\t\t\r\n.",
                 TimeSpan = new TimeSpan(3, 4, 5, 6, 7),
                 UInt16 = ushort.MaxValue,
                 UInt32 = uint.MaxValue,
@@ -146,7 +146,6 @@ namespace Test
             Assert.AreEqual(simpleClass.UInt16, obj.UInt16);
             Assert.AreEqual(simpleClass.UInt32, obj.UInt32);
             Assert.AreEqual(simpleClass.UInt64, obj.UInt64);
-
         }
     }
 }
