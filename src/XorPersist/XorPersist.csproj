@@ -70,6 +70,9 @@
     <EmbeddedResource Include="Schema\XorPersist.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Schema\xml.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <None Include="XorPersistSNK.pfx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

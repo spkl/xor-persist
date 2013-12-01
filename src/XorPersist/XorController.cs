@@ -159,6 +159,7 @@ namespace LateNightStupidities.XorPersist
             var xDocument = new XDocument();
 
             var rootElement = new XElement(XorXsd.Root);
+            rootElement.SetAttributeValue(XName.Get("{http://www.w3.org/XML/1998/namespace}space"), "preserve");
             xDocument.Add(rootElement);
 
             var staticInfoElement = new XElement(XorXsd.StaticInfo);
@@ -184,20 +185,25 @@ namespace LateNightStupidities.XorPersist
         public void Validate(Stream xmlStream)
         {
             var assembly = Assembly.GetExecutingAssembly();
-            const string schemaResourceName = "LateNightStupidities.XorPersist.Schema.XorPersist.xsd";
+            const string xorPersistXsd = "LateNightStupidities.XorPersist.Schema.XorPersist.xsd";
+            const string xmlXsd = "LateNightStupidities.XorPersist.Schema.xml.xsd";
 
-            using (Stream schemaStream = assembly.GetManifestResourceStream(schemaResourceName))
+            using (Stream xmlSchemaStream = assembly.GetManifestResourceStream(xmlXsd))
+            using (Stream xorSchemaStream = assembly.GetManifestResourceStream(xorPersistXsd))
             {
-                XmlSchema schema = XmlSchema.Read(schemaStream, null);
+                XmlSchema xmlSchema = XmlSchema.Read(xmlSchemaStream, null);
+                XmlSchema xorSchema = XmlSchema.Read(xorSchemaStream, null);
+
                 var settings = new XmlReaderSettings();
                 settings.ValidationType = ValidationType.Schema;
                 settings.ValidationFlags = XmlSchemaValidationFlags.None;
-                settings.Schemas.Add(schema);
+                settings.Schemas.Add(xmlSchema);
+                settings.Schemas.Add(xorSchema);
                 settings.ValidationEventHandler += SchemaValidationHandler;
-                
+
                 using (var reader = XmlReader.Create(xmlStream, settings))
                 {
-                    while (reader.Read());
+                    while (reader.Read()) ;
                 }
             }
         }
