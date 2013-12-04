@@ -78,7 +78,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SimpleTest.cs" />
+    <Compile Include="SimpleValue.cs" />
+    <Compile Include="ObjectContainment.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\XorPersist\XorPersist.csproj">
