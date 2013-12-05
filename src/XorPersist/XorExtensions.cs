@@ -128,6 +128,11 @@ namespace LateNightStupidities.XorPersist
             }
         }
 
+        /// <summary>
+        /// Casts the specified enumerable to an <see cref="IEnumerable{T}"/> of <paramref name="type"/>.
+        /// </summary>
+        /// <param name="enumerable">The enumerable.</param>
+        /// <param name="type">The type.</param>
         public static IEnumerable Cast(this IEnumerable enumerable, Type type)
         {
             var castMethod = typeof(Enumerable).GetMethod("Cast");
