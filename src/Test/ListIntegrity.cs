@@ -17,13 +17,13 @@ namespace Test
         [XorClass("Lists")]
         private class Lists : XorObject
         {
-            [XorProperty("Strings", typeof(string))]
+            [XorProperty("Strings", XorMultiplicity.List)]
             public IEnumerable<string> Strings;
 
-            [XorProperty("Doubles", typeof(double))]
+            [XorProperty("Doubles", XorMultiplicity.List)]
             public IEnumerable<double> Doubles;
 
-            [XorProperty("Objects", typeof(ListItem))]
+            [XorProperty("Objects", XorMultiplicity.List)]
             public IEnumerable<ListItem> Objects;
 
             public Lists()

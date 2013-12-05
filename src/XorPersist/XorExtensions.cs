@@ -141,6 +141,35 @@ namespace LateNightStupidities.XorPersist
         }
 
         /// <summary>
+        /// Determines whether the specified type is an <see cref="IEnumerable"/>.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified type is an <see cref="IEnumerable"/>; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsEnumerable(this Type type)
+        {
+            return typeof(IEnumerable).IsAssignableFrom(type);
+        }
+
+        /// <summary>
+        /// Determines whether the specified type is an <see cref="IEnumerable{T}"/>.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified type is an <see cref="IEnumerable{T}"/>; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsTypedEnumerable(this Type type)
+        {
+            if (type.IsEnumerable() && type.IsGenericType)
+            {
+                return type.GetGenericArguments().Count() == 1;
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Gets the type of the member info.
         /// </summary>
         /// <param name="memberInfo">The member info.</param>
@@ -157,6 +186,22 @@ namespace LateNightStupidities.XorPersist
                 default:
                     throw new ArgumentOutOfRangeException("memberInfo", "Only fields and properties are supported.");
             }
+        }
+
+        /// <summary>
+        /// Gets the type of the list item.
+        /// Tries to get the type from the <see cref="XorPropertyAttribute.ListItemType"/>.
+        /// If that is not successful, the generic argument of the IEnumerable is extracted.
+        /// </summary>
+        /// <param name="member">The member.</param>
+        public static Type GetListItemType(this XorPropertyTuple member)
+        {
+            var listItemType = member.Attr.ListItemType;
+            if (listItemType == null && member.Info.GetMemberInfoType().IsTypedEnumerable())
+            {
+                listItemType = member.Info.GetMemberInfoType().GetGenericArguments().Single();
+            }
+            return listItemType;
         }
 
         /// <summary>

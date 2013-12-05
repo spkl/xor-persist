@@ -359,6 +359,13 @@
             </summary>
             <param name="name">The name.</param>
         </member>
+        <member name="M:LateNightStupidities.XorPersist.Attributes.XorPropertyAttribute.#ctor(System.String,LateNightStupidities.XorPersist.Attributes.XorMultiplicity)">
+            <summary>
+            Initializes a new instance of the <see cref="T:LateNightStupidities.XorPersist.Attributes.XorPropertyAttribute"/> class with the supplied multiplicity.
+            </summary>
+            <param name="name">The name.</param>
+            <param name="multiplicity">The multiplicity.</param>
+        </member>
         <member name="M:LateNightStupidities.XorPersist.Attributes.XorPropertyAttribute.#ctor(System.String,System.Type)">
             <summary>
             Initializes a new instance of the <see cref="T:LateNightStupidities.XorPersist.Attributes.XorPropertyAttribute"/> class with list multiplicity.
@@ -374,7 +381,8 @@
         <member name="P:LateNightStupidities.XorPersist.Attributes.XorPropertyAttribute.ListItemType">
             <summary>
             Only for properties with <see cref="P:LateNightStupidities.XorPersist.Attributes.XorPropertyAttribute.Multiplicity"/> "<see cref="F:LateNightStupidities.XorPersist.Attributes.XorMultiplicity.List"/>":
-            The type of the list items. This must be a class that is derived from <see cref="T:LateNightStupidities.XorPersist.XorObject"/> or an interface.
+            The type of the list items. This must be a class that is derived from <see cref="T:LateNightStupidities.XorPersist.XorObject"/>, 
+            an interface or a supported simple type.
             </summary>
         </member>
         <member name="M:LateNightStupidities.XorPersist.XorExtensions.GetXorReferenceMembers(System.Type)">
@@ -431,6 +439,31 @@
             <param name="index">The index.</param>
             <exception cref="T:System.ArgumentOutOfRangeException">Only fields and properties are supported.</exception>
         </member>
+        <member name="M:LateNightStupidities.XorPersist.XorExtensions.Cast(System.Collections.IEnumerable,System.Type)">
+            <summary>
+            Casts the specified enumerable to an <see cref="T:System.Collections.Generic.IEnumerable`1"/> of <paramref name="type"/>.
+            </summary>
+            <param name="enumerable">The enumerable.</param>
+            <param name="type">The type.</param>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.XorExtensions.IsEnumerable(System.Type)">
+            <summary>
+            Determines whether the specified type is an <see cref="T:System.Collections.IEnumerable"/>.
+            </summary>
+            <param name="type">The type.</param>
+            <returns>
+              <c>true</c> if the specified type is an <see cref="T:System.Collections.IEnumerable"/>; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.XorExtensions.IsTypedEnumerable(System.Type)">
+            <summary>
+            Determines whether the specified type is an <see cref="T:System.Collections.Generic.IEnumerable`1"/>.
+            </summary>
+            <param name="type">The type.</param>
+            <returns>
+              <c>true</c> if the specified type is an <see cref="T:System.Collections.Generic.IEnumerable`1"/>; otherwise, <c>false</c>.
+            </returns>
+        </member>
         <member name="M:LateNightStupidities.XorPersist.XorExtensions.GetMemberInfoType(System.Reflection.MemberInfo)">
             <summary>
             Gets the type of the member info.
@@ -438,6 +471,14 @@
             <param name="memberInfo">The member info.</param>
             <returns></returns>
             <exception cref="T:System.ArgumentOutOfRangeException">Only fields and properties are supported.</exception>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.XorExtensions.GetListItemType(LateNightStupidities.XorPersist.Attributes.XorPropertyTuple)">
+            <summary>
+            Gets the type of the list item.
+            Tries to get the type from the <see cref="P:LateNightStupidities.XorPersist.Attributes.XorPropertyAttribute.ListItemType"/>.
+            If that is not successful, the generic argument of the IEnumerable is extracted.
+            </summary>
+            <param name="member">The member.</param>
         </member>
         <member name="M:LateNightStupidities.XorPersist.XorExtensions.GetNameAndMultiplicity(System.Xml.Linq.XElement,System.String@,LateNightStupidities.XorPersist.Attributes.XorMultiplicity@)">
             <summary>

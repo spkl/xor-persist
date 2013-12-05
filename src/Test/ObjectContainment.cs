@@ -29,16 +29,16 @@ namespace Test
             [XorProperty("PublicProperty")]
             public ILeaf PublicProperty { get; set; }
 
-            [XorProperty("PrivateEnumerableField", typeof(ILeaf))]
+            [XorProperty("PrivateEnumerableField", XorMultiplicity.List)]
             private IEnumerable<ILeaf> PrivateEnumerableField;
 
-            [XorProperty("PublicEnumerableField", typeof(ILeaf))]
+            [XorProperty("PublicEnumerableField", XorMultiplicity.List)]
             public IEnumerable<ILeaf> PublicEnumerableField;
 
-            [XorProperty("PrivateEnumerableProperty", typeof(ILeaf))]
+            [XorProperty("PrivateEnumerableProperty", XorMultiplicity.List)]
             private IEnumerable<ILeaf> PrivateEnumerableProperty { get; set; }
 
-            [XorProperty("PublicEnumerableProperty", typeof(ILeaf))]
+            [XorProperty("PublicEnumerableProperty", XorMultiplicity.List)]
             public IEnumerable<ILeaf> PublicEnumerableProperty { get; set; }
 
             public Root()

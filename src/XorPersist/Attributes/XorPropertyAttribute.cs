@@ -41,7 +41,12 @@ namespace LateNightStupidities.XorPersist.Attributes
         {
         }
 
-        private XorPropertyAttribute(string name, XorMultiplicity multiplicity)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="XorPropertyAttribute" /> class with the supplied multiplicity.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="multiplicity">The multiplicity.</param>
+        public XorPropertyAttribute(string name, XorMultiplicity multiplicity)
             : base(name)
         {
             Multiplicity = multiplicity;

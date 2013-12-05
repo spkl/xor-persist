@@ -16,8 +16,8 @@ namespace LateNightStupidities.XorPersist.Example
         private string secret;
 
         public List<ILeafClass> Leaves { get; set; }
-
-        [XorProperty("Leaves", typeof(ILeafClass))]
+        
+        [XorProperty("Leaves", XorMultiplicity.List)]
         private IEnumerable<ILeafClass> _Leaves
         {
             get { return Leaves; }
@@ -26,7 +26,7 @@ namespace LateNightStupidities.XorPersist.Example
 
         public List<string> Strings { get; set; }
 
-        [XorProperty("Strings", typeof(string))]
+        [XorProperty("Strings", XorMultiplicity.List)]
         private IEnumerable<string> _Strings
         {
             get { return Strings; }
@@ -35,7 +35,7 @@ namespace LateNightStupidities.XorPersist.Example
 
         private ISet<uint> Uints { get; set; }
 
-        [XorProperty("Uints", typeof(uint))]
+        [XorProperty("Uints", XorMultiplicity.List)]
         private IEnumerable<uint> _Uints
         {
             get { return Uints; }

@@ -47,8 +47,8 @@ namespace LateNightStupidities.XorPersist
                     }
                     else if (member.Attr.Multiplicity == XorMultiplicity.List)
                     {
-                        if (member.Attr.ListItemType.IsSupportedXorType()
-                            || member.Attr.ListItemType.IsInterface)
+                        if (member.GetListItemType().IsSupportedXorType()
+                            || member.GetListItemType().IsInterface)
                         {
                             var list = (IEnumerable) member.Info.GetMemberValue(this);
                             if (list != null)
@@ -272,6 +272,7 @@ namespace LateNightStupidities.XorPersist
         private void LoadXorTypePropertyList(XElement propertyElement, XorPropertyTuple member, XorController controller)
         {
             var list = new List<XorObject>(propertyElement.Elements().Count());
+            var listItemType = member.GetListItemType();
 
             foreach (var itemElement in propertyElement.Elements())
             {
@@ -287,7 +288,7 @@ namespace LateNightStupidities.XorPersist
                 }
             }
 
-            var castedEnumerable = list.Cast(member.Attr.ListItemType);
+            var castedEnumerable = list.Cast(listItemType);
             member.Info.SetMemberValue(this, castedEnumerable);
         }
 
@@ -299,6 +300,7 @@ namespace LateNightStupidities.XorPersist
         private void LoadSimplePropertyList(XElement propertyElement, XorPropertyTuple member)
         {
             var list = new List<object>(propertyElement.Elements().Count());
+            var listItemType = member.GetListItemType();
 
             foreach (var itemElement in propertyElement.Elements())
             {
@@ -308,16 +310,14 @@ namespace LateNightStupidities.XorPersist
                 }
                 else if (itemElement.Name.LocalName == XorXsd.ListItemNonNull)
                 {
-                    var value = itemElement.ConvertToType(member.Attr.ListItemType);
+                    var value = itemElement.ConvertToType(listItemType);
                     list.Add(value);
                 }
             }
 
-            var castedEnumerable = list.Cast(member.Attr.ListItemType);
+            var castedEnumerable = list.Cast(listItemType);
             member.Info.SetMemberValue(this, castedEnumerable);
         }
-
-        
 
         /// <summary>
         /// Loads a property that contains an <see cref="XorObject"/> from an <see cref="XElement"/>.
@@ -483,7 +483,7 @@ namespace LateNightStupidities.XorPersist
                     var list = (IEnumerable)member.Info.GetMemberValue(this);
                     if (list == null) continue; // Skip null lists
 
-                    var listItemType = member.Attr.ListItemType;
+                    var listItemType = member.GetListItemType();
                     
                     bool supportedSimpleType = listItemType.IsSupportedSimpleType();
                     bool supportedXorType = !supportedSimpleType && (listItemType.IsSupportedXorType() || listItemType.IsInterface); // TODO Produce warning for interface
