@@ -18,38 +18,38 @@ namespace Test
         private class Root : XorObject
         {
             [XorProperty("PrivateField")]
-            private XorObject PrivateField;
+            private ILeaf PrivateField;
 
             [XorProperty("PublicField")]
-            public XorObject PublicField;
+            public ILeaf PublicField;
 
             [XorProperty("PrivateProperty")]
-            private XorObject PrivateProperty { get; set; }
+            private ILeaf PrivateProperty { get; set; }
 
             [XorProperty("PublicProperty")]
-            public XorObject PublicProperty { get; set; }
+            public ILeaf PublicProperty { get; set; }
 
-            [XorProperty("PrivateEnumerableField", typeof(XorObject))]
-            private IEnumerable<XorObject> PrivateEnumerableField;
+            [XorProperty("PrivateEnumerableField", typeof(ILeaf))]
+            private IEnumerable<ILeaf> PrivateEnumerableField;
 
-            [XorProperty("PublicEnumerableField", typeof(XorObject))]
-            public IEnumerable<XorObject> PublicEnumerableField;
+            [XorProperty("PublicEnumerableField", typeof(ILeaf))]
+            public IEnumerable<ILeaf> PublicEnumerableField;
 
-            [XorProperty("PrivateEnumerableProperty", typeof(XorObject))]
-            private IEnumerable<XorObject> PrivateEnumerableProperty { get; set; }
+            [XorProperty("PrivateEnumerableProperty", typeof(ILeaf))]
+            private IEnumerable<ILeaf> PrivateEnumerableProperty { get; set; }
 
-            [XorProperty("PublicEnumerableProperty", typeof(XorObject))]
-            public IEnumerable<XorObject> PublicEnumerableProperty { get; set; }
+            [XorProperty("PublicEnumerableProperty", typeof(ILeaf))]
+            public IEnumerable<ILeaf> PublicEnumerableProperty { get; set; }
 
             public Root()
             {
                 
             }
 
-            public Root(XorObject privateField, XorObject publicField, XorObject privateProperty,
-                XorObject publicProperty, IEnumerable<XorObject> privateEnumerableField,
-                IEnumerable<XorObject> publicEnumerableField, IEnumerable<XorObject> privateEnumerableProperty,
-                IEnumerable<XorObject> publicEnumerableProperty)
+            public Root(ILeaf privateField, ILeaf publicField, ILeaf privateProperty,
+                ILeaf publicProperty, IEnumerable<ILeaf> privateEnumerableField,
+                IEnumerable<ILeaf> publicEnumerableField, IEnumerable<ILeaf> privateEnumerableProperty,
+                IEnumerable<ILeaf> publicEnumerableProperty)
             {
                 this.PrivateField = privateField;
                 this.PublicField = publicField;
@@ -63,22 +63,22 @@ namespace Test
 
             public ILeaf GetPrivateField()
             {
-                return (ILeaf) this.PrivateField;
+                return this.PrivateField;
             }
 
             public ILeaf GetPrivateProperty()
             {
-                return (ILeaf) this.PrivateProperty;
+                return this.PrivateProperty;
             }
 
             public IEnumerable<ILeaf> GetPrivateEnumerableField()
             {
-                return this.PrivateEnumerableField.Cast<ILeaf>();
+                return this.PrivateEnumerableField;
             }
 
             public IEnumerable<ILeaf> GetPrivateEnumerableProperty()
             {
-                return this.PrivateEnumerableProperty.Cast<ILeaf>();
+                return this.PrivateEnumerableProperty;
             }
         }
 
@@ -132,25 +132,17 @@ namespace Test
             var publicField = new Leaf("PublicField");
             var privateProperty = new Leaf2("PrivateProperty");
             var publicProperty = new Leaf2("PublicProperty");
-            var privateEnumerableField = new XorObject[] { new Leaf("1"), new Leaf2("2"), };
-            var publicEnumerableField = new XorObject[] { new Leaf2("3"), new Leaf2("4"), };
-            var privateEnumerableProperty = new XorObject[] { new Leaf2("5"), new Leaf("6"), };
-            var publicEnumerableProperty = new XorObject[] { new Leaf("7"), new Leaf("8"), };
+            var privateEnumerableField = new ILeaf[] { new Leaf("1"), new Leaf2("2"), };
+            var publicEnumerableField = new ILeaf[] { new Leaf2("3"), new Leaf2("4"), };
+            var privateEnumerableProperty = new ILeaf[] { new Leaf2("5"), new Leaf("6"), };
+            var publicEnumerableProperty = new ILeaf[] { new Leaf("7"), new Leaf("8"), };
 
             root = new Root(privateField, publicField, privateProperty, publicProperty, privateEnumerableField,
                 publicEnumerableField, privateEnumerableProperty, publicEnumerableProperty);
 
-            rootCopy = SaveAndLoadCopy(root);
+            rootCopy = TestHelper.SaveAndLoad(root);
         }
 
-        private Root SaveAndLoadCopy(Root obj)
-        {
-            string file = Path.GetTempFileName();
-            XorController.Get().Save(obj, file);
-            var copy = XorController.Get().Load<Root>(file);
-            return copy;
-        }
-        
         [Test]
         public void PrivateField()
         {
@@ -162,7 +154,7 @@ namespace Test
         public void PublicField()
         {
             Assert.AreSame(root.PublicField.GetType(), rootCopy.PublicField.GetType());
-            Assert.AreEqual(((ILeaf)root.PublicField).Name, ((ILeaf)rootCopy.PublicField).Name);
+            Assert.AreEqual(root.PublicField.Name, rootCopy.PublicField.Name);
         }
 
         [Test]
@@ -176,7 +168,7 @@ namespace Test
         public void PublicProperty()
         {
             Assert.AreSame(root.PublicProperty.GetType(), rootCopy.PublicProperty.GetType());
-            Assert.AreEqual(((ILeaf)root.PublicProperty).Name, ((ILeaf)rootCopy.PublicProperty).Name);
+            Assert.AreEqual(root.PublicProperty.Name, rootCopy.PublicProperty.Name);
         }
 
         [Test]
@@ -190,7 +182,7 @@ namespace Test
         public void PublicEnumerableField()
         {
             CollectionAssert.AreEqual(root.PublicEnumerableField.Select(o => o.GetType()), rootCopy.PublicEnumerableField.Select(o => o.GetType()));
-            CollectionAssert.AreEqual(root.PublicEnumerableField.Cast<ILeaf>().Select(o => o.Name), rootCopy.PublicEnumerableField.Cast<ILeaf>().Select(o => o.Name));
+            CollectionAssert.AreEqual(root.PublicEnumerableField.Select(o => o.Name), rootCopy.PublicEnumerableField.Select(o => o.Name));
         }
 
         [Test]
@@ -204,7 +196,7 @@ namespace Test
         public void PublicEnumerableProperty()
         {
             CollectionAssert.AreEqual(root.PublicEnumerableProperty.Select(o => o.GetType()), rootCopy.PublicEnumerableProperty.Select(o => o.GetType()));
-            CollectionAssert.AreEqual(root.PublicEnumerableProperty.Cast<ILeaf>().Select(o => o.Name), rootCopy.PublicEnumerableProperty.Cast<ILeaf>().Select(o => o.Name));
+            CollectionAssert.AreEqual(root.PublicEnumerableProperty.Select(o => o.Name), rootCopy.PublicEnumerableProperty.Select(o => o.Name));
         }
 
     }

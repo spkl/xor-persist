@@ -18,28 +18,28 @@ namespace LateNightStupidities.XorPersist.Example
         public List<ILeafClass> Leaves { get; set; }
 
         [XorProperty("Leaves", typeof(ILeafClass))]
-        private IEnumerable<XorObject> _Leaves
+        private IEnumerable<ILeafClass> _Leaves
         {
-            get { return Leaves.Cast<XorObject>(); }
-            set { Leaves = new List<ILeafClass>(value.Cast<ILeafClass>()); }
+            get { return Leaves; }
+            set { Leaves = new List<ILeafClass>(value); }
         }
 
         public List<string> Strings { get; set; }
 
         [XorProperty("Strings", typeof(string))]
-        private IEnumerable<object> _Strings
+        private IEnumerable<string> _Strings
         {
             get { return Strings; }
-            set { Strings = new List<string>(value.Cast<string>()); }
+            set { Strings = new List<string>(value); }
         }
 
         private ISet<uint> Uints { get; set; }
 
         [XorProperty("Uints", typeof(uint))]
-        private IEnumerable<object> _Uints
+        private IEnumerable<uint> _Uints
         {
-            get { return Uints.Cast<object>(); }
-            set { Uints = new HashSet<uint>(value.Cast<uint>()); }
+            get { return Uints; }
+            set { Uints = new HashSet<uint>(value); }
         }
 
         [XorProperty("MainLeaf")]
@@ -63,6 +63,9 @@ namespace LateNightStupidities.XorPersist.Example
             set { References = new List<ILeafClass>(value.Cast<ILeafClass>()); }
         }
 
+        [XorReference("Reference")]
+        public ILeafClass Reference { get; set; }
+
         //[XorProperty("NullableIntIsNull")]
         //public int? NullableIntIsNull { get; set; }
 
@@ -71,7 +74,7 @@ namespace LateNightStupidities.XorPersist.Example
 
         public RootClass()
         {
-
+            
         }
 
         public RootClass(bool foo)
@@ -84,8 +87,9 @@ namespace LateNightStupidities.XorPersist.Example
             Value = 0.54444444444444444441m;
             Strings = new List<string>() { "1", null, "2" };
             Leaves = new List<ILeafClass>() { new LeafClass(this, "numma 1"), new LeafClass(this, "numma 2") };
-            References = Leaves.ToList().Concat(new[] { (ILeafClass)null });
+            References = Leaves.ToList().Concat(new[] { null, Leaves.ElementAt(0) });
             Uints = new HashSet<uint>() { 1, 2, 3, 1, 5 };
+            Reference = Leaves.ElementAt(1);
             //NullableIntIsNull = null;
             //NullableIntIsNotNull = 4;
         }

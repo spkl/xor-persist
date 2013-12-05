@@ -111,7 +111,7 @@ namespace Test
         public void IntegrityBool([Values(true, false)] bool vBool)
         {
             simpleClass.Bool = vBool;
-            var obj = SaveAndLoad();
+            var obj = TestHelper.SaveAndLoad(simpleClass);
             Assert.AreEqual(simpleClass.Bool, obj.Bool);
         }
 
@@ -119,7 +119,7 @@ namespace Test
         public void IntegrityByte([Values(byte.MinValue, byte.MaxValue)] byte vByte)
         {
             simpleClass.Byte = vByte;
-            var obj = SaveAndLoad();
+            var obj = TestHelper.SaveAndLoad(simpleClass);
             Assert.AreEqual(simpleClass.Byte, obj.Byte);
         }
 
@@ -127,15 +127,15 @@ namespace Test
         public void IntegrityDecimal()
         {
             simpleClass.Decimal = decimal.MaxValue;
-            var obj = SaveAndLoad();
+            var obj = TestHelper.SaveAndLoad(simpleClass);
             Assert.AreEqual(simpleClass.Decimal, obj.Decimal);
 
             simpleClass.Decimal = decimal.MinValue;
-            obj = SaveAndLoad();
+            obj = TestHelper.SaveAndLoad(simpleClass);
             Assert.AreEqual(simpleClass.Decimal, obj.Decimal);
 
             simpleClass.Decimal = 4357843578234.32452346565m;
-            obj = SaveAndLoad();
+            obj = TestHelper.SaveAndLoad(simpleClass);
             Assert.AreEqual(simpleClass.Decimal, obj.Decimal);
         }
 
@@ -143,19 +143,19 @@ namespace Test
         public void IntegrityDateTime()
         {
             simpleClass.DateTime = DateTime.MaxValue;
-            var obj = SaveAndLoad();
+            var obj = TestHelper.SaveAndLoad(simpleClass);
             Assert.AreEqual(simpleClass.DateTime, obj.DateTime);
 
             simpleClass.DateTime = DateTime.MinValue;
-            obj = SaveAndLoad();
+            obj = TestHelper.SaveAndLoad(simpleClass);
             Assert.AreEqual(simpleClass.DateTime, obj.DateTime);
 
             simpleClass.DateTime = DateTime.Now;
-            obj = SaveAndLoad();
+            obj = TestHelper.SaveAndLoad(simpleClass);
             Assert.AreEqual(simpleClass.DateTime, obj.DateTime);
 
             simpleClass.DateTime = DateTime.UtcNow;
-            obj = SaveAndLoad();
+            obj = TestHelper.SaveAndLoad(simpleClass);
             Assert.AreEqual(simpleClass.DateTime, obj.DateTime);
         }
 
@@ -163,7 +163,7 @@ namespace Test
         public void IntegrityDouble([Values(double.MinValue, double.MaxValue, double.Epsilon, double.NaN, double.NegativeInfinity, double.PositiveInfinity)] Double vDouble)
         {
             simpleClass.Double = vDouble;
-            var obj = SaveAndLoad();
+            var obj = TestHelper.SaveAndLoad(simpleClass);
             Assert.AreEqual(simpleClass.Double, obj.Double);
         }
 
@@ -171,7 +171,7 @@ namespace Test
         public void IntegrityDoubleRandom([Random(double.MinValue, double.MaxValue, 10)] Double vDouble)
         {
             simpleClass.Double = vDouble;
-            var obj = SaveAndLoad();
+            var obj = TestHelper.SaveAndLoad(simpleClass);
             Assert.AreEqual(simpleClass.Double, obj.Double);
         }
 
@@ -179,7 +179,7 @@ namespace Test
         public void IntegrityInt16([Values(short.MinValue, short.MaxValue)] Int16 vInt16)
         {
             simpleClass.Int16 = vInt16;
-            var obj = SaveAndLoad();
+            var obj = TestHelper.SaveAndLoad(simpleClass);
             Assert.AreEqual(simpleClass.Int16, obj.Int16);
         }
 
@@ -187,7 +187,7 @@ namespace Test
         public void IntegrityInt32([Values(int.MinValue, int.MaxValue)] Int32 vInt32)
         {
             simpleClass.Int32 = vInt32;
-            var obj = SaveAndLoad();
+            var obj = TestHelper.SaveAndLoad(simpleClass);
             Assert.AreEqual(simpleClass.Int32, obj.Int32);
         }
 
@@ -195,7 +195,7 @@ namespace Test
         public void IntegrityInt64([Values(long.MinValue, long.MaxValue)] Int64 vInt64)
         {
             simpleClass.Int64 = vInt64;
-            var obj = SaveAndLoad();
+            var obj = TestHelper.SaveAndLoad(simpleClass);
             Assert.AreEqual(simpleClass.Int64, obj.Int64);
         }
 
@@ -203,7 +203,7 @@ namespace Test
         public void IntegritySByte([Values(sbyte.MinValue, sbyte.MaxValue)] SByte vSByte)
         {
             simpleClass.SByte = vSByte;
-            var obj = SaveAndLoad();
+            var obj = TestHelper.SaveAndLoad(simpleClass);
             Assert.AreEqual(simpleClass.SByte, obj.SByte);
         }
 
@@ -211,7 +211,7 @@ namespace Test
         public void IntegritySingle([Values(float.MinValue, float.MaxValue, float.Epsilon, float.NaN, float.NegativeInfinity, float.PositiveInfinity)] Single vSingle)
         {
             simpleClass.Single = vSingle;
-            var obj = SaveAndLoad();
+            var obj = TestHelper.SaveAndLoad(simpleClass);
             Assert.AreEqual(simpleClass.Single, obj.Single);
         }
 
@@ -219,7 +219,7 @@ namespace Test
         public void IntegritySingleRandom([Random(float.MinValue, float.MaxValue, 10)] Double vSingle)
         {
             simpleClass.Single = (float) vSingle;
-            var obj = SaveAndLoad();
+            var obj = TestHelper.SaveAndLoad(simpleClass);
             Assert.AreEqual(simpleClass.Single, obj.Single);
         }
 
@@ -227,7 +227,7 @@ namespace Test
         public void IntegrityString([Values("Test", ":)", "\n", "\n\n", "\t", " leading and trailing whitespace ")] String vString)
         {
             simpleClass.String = vString;
-            var obj = SaveAndLoad();
+            var obj = TestHelper.SaveAndLoad(simpleClass);
             Assert.AreEqual(simpleClass.String, obj.String);
         }
 
@@ -236,7 +236,7 @@ namespace Test
         public void IntegrityStringCrLfLineBreaks([Values("\r\n\r\n", "\r\n", "This is a test\n:)\\<~>\r\n\t\t\r\n.")] String vString)
         {
             simpleClass.String = vString;
-            var obj = SaveAndLoad();
+            var obj = TestHelper.SaveAndLoad(simpleClass);
             Assert.AreEqual(simpleClass.String, obj.String);
         }
 
@@ -244,15 +244,15 @@ namespace Test
         public void IntegrityTimeSpan()
         {
             simpleClass.TimeSpan = TimeSpan.MaxValue;
-            var obj = SaveAndLoad();
+            var obj = TestHelper.SaveAndLoad(simpleClass);
             Assert.AreEqual(simpleClass.TimeSpan, obj.TimeSpan);
 
             simpleClass.TimeSpan = TimeSpan.MinValue;
-            obj = SaveAndLoad();
+            obj = TestHelper.SaveAndLoad(simpleClass);
             Assert.AreEqual(simpleClass.TimeSpan, obj.TimeSpan);
 
             simpleClass.TimeSpan = TimeSpan.Zero;
-            obj = SaveAndLoad();
+            obj = TestHelper.SaveAndLoad(simpleClass);
             Assert.AreEqual(simpleClass.TimeSpan, obj.TimeSpan);
         }
 
@@ -260,7 +260,7 @@ namespace Test
         public void IntegrityUInt16([Values(ushort.MinValue, ushort.MaxValue)] UInt16 vUInt16)
         {
             simpleClass.UInt16 = vUInt16;
-            var obj = SaveAndLoad();
+            var obj = TestHelper.SaveAndLoad(simpleClass);
             Assert.AreEqual(simpleClass.UInt16, obj.UInt16);
         }
 
@@ -268,7 +268,7 @@ namespace Test
         public void IntegrityUInt32([Values(uint.MinValue, uint.MaxValue)] UInt32 vUInt32)
         {
             simpleClass.UInt32 = vUInt32;
-            var obj = SaveAndLoad();
+            var obj = TestHelper.SaveAndLoad(simpleClass);
             Assert.AreEqual(simpleClass.UInt32, obj.UInt32);
         }
 
@@ -276,7 +276,7 @@ namespace Test
         public void IntegrityUInt64([Values(ulong.MinValue, ulong.MaxValue)] UInt64 vUInt64)
         {
             simpleClass.UInt64 = vUInt64;
-            var obj = SaveAndLoad();
+            var obj = TestHelper.SaveAndLoad(simpleClass);
             Assert.AreEqual(simpleClass.UInt64, obj.UInt64);
         }
 
@@ -286,7 +286,7 @@ namespace Test
         public void IntegrityUninitialized()
         {
             simpleClass = new SimpleClass();
-            var obj = SaveAndLoad();
+            var obj = TestHelper.SaveAndLoad(simpleClass);
 
             Assert.AreEqual(simpleClass.Bool, obj.Bool);
             Assert.AreEqual(simpleClass.Byte, obj.Byte);
@@ -304,14 +304,6 @@ namespace Test
             Assert.AreEqual(simpleClass.UInt16, obj.UInt16);
             Assert.AreEqual(simpleClass.UInt32, obj.UInt32);
             Assert.AreEqual(simpleClass.UInt64, obj.UInt64);
-        }
-
-        private SimpleClass SaveAndLoad()
-        {
-            string file = Path.GetTempFileName();
-            XorController.Get().Save(simpleClass, file);
-            var obj = XorController.Get().Load<SimpleClass>(file);
-            return obj;
         }
     }
 }

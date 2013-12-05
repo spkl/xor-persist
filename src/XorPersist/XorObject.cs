@@ -287,7 +287,8 @@ namespace LateNightStupidities.XorPersist
                 }
             }
 
-            member.Info.SetMemberValue(this, list);
+            var castedEnumerable = list.Cast(member.Attr.ListItemType);
+            member.Info.SetMemberValue(this, castedEnumerable);
         }
 
         /// <summary>
@@ -312,8 +313,11 @@ namespace LateNightStupidities.XorPersist
                 }
             }
 
-            member.Info.SetMemberValue(this, list);
+            var castedEnumerable = list.Cast(member.Attr.ListItemType);
+            member.Info.SetMemberValue(this, castedEnumerable);
         }
+
+        
 
         /// <summary>
         /// Loads a property that contains an <see cref="XorObject"/> from an <see cref="XElement"/>.

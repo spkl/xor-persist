@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -125,6 +126,13 @@ namespace LateNightStupidities.XorPersist
                 default:
                     throw new ArgumentOutOfRangeException("memberInfo", "Only fields and properties are supported.");
             }
+        }
+
+        public static IEnumerable Cast(this IEnumerable enumerable, Type type)
+        {
+            var castMethod = typeof(Enumerable).GetMethod("Cast");
+            castMethod = castMethod.MakeGenericMethod(type);
+            return (IEnumerable)castMethod.Invoke(null, new object[] { enumerable });
         }
 
         /// <summary>
