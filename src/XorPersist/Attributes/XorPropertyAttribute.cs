@@ -27,7 +27,8 @@ namespace LateNightStupidities.XorPersist.Attributes
 
         /// <summary>
         /// Only for properties with <see cref="Multiplicity"/> "<see cref="XorMultiplicity.List"/>":
-        /// The type of the list items. This must be a class that is derived from <see cref="XorObject"/> or an interface.
+        /// The type of the list items. This must be a class that is derived from <see cref="XorObject"/>, 
+        /// an interface or a supported simple type.
         /// </summary>
         public Type ListItemType { get; private set; }
 
