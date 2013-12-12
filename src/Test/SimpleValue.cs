@@ -105,6 +105,12 @@ namespace Test
             XorController.Get().Load<SimpleClass>(file);
         }
 
+        [Test]
+        public void LoadSaveIteration()
+        {
+            TestHelper.TestIteration(simpleClass);
+        }
+
         #region Integrity<SimpleValueType>
 
         [Test]
