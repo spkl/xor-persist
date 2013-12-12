@@ -78,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ListIntegrity.cs" />
+    <Compile Include="LoadSaveMechanism.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimpleValue.cs" />
     <Compile Include="ObjectContainment.cs" />

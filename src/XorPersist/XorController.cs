@@ -53,6 +53,16 @@ namespace LateNightStupidities.XorPersist
                     var attribute = (XorClassAttribute)Attribute.GetCustomAttribute(type, typeof(XorClassAttribute));
                     if (attribute != null)
                     {
+                        Type existingType;
+                        if (typeMapping.TryGetValue(attribute.Name, out existingType))
+                        {
+                            // TODO custom exception
+                            throw new Exception(
+                                string.Format(
+                                    "Duplicate XorClass name '{0}'. Type of existing entry: '{1}, Assembly {3}'. Type of duplicate entry: '{2}, Assembly {4}'.",
+                                    attribute.Name, existingType, type, existingType.Assembly, type.Assembly));
+                        }
+
                         typeMapping.Add(attribute.Name, type);
                     }
                 }
