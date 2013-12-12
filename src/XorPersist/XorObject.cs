@@ -142,6 +142,21 @@ namespace LateNightStupidities.XorPersist
             
         }
 
+        internal void Finish()
+        {
+            XorFinish();
+        }
+
+        /// <summary>
+        /// Prepares the <see cref="XorObject"/> for saving.
+        /// Called before the object is saved.
+        /// Override in a child class to implement custom pre-saving behavior.
+        /// </summary>
+        protected virtual void XorFinish()
+        {
+            
+        }
+
         /// <summary>
         /// Resolves the references of this XorObject.
         /// </summary>
@@ -394,6 +409,8 @@ namespace LateNightStupidities.XorPersist
                 // TODO Custom exception
                 throw new Exception("XorClass attribute is missing on type " + GetType() + ".");
             }
+
+            Finish();
 
             var mainElement = new XElement(XorXsd.Object);
             mainElement.SetAttributeValue(XorXsd.ClassName, classAttribute.Name);

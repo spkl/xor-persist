@@ -37,6 +37,13 @@
             Override in a child class to implement custom initialization behavior.
             </summary>
         </member>
+        <member name="M:LateNightStupidities.XorPersist.XorObject.XorFinish">
+            <summary>
+            Prepares the <see cref="T:LateNightStupidities.XorPersist.XorObject"/> for saving.
+            Called before the object is saved.
+            Override in a child class to implement custom pre-saving behavior.
+            </summary>
+        </member>
         <member name="M:LateNightStupidities.XorPersist.XorObject.ResolveReferences(System.Collections.Generic.Dictionary{System.Guid,LateNightStupidities.XorPersist.XorObject})">
             <summary>
             Resolves the references of this XorObject.
