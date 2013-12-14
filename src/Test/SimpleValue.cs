@@ -12,7 +12,7 @@ namespace Test
     [TestFixture]
     public class SimpleValue
     {
-        private SimpleClass simpleClass;
+        #region Private classes
 
         [XorClass("SimpleClass")]
         private class SimpleClass : XorObject
@@ -65,7 +65,11 @@ namespace Test
             [XorProperty("Decimal")]
             public decimal Decimal { get; set; }
         }
-        
+
+        #endregion
+
+        private SimpleClass simpleClass;
+
         [SetUp]
         public void Init()
         {

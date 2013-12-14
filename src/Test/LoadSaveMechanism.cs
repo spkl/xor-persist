@@ -12,6 +12,8 @@ namespace Test
     [TestFixture]
     public class LoadSaveMechanism
     {
+        #region Private classes
+
         [XorClass("Minimal")]
         private class Minimal : XorObject
         {
@@ -33,7 +35,9 @@ namespace Test
                 FinishCalled = DateTime.Now;
             }
         }
-        
+
+        #endregion
+
         [Test]
         public void InitializeCalled()
         {
