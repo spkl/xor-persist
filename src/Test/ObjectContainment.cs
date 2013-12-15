@@ -125,7 +125,7 @@ namespace Test
 
         private Root root, rootCopy;
 
-        [SetUp]
+        [TestFixtureSetUp]
         public void Init()
         {
             var privateField = new Leaf("PrivateField");

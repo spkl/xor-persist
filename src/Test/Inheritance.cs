@@ -158,7 +158,7 @@ namespace Test
         private B bCopy;
         private C cCopy;
 
-        [SetUp]
+        [TestFixtureSetUp]
         public void Init()
         {
             b = new B(true);

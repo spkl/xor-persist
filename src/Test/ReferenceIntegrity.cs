@@ -98,7 +98,7 @@ namespace Test
         private Owner o0_copy, o1_copy;
         private Child c0_0_copy, c0_1_copy, c0_2_copy, c1_0_copy, c1_1_copy;
 
-        [SetUp]
+        [TestFixtureSetUp]
         public void Init()
         {
             c0_0 = new Child();
