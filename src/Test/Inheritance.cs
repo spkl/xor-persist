@@ -52,10 +52,18 @@ namespace Test
             [XorProperty("FieldB")]
             private string FieldB;
 
+            [XorProperty("DefinedAtB_NewAtC")]
+            protected string DefinedAtB_NewAtC { get; set; }
+
+            public virtual string DefinedAtB_OverrideAtC { get; set; }
+
             public B(bool dummy) : base(dummy)
             {
                 FieldB = Guid.NewGuid().ToString();
                 PropB = Guid.NewGuid().ToString();
+
+                DefinedAtB_NewAtC = Guid.NewGuid().ToString();
+                DefinedAtB_OverrideAtC = Guid.NewGuid().ToString();
             }
 
             public B()
@@ -72,6 +80,11 @@ namespace Test
             {
                 return FieldB;
             }
+
+            public string GetDefinedAtB_NewAtC_FromB()
+            {
+                return DefinedAtB_NewAtC;
+            }
         }
 
         [XorClass("C")]
@@ -83,10 +96,28 @@ namespace Test
             [XorProperty("FieldC")]
             private string FieldC;
 
+            [XorProperty("NewPropB")]
+            private string PropB { get; set; }
+
+            [XorProperty("NewFieldB")]
+            private string FieldB;
+
+            [XorProperty("DefinedAtB_NewAtC2")]
+            protected new string DefinedAtB_NewAtC { get; set; }
+
+            [XorProperty("DefinedAtB_OverrideAtC")]
+            public override string DefinedAtB_OverrideAtC { get; set; }
+
             public C(bool dummy) : base(dummy)
             {
                 FieldC = Guid.NewGuid().ToString();
                 PropC = Guid.NewGuid().ToString();
+
+                FieldB = Guid.NewGuid().ToString();
+                PropB = Guid.NewGuid().ToString();
+
+                DefinedAtB_NewAtC = Guid.NewGuid().ToString();
+                DefinedAtB_OverrideAtC = Guid.NewGuid().ToString();
             }
 
             public C()
@@ -102,6 +133,21 @@ namespace Test
             public string GetFieldC()
             {
                 return FieldC;
+            }
+
+            public string GetNewPropB()
+            {
+                return PropB;
+            }
+
+            public string GetNewFieldB()
+            {
+                return FieldB;
+            }
+
+            public string GetDefinedAtB_NewAtC_FromC()
+            {
+                return DefinedAtB_NewAtC;
             }
         }
 
@@ -133,6 +179,29 @@ namespace Test
         }
 
         [Test]
+        public void PropertyWithSameName()
+        {
+            Assert.AreEqual(c.GetNewPropB(), cCopy.GetNewPropB());
+        }
+
+        [Test]
+        public void PropertyNew()
+        {
+            Assert.AreEqual(b.GetDefinedAtB_NewAtC_FromB(), bCopy.GetDefinedAtB_NewAtC_FromB());
+
+            Assert.AreEqual(c.GetDefinedAtB_NewAtC_FromB(), cCopy.GetDefinedAtB_NewAtC_FromB());
+            Assert.AreEqual(c.GetDefinedAtB_NewAtC_FromC(), cCopy.GetDefinedAtB_NewAtC_FromC());
+            Assert.AreNotEqual(c.GetDefinedAtB_NewAtC_FromB(), cCopy.GetDefinedAtB_NewAtC_FromC());
+        }
+
+        [Test]
+        public void PropertyOverride()
+        {
+            Assert.AreEqual(null, bCopy.DefinedAtB_OverrideAtC);
+            Assert.AreEqual(c.DefinedAtB_OverrideAtC, cCopy.DefinedAtB_OverrideAtC);
+        }
+
+        [Test]
         public void Field()
         {
             Assert.AreEqual(b.GetFieldB(), bCopy.GetFieldB());
@@ -141,6 +210,12 @@ namespace Test
             Assert.AreEqual(c.GetFieldC(), cCopy.GetFieldC());
             Assert.AreEqual(c.GetFieldB(), cCopy.GetFieldB());
             Assert.AreEqual(c.GetFieldA(), cCopy.GetFieldA());
+        }
+
+        [Test]
+        public void FieldWithSameName()
+        {
+            Assert.AreEqual(c.GetNewFieldB(), cCopy.GetNewFieldB());
         }
     }
 }
