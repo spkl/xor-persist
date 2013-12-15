@@ -24,7 +24,7 @@ namespace LateNightStupidities.XorPersist
         {
             var fields = type.GetFields(XorBindingFlags);
             var properties = type.GetProperties(XorBindingFlags);
-            var members = fields.Concat<MemberInfo>(properties);
+            var members = fields.Concat<MemberInfo>(properties).Where(member => member.DeclaringType == type);
 
             foreach (var memberInfo in members)
             {
@@ -32,6 +32,14 @@ namespace LateNightStupidities.XorPersist
                 if (attribute != null)
                 {
                     yield return new XorReferenceTuple(memberInfo, attribute);
+                }
+            }
+
+            if (type.BaseType != null)
+            {
+                foreach (var xorReferenceMember in type.BaseType.GetXorReferenceMembers())
+                {
+                    yield return xorReferenceMember;
                 }
             }
         }
@@ -45,7 +53,7 @@ namespace LateNightStupidities.XorPersist
         {
             var properties = type.GetProperties(XorBindingFlags);
             var fields = type.GetFields(XorBindingFlags);
-            var members = properties.Concat<MemberInfo>(fields);
+            var members = properties.Concat<MemberInfo>(fields).Where(member => member.DeclaringType == type);
 
             foreach (var memberInfo in members)
             {
@@ -53,6 +61,14 @@ namespace LateNightStupidities.XorPersist
                 if (attribute != null)
                 {
                     yield return new XorPropertyTuple(memberInfo, attribute);
+                }
+            }
+
+            if (type.BaseType != null)
+            {
+                foreach (var xorPropertyMember in type.BaseType.GetXorPropertyMembers())
+                {
+                    yield return xorPropertyMember;
                 }
             }
         }
