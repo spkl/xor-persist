@@ -22,11 +22,6 @@ namespace LateNightStupidities.XorPersist.Attributes
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     public class XorReferenceAttribute : XorAttribute
     {
-        /// <summary>
-        /// Gets the multiplicity of the reference.
-        /// </summary>
-        public XorMultiplicity Multiplicity { get; private set; }
-
         private List<Guid> ReferencedIds { get; set; }
 
         /// <summary>

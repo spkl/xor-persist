@@ -74,7 +74,10 @@ namespace Test
             public Owner Owner { get; set; }
 
             [XorReference("References", XorMultiplicity.List)]
-            public IEnumerable<XorObject> References { get; set; }
+            public IEnumerable<Child> References { get; set; }
+
+            [XorReference("BaseTypeReferences", XorMultiplicity.List)]
+            public IEnumerable<Child> BaseTypeReferences { get; set; }
 
             public override bool Equals(object obj)
             {
@@ -128,6 +131,12 @@ namespace Test
             c1_0.References = null;
             c1_1.References = new Child[] { };
 
+            c0_0.BaseTypeReferences = new[] { c0_0, c0_1, c0_2, c1_0, c1_1 };
+            c0_1.BaseTypeReferences = new[] { c1_1, null, null, c1_1, c1_0 };
+            c0_2.BaseTypeReferences = new Child[] { null, null, null, null };
+            c1_0.BaseTypeReferences = null;
+            c1_1.BaseTypeReferences = new Child[] { };
+
 
             oList_copy = TestHelper.SaveAndLoad(oList);
             o0_copy = oList_copy.Owners.ElementAt(0);
@@ -160,6 +169,14 @@ namespace Test
 
             CollectionAssert.AreEqual(c1_0.References, c1_0_copy.References);
             CollectionAssert.AreEqual(c1_1.References, c1_1_copy.References);
+
+
+            CollectionAssert.AreEqual(c0_0.BaseTypeReferences, c0_0_copy.BaseTypeReferences);
+            CollectionAssert.AreEqual(c0_1.BaseTypeReferences, c0_1_copy.BaseTypeReferences);
+            CollectionAssert.AreEqual(c0_2.BaseTypeReferences, c0_2_copy.BaseTypeReferences);
+
+            CollectionAssert.AreEqual(c1_0.BaseTypeReferences, c1_0_copy.BaseTypeReferences);
+            CollectionAssert.AreEqual(c1_1.BaseTypeReferences, c1_1_copy.BaseTypeReferences);
         }
 
         // ReSharper restore InconsistentNaming

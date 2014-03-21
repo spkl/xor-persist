@@ -21,18 +21,6 @@ namespace LateNightStupidities.XorPersist.Attributes
     public class XorPropertyAttribute : XorAttribute
     {
         /// <summary>
-        /// The multiplicity of the property.
-        /// </summary>
-        public XorMultiplicity Multiplicity { get; private set; }
-
-        /// <summary>
-        /// Only for properties with <see cref="Multiplicity"/> "<see cref="XorMultiplicity.List"/>":
-        /// The type of the list items. This must be a class that is derived from <see cref="XorObject"/>, 
-        /// an interface or a supported simple type.
-        /// </summary>
-        public Type ListItemType { get; private set; }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="XorPropertyAttribute" /> class with single multiplicity.
         /// </summary>
         /// <param name="name">The name.</param>

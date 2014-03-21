@@ -178,6 +178,7 @@ namespace LateNightStupidities.XorPersist
                 {
                     var ids = member.Attr.GetIds().ToArray();
                     var referencedObjects = new XorObject[ids.Length];
+                    var listItemType = member.GetListItemType();
 
                     for (int i = 0; i < ids.Length; i++)
                     {
@@ -189,7 +190,8 @@ namespace LateNightStupidities.XorPersist
                         // TODO Exception?
                     }
 
-                    member.Info.SetMemberValue(this, referencedObjects);
+                    var castedEnumerable = referencedObjects.Cast(listItemType);
+                    member.Info.SetMemberValue(this, castedEnumerable);
                 }
             }
         }

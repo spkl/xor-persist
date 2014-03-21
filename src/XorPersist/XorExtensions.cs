@@ -212,10 +212,34 @@ namespace LateNightStupidities.XorPersist
         /// <param name="member">The member.</param>
         public static Type GetListItemType(this XorPropertyTuple member)
         {
-            var listItemType = member.Attr.ListItemType;
-            if (listItemType == null && member.Info.GetMemberInfoType().IsTypedEnumerable())
+            return GetListItemType(member.Attr, member.Info);
+        }
+
+        /// <summary>
+        /// Gets the type of the list item.
+        /// Tries to get the type from the <see cref="XorReferenceAttribute.ListItemType"/>.
+        /// If that is not successful, the generic argument of the IEnumerable is extracted.
+        /// </summary>
+        /// <param name="member">The member.</param>
+        public static Type GetListItemType(this XorReferenceTuple member)
+        {
+            return GetListItemType(member.Attr, member.Info);
+        }
+
+        /// <summary>
+        /// Gets the type of the list item.
+        /// Tries to get the type from the <see cref="XorAttribute.ListItemType"/>.
+        /// If that is not successful, the generic argument of the IEnumerable is extracted.
+        /// </summary>
+        /// <param name="memberAttr">The XorAttribute.</param>
+        /// <param name="memberInfo">The member info.</param>
+        private static Type GetListItemType(XorAttribute memberAttr, MemberInfo memberInfo)
+        {
+            var listItemType = memberAttr.ListItemType;
+
+            if (listItemType == null && memberInfo.GetMemberInfoType().IsTypedEnumerable())
             {
-                listItemType = member.Info.GetMemberInfoType().GetGenericArguments().Single();
+                listItemType = memberInfo.GetMemberInfoType().GetGenericArguments().Single();
             }
             return listItemType;
         }
