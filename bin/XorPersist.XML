@@ -217,6 +217,18 @@
             The Name of the annotated element in the Xor context.
             </summary>
         </member>
+        <member name="P:LateNightStupidities.XorPersist.Attributes.XorAttribute.Multiplicity">
+            <summary>
+            The multiplicity of the property.
+            </summary>
+        </member>
+        <member name="P:LateNightStupidities.XorPersist.Attributes.XorAttribute.ListItemType">
+            <summary>
+            Only for properties with <see cref="P:LateNightStupidities.XorPersist.Attributes.XorAttribute.Multiplicity"/> "<see cref="F:LateNightStupidities.XorPersist.Attributes.XorMultiplicity.List"/>":
+            The type of the list items. This must be a class that is derived from <see cref="T:LateNightStupidities.XorPersist.XorObject"/>, 
+            an interface or (only for property lists, not reference lists) a supported simple type.
+            </summary>
+        </member>
         <member name="T:LateNightStupidities.XorPersist.XorController">
             <summary>
             Controller class for saving and loading <see cref="T:LateNightStupidities.XorPersist.XorObject"/> data structures.
@@ -380,18 +392,6 @@
             <param name="name">The name.</param>
             <param name="listItemType">Type of the list item.</param>
         </member>
-        <member name="P:LateNightStupidities.XorPersist.Attributes.XorPropertyAttribute.Multiplicity">
-            <summary>
-            The multiplicity of the property.
-            </summary>
-        </member>
-        <member name="P:LateNightStupidities.XorPersist.Attributes.XorPropertyAttribute.ListItemType">
-            <summary>
-            Only for properties with <see cref="P:LateNightStupidities.XorPersist.Attributes.XorPropertyAttribute.Multiplicity"/> "<see cref="F:LateNightStupidities.XorPersist.Attributes.XorMultiplicity.List"/>":
-            The type of the list items. This must be a class that is derived from <see cref="T:LateNightStupidities.XorPersist.XorObject"/>, 
-            an interface or a supported simple type.
-            </summary>
-        </member>
         <member name="M:LateNightStupidities.XorPersist.XorExtensions.GetXorReferenceMembers(System.Type)">
             <summary>
             Gets the XorReference members (fields and properties).
@@ -482,10 +482,27 @@
         <member name="M:LateNightStupidities.XorPersist.XorExtensions.GetListItemType(LateNightStupidities.XorPersist.Attributes.XorPropertyTuple)">
             <summary>
             Gets the type of the list item.
-            Tries to get the type from the <see cref="P:LateNightStupidities.XorPersist.Attributes.XorPropertyAttribute.ListItemType"/>.
+            Tries to get the type from the <see cref="P:LateNightStupidities.XorPersist.Attributes.XorAttribute.ListItemType"/>.
             If that is not successful, the generic argument of the IEnumerable is extracted.
             </summary>
             <param name="member">The member.</param>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.XorExtensions.GetListItemType(LateNightStupidities.XorPersist.Attributes.XorReferenceTuple)">
+            <summary>
+            Gets the type of the list item.
+            Tries to get the type from the <see cref="P:LateNightStupidities.XorPersist.Attributes.XorAttribute.ListItemType"/>.
+            If that is not successful, the generic argument of the IEnumerable is extracted.
+            </summary>
+            <param name="member">The member.</param>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.XorExtensions.GetListItemType(LateNightStupidities.XorPersist.Attributes.XorAttribute,System.Reflection.MemberInfo)">
+            <summary>
+            Gets the type of the list item.
+            Tries to get the type from the <see cref="P:LateNightStupidities.XorPersist.Attributes.XorAttribute.ListItemType"/>.
+            If that is not successful, the generic argument of the IEnumerable is extracted.
+            </summary>
+            <param name="memberAttr">The XorAttribute.</param>
+            <param name="memberInfo">The member info.</param>
         </member>
         <member name="M:LateNightStupidities.XorPersist.XorExtensions.GetNameAndMultiplicity(System.Xml.Linq.XElement,System.String@,LateNightStupidities.XorPersist.Attributes.XorMultiplicity@)">
             <summary>
@@ -552,11 +569,6 @@
             </summary>
             <param name="name">The name.</param>
             <param name="multiplicity">The multiplicity.</param>
-        </member>
-        <member name="P:LateNightStupidities.XorPersist.Attributes.XorReferenceAttribute.Multiplicity">
-            <summary>
-            Gets the multiplicity of the reference.
-            </summary>
         </member>
     </members>
 </doc>
