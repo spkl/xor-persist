@@ -206,7 +206,7 @@ namespace LateNightStupidities.XorPersist
 
         /// <summary>
         /// Gets the type of the list item.
-        /// Tries to get the type from the <see cref="XorPropertyAttribute.ListItemType"/>.
+        /// Tries to get the type from the <see cref="XorAttribute.ListItemType"/>.
         /// If that is not successful, the generic argument of the IEnumerable is extracted.
         /// </summary>
         /// <param name="member">The member.</param>
@@ -217,7 +217,7 @@ namespace LateNightStupidities.XorPersist
 
         /// <summary>
         /// Gets the type of the list item.
-        /// Tries to get the type from the <see cref="XorReferenceAttribute.ListItemType"/>.
+        /// Tries to get the type from the <see cref="XorAttribute.ListItemType"/>.
         /// If that is not successful, the generic argument of the IEnumerable is extracted.
         /// </summary>
         /// <param name="member">The member.</param>
