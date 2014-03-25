@@ -157,6 +157,15 @@ namespace LateNightStupidities.XorPersist
         }
 
         /// <summary>
+        /// Creates an object list from an enumerable.
+        /// </summary>
+        /// <param name="enumerable">The enumerable.</param>
+        public static List<object> ToObjectList(this IEnumerable enumerable)
+        {
+            return enumerable.Cast<object>().ToList();
+        }
+
+        /// <summary>
         /// Determines whether the specified type is an <see cref="IEnumerable"/>.
         /// </summary>
         /// <param name="type">The type.</param>
@@ -228,7 +237,7 @@ namespace LateNightStupidities.XorPersist
 
         /// <summary>
         /// Gets the type of the list item.
-        /// Tries to get the type from the <see cref="XorAttribute.ListItemType"/>.
+        /// Tries to get the type from the <see cref="XorAttribute.ListItemType" />.
         /// If that is not successful, the generic argument of the IEnumerable is extracted.
         /// </summary>
         /// <param name="memberAttr">The XorAttribute.</param>
@@ -236,11 +245,18 @@ namespace LateNightStupidities.XorPersist
         private static Type GetListItemType(XorAttribute memberAttr, MemberInfo memberInfo)
         {
             var listItemType = memberAttr.ListItemType;
+            var memberInfoType = memberInfo.GetMemberInfoType();
 
-            if (listItemType == null && memberInfo.GetMemberInfoType().IsTypedEnumerable())
+            if (listItemType == null && memberInfoType.IsTypedEnumerable())
             {
-                listItemType = memberInfo.GetMemberInfoType().GetGenericArguments().Single();
+                listItemType = memberInfoType.GetGenericArguments().Single();
             }
+
+            if (listItemType == null && memberInfoType.IsArray)
+            {
+                listItemType = memberInfoType.GetElementType();
+            }
+
             return listItemType;
         }
 

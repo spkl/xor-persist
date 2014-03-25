@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Xml.Linq;
 using System.Collections;
 using LateNightStupidities.XorPersist.Attributes;
@@ -190,8 +191,7 @@ namespace LateNightStupidities.XorPersist
                         // TODO Exception?
                     }
 
-                    var castedEnumerable = referencedObjects.Cast(listItemType);
-                    member.Info.SetMemberValue(this, castedEnumerable);
+                    SetMemberValueWithCorrectCollectionType(member.Info, referencedObjects, listItemType);
                 }
             }
         }
@@ -305,8 +305,7 @@ namespace LateNightStupidities.XorPersist
                 }
             }
 
-            var castedEnumerable = list.Cast(listItemType);
-            member.Info.SetMemberValue(this, castedEnumerable);
+            SetMemberValueWithCorrectCollectionType(member.Info, list, listItemType);
         }
 
         /// <summary>
@@ -332,8 +331,107 @@ namespace LateNightStupidities.XorPersist
                 }
             }
 
-            var castedEnumerable = list.Cast(listItemType);
-            member.Info.SetMemberValue(this, castedEnumerable);
+            SetMemberValueWithCorrectCollectionType(member.Info, list, listItemType);
+        }
+
+        // TODO doc comments
+        private void SetMemberValueWithCorrectCollectionType(MemberInfo memberInfo, IEnumerable list, Type listItemType)
+        {
+            if (listItemType != null)
+            {
+                var castedEnumerable = list.Cast(listItemType);
+                SetCorrectListType(memberInfo, castedEnumerable);
+            }
+            else
+            {
+                SetCorrectListType(memberInfo, list);
+            }
+        }
+
+        // TODO doc comments
+        private void SetCorrectListType(MemberInfo memberInfo, IEnumerable castedEnumerable)
+        {
+            var type = memberInfo.GetMemberInfoType();
+
+            if (type == typeof(ArrayList) || type == typeof(ICollection) || type == typeof(IList))
+            {
+                memberInfo.SetMemberValue(this, new ArrayList(castedEnumerable.ToObjectList()));
+                return;
+            }
+
+            if (type == typeof(Queue))
+            {
+                memberInfo.SetMemberValue(this, new Queue(castedEnumerable.ToObjectList()));
+                return;
+            }
+
+            if (type == typeof(Stack))
+            {
+                // Stack constructor reverses the order
+                var reversed = castedEnumerable.ToObjectList();
+                reversed.Reverse();
+                memberInfo.SetMemberValue(this, new Stack(reversed));
+                return;
+            }
+
+            if (type.IsArray)
+            {
+                var elementType = type.GetElementType();
+                var list = castedEnumerable.ToObjectList();
+                var array = Array.CreateInstance(elementType, list.Count);
+
+                for (int i = 0; i < array.Length; i++)
+                {
+                    array.SetValue(list[i], i);
+                }
+
+                memberInfo.SetMemberValue(this, array);
+                return;
+            }
+
+            if (type.IsGenericType)
+            {
+                var genericTypeDefinition = type.GetGenericTypeDefinition();
+
+                if (genericTypeDefinition == typeof(List<>) 
+                    || genericTypeDefinition == typeof(HashSet<>) 
+                    || genericTypeDefinition == typeof(SortedSet<>) 
+                    || genericTypeDefinition == typeof(Queue<>) 
+                    || genericTypeDefinition == typeof(Stack<>)
+                    || genericTypeDefinition == typeof(LinkedList<>))
+                {
+                    if (genericTypeDefinition == typeof(Stack<>))
+                    {
+                        // Stack constructor reverses the order
+                        var reversed = castedEnumerable.ToObjectList();
+                        reversed.Reverse();
+                        castedEnumerable = reversed.Cast(type.GetGenericArguments().Single());
+                    }
+
+                    var instance = Activator.CreateInstance(type, castedEnumerable);
+                    memberInfo.SetMemberValue(this, instance);
+                    return;
+                }
+
+                if (genericTypeDefinition == typeof(ICollection<>)
+                    || genericTypeDefinition == typeof(IList<>))
+                {
+                    var instance = Activator.CreateInstance(
+                        typeof(List<>).MakeGenericType(type.GetGenericArguments()), castedEnumerable);
+                    memberInfo.SetMemberValue(this, instance);
+                    return;
+                }
+
+                if (genericTypeDefinition == typeof(ISet<>))
+                {
+                    var instance = Activator.CreateInstance(
+                        typeof(HashSet<>).MakeGenericType(type.GetGenericArguments()), castedEnumerable);
+                    memberInfo.SetMemberValue(this, instance);
+                    return;
+                }
+            }
+
+            memberInfo.SetMemberValue(this, castedEnumerable);
         }
 
         /// <summary>
@@ -503,9 +601,11 @@ namespace LateNightStupidities.XorPersist
                     if (list == null) continue; // Skip null lists
 
                     var listItemType = member.GetListItemType();
-                    
+
                     bool supportedSimpleType = listItemType.IsSupportedSimpleType();
-                    bool supportedXorType = !supportedSimpleType && (listItemType.IsSupportedXorType() || listItemType.IsInterface); // TODO Produce warning for interface
+                    bool supportedXorType = !supportedSimpleType && (listItemType.IsSupportedXorType() || listItemType.IsInterface);
+
+                    // TODO Produce warning for interface
 
                     XElement listElement;
                     if (supportedSimpleType)

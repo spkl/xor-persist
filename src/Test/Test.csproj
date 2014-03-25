@@ -84,6 +84,7 @@
     <Compile Include="ReferenceIntegrity.cs" />
     <Compile Include="SimpleValue.cs" />
     <Compile Include="ObjectContainment.cs" />
+    <Compile Include="SpecialCollections.cs" />
     <Compile Include="TestHelper.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -92,6 +93,7 @@
       <Name>XorPersist</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
