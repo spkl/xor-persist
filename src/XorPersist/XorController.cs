@@ -109,19 +109,28 @@ namespace LateNightStupidities.XorPersist
         /// <returns>The root object of the loaded data structure.</returns>
         public T Load<T>(Stream xmlStream) where T : XorObject
         {
-            return Load<T>(XDocument.Load(xmlStream));
+            return Load<T>(XDocument.Load(xmlStream), xmlStream);
         }
 
         /// <summary>
-        /// Loads an <see cref="XorObject"/> data structure from the specified <see cref="XDocument"/>.
+        /// Loads an <see cref="XorObject" /> data structure from the specified <see cref="XDocument" />.
         /// </summary>
         /// <typeparam name="T">The type of the root object your are loading.</typeparam>
-        /// <param name="xDocument">The <see cref="XDocument"/>.</param>
+        /// <param name="xDocument">The <see cref="XDocument" />.</param>
+        /// <param name="xmlStream">The XML stream. Optional. Used to speed up validation if available.</param>
         /// <returns>The root object of the loaded data structure.</returns>
-        public T Load<T>(XDocument xDocument) where T : XorObject
+        private T Load<T>(XDocument xDocument, Stream xmlStream) where T : XorObject
         {
             // Validate the document
-            Validate(xDocument);
+            if (xmlStream != null)
+            {
+                xmlStream.Seek(0, SeekOrigin.Begin);
+                Validate(xmlStream);
+            }
+            else
+            {
+                Validate(xDocument);
+            }
 
             BuildTypeDictionary();
 
@@ -138,6 +147,17 @@ namespace LateNightStupidities.XorPersist
             objects.Clear();
 
             return (T)rootObject;
+        }
+
+        /// <summary>
+        /// Loads an <see cref="XorObject"/> data structure from the specified <see cref="XDocument"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the root object your are loading.</typeparam>
+        /// <param name="xDocument">The <see cref="XDocument"/>.</param>
+        /// <returns>The root object of the loaded data structure.</returns>
+        public T Load<T>(XDocument xDocument) where T : XorObject
+        {
+            return Load<T>(xDocument, null);
         }
 
         
