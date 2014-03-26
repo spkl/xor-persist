@@ -21,9 +21,6 @@ namespace LateNightStupidities.XorPersist.Example
             
             root = controller.Load<RootClass>(@"C:\Users\Sebastian\Desktop\temp\xor\test.xml");
 
-            var references = root.ReferencedXorObjects.ToList();
-            var owned = root.OwnedXorObjects.ToList();
-
             controller = XorController.Get();
             controller.Save(root, @"C:\Users\Sebastian\Desktop\temp\xor\test2.xml");
         }
