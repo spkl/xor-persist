@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Xml.Linq;
 using System.Collections;
 using LateNightStupidities.XorPersist.Attributes;
+using LateNightStupidities.XorPersist.Exceptions;
 using LateNightStupidities.XorPersist.Schema;
 
 namespace LateNightStupidities.XorPersist
@@ -83,7 +84,10 @@ namespace LateNightStupidities.XorPersist
                     {
                         member.Info.SetMemberValue(this, referencedObject);
                     }
-                    // TODO Exception?
+                    else if (member.Attr.GetId() != default(Guid)) // Null reference: don't throw exception
+                    {
+                        throw new CouldNotResolveReferenceException(member.Info, member.Attr.GetId());
+                    }
                 }
                 else if (member.Attr.Multiplicity == XorMultiplicity.List)
                 {
@@ -98,7 +102,10 @@ namespace LateNightStupidities.XorPersist
                         {
                             referencedObjects[i] = referencedObject;
                         }
-                        // TODO Exception?
+                        else if (ids[i] != default(Guid)) // Null reference: don't throw exception
+                        {
+                            throw new CouldNotResolveReferenceException(member.Info, ids[i]);
+                        }
                     }
 
                     SetCollectionMemberValue(member.Info, referencedObjects, listItemType);
@@ -119,7 +126,7 @@ namespace LateNightStupidities.XorPersist
         internal static XorObject LoadFromElement(XElement objectElement, XorController controller)
         {
             if (objectElement.Name.LocalName != XorXsd.Object)
-                throw new ArgumentException();
+                throw new ArgumentException("LoadFromElement: Wrong element name.", "objectElement");
 
             var objectType = controller.GetTypeForName(objectElement.Attribute(XorXsd.ClassName).Value);
 
@@ -134,8 +141,7 @@ namespace LateNightStupidities.XorPersist
             }
             catch (MissingMethodException mme)
             {
-                // TODO Custom exception
-                throw new Exception("Parameterless constructor is missing on type " + objectType + ".", mme);
+                throw new CtorMissingException(objectType, mme);
             }
         }
 
@@ -152,6 +158,7 @@ namespace LateNightStupidities.XorPersist
                 string memberName = propertyElement.GetMemberName();
 
                 var member = GetType().GetXorPropertyMembers().Single(tuple => tuple.Attr.Name == memberName);
+                // TODO Exception: Multiple properties with same name.
 
                 switch (propertyElement.Name.LocalName)
                 {
@@ -443,8 +450,7 @@ namespace LateNightStupidities.XorPersist
 
             if (classAttribute == null)
             {
-                // TODO Custom exception
-                throw new Exception("XorClass attribute is missing on type " + GetType() + ".");
+                throw new ClassAttributeMissingException(GetType());
             }
 
             Finish();
@@ -524,10 +530,8 @@ namespace LateNightStupidities.XorPersist
                     }
                     else
                     {
-                        // TODO Custom exception
-                        throw new Exception(
-                            string.Format("Property type ({0}) is not supported. Class: {1}. Property: {2}.",
-                                member.Info.GetMemberInfoType(), GetType(), member.Attr.Name));
+                        throw new PropertyTypeNotSupportedException(member.Info.GetMemberInfoType(), GetType(),
+                            member.Attr.Name, member.Info.Name);
                     }
 
                     mainElement.Add(propertyElement);
@@ -541,9 +545,7 @@ namespace LateNightStupidities.XorPersist
 
                     bool supportedSimpleType = listItemType.IsSupportedSimpleType();
                     bool supportedXorType = !supportedSimpleType && (listItemType.IsSupportedXorType() || listItemType.IsInterface);
-
-                    // TODO Produce warning for interface
-
+                    
                     XElement listElement;
                     if (supportedSimpleType)
                     {
@@ -555,10 +557,8 @@ namespace LateNightStupidities.XorPersist
                     }
                     else
                     {
-                        // TODO Custom exception
-                        throw new Exception(
-                            string.Format("Property type ({0}) is not supported. Class: {1}. Property: {2}.",
-                                member.Info.GetMemberInfoType(), GetType(), member.Attr.Name));
+                        throw new PropertyTypeNotSupportedException(member.Info.GetMemberInfoType(), GetType(),
+                            member.Attr.Name, member.Info.Name);
                     }
 
                     foreach (object listItem in list)

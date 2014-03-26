@@ -7,6 +7,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Schema;
 using LateNightStupidities.XorPersist.Attributes;
+using LateNightStupidities.XorPersist.Exceptions;
 using LateNightStupidities.XorPersist.Schema;
 
 namespace LateNightStupidities.XorPersist
@@ -56,11 +57,7 @@ namespace LateNightStupidities.XorPersist
                         Type existingType;
                         if (typeMapping.TryGetValue(attribute.Name, out existingType))
                         {
-                            // TODO custom exception
-                            throw new Exception(
-                                string.Format(
-                                    "Duplicate XorClass name '{0}'. Type of existing entry: '{1}, Assembly {3}'. Type of duplicate entry: '{2}, Assembly {4}'.",
-                                    attribute.Name, existingType, type, existingType.Assembly, type.Assembly));
+                            throw new DuplicateXorClassNameException(attribute.Name, existingType, type);
                         }
 
                         typeMapping.Add(attribute.Name, type);
@@ -266,11 +263,8 @@ namespace LateNightStupidities.XorPersist
 
         private void SchemaValidationHandler(object sender, ValidationEventArgs validationEventArgs)
         {
-            // TODO Custom exception
-            throw new Exception(
-                string.Format("The data does not conform to the XorPersist XML schema. Line {0}, Position {1}: {2}",
-                    validationEventArgs.Exception.LineNumber, validationEventArgs.Exception.LinePosition,
-                    validationEventArgs.Message), validationEventArgs.Exception);
+            throw new SchemaValidationException(validationEventArgs.Exception.LineNumber,
+                validationEventArgs.Exception.LinePosition, validationEventArgs.Message, validationEventArgs.Exception);
         }
 
         #endregion

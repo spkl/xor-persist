@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Xml.Linq;
 using LateNightStupidities.XorPersist.Attributes;
+using LateNightStupidities.XorPersist.Exceptions;
 using LateNightStupidities.XorPersist.Schema;
 
 namespace LateNightStupidities.XorPersist
@@ -372,7 +373,7 @@ namespace LateNightStupidities.XorPersist
                 return (decimal)propertyElement;
             }
 
-            throw new Exception("Unsupported property type: " + type); // TODO Custom exception
+            throw new PropertyTypeNotSupportedException(type, propertyElement);
         }
 
         /// <summary>
