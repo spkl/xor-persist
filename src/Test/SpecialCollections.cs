@@ -17,9 +17,18 @@ namespace Test
             [XorProperty("Guid")]
             private readonly Guid guid;
 
+            [XorProperty("IntVal")] 
+            private readonly int intVal;
+
             public SpecialListItem()
             {
-                guid = Guid.NewGuid();
+                
+            }
+
+            public SpecialListItem(int intVal)
+            {
+                this.guid = Guid.NewGuid();
+                this.intVal = intVal;
             }
 
             public override bool Equals(object obj)
@@ -35,13 +44,13 @@ namespace Test
 
             public int CompareTo(object obj)
             {
-                return this.GetHashCode() - obj.GetHashCode();
+                return ((SpecialListItem)obj).intVal - this.intVal;
             }
         }
 
         private static SpecialListItem[] GetObjects()
         {
-            return new[] { new SpecialListItem(), new SpecialListItem(), new SpecialListItem() };
+            return new[] { new SpecialListItem(1), new SpecialListItem(3), new SpecialListItem(2) };
         }
 
         private static int[] GetInts()
