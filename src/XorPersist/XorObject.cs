@@ -191,7 +191,7 @@ namespace LateNightStupidities.XorPersist
                         // TODO Exception?
                     }
 
-                    SetMemberValueWithCorrectCollectionType(member.Info, referencedObjects, listItemType);
+                    SetCollectionMemberValue(member.Info, referencedObjects, listItemType);
                 }
             }
         }
@@ -305,7 +305,7 @@ namespace LateNightStupidities.XorPersist
                 }
             }
 
-            SetMemberValueWithCorrectCollectionType(member.Info, list, listItemType);
+            SetCollectionMemberValue(member.Info, list, listItemType);
         }
 
         /// <summary>
@@ -331,30 +331,46 @@ namespace LateNightStupidities.XorPersist
                 }
             }
 
-            SetMemberValueWithCorrectCollectionType(member.Info, list, listItemType);
+            SetCollectionMemberValue(member.Info, list, listItemType);
         }
 
-        // TODO doc comments
-        private void SetMemberValueWithCorrectCollectionType(MemberInfo memberInfo, IEnumerable list, Type listItemType)
+        /// <summary>
+        /// Converts the supplied list/collection to the target type 
+        /// and sets is at the specified member.
+        /// Casts the IEnumerable to an IEnumerable of <paramref name="listItemType"/>,
+        /// if the type information is available.
+        /// </summary>
+        /// <param name="memberInfo">The member to set.</param>
+        /// <param name="list">The list/collection.</param>
+        /// <param name="listItemType">Type of the list item, may be null if unknown.</param>
+        private void SetCollectionMemberValue(MemberInfo memberInfo, IEnumerable list, Type listItemType)
         {
             if (listItemType != null)
             {
                 var castedEnumerable = list.Cast(listItemType);
-                SetCorrectListType(memberInfo, castedEnumerable);
+                SetCollectionMemberValue(memberInfo, castedEnumerable);
             }
             else
             {
-                SetCorrectListType(memberInfo, list);
+                SetCollectionMemberValue(memberInfo, list);
             }
         }
 
-        // TODO doc comments
-        private void SetCorrectListType(MemberInfo memberInfo, IEnumerable castedEnumerable)
+        /// <summary>
+        /// Converts the supplied list/collection to the target type
+        /// and sets is at the specified member.
+        /// Expects (if possible) a generic IEnumerable of the correct
+        /// list item type as <paramref name="castedEnumerable"/>.
+        /// </summary>
+        /// <param name="memberInfo">The member to set.</param>
+        /// <param name="castedEnumerable">The casted enumerable.</param>
+        private void SetCollectionMemberValue(MemberInfo memberInfo, IEnumerable castedEnumerable)
         {
             var type = memberInfo.GetMemberInfoType();
 
             if (type == typeof(ArrayList) || type == typeof(ICollection) || type == typeof(IList))
             {
+                // Use ArrayList for the interfaces as well
                 memberInfo.SetMemberValue(this, new ArrayList(castedEnumerable.ToObjectList()));
                 return;
             }
@@ -378,8 +394,10 @@ namespace LateNightStupidities.XorPersist
             {
                 var elementType = type.GetElementType();
                 var list = castedEnumerable.ToObjectList();
-                var array = Array.CreateInstance(elementType, list.Count);
 
+                // Create an array of the element type and
+                // transfer the values from the list
+                var array = Array.CreateInstance(elementType, list.Count);
                 for (int i = 0; i < array.Length; i++)
                 {
                     array.SetValue(list[i], i);
@@ -391,6 +409,7 @@ namespace LateNightStupidities.XorPersist
 
             if (type.IsGenericType)
             {
+                // Extract generic base type from supplied type
                 var genericTypeDefinition = type.GetGenericTypeDefinition();
 
                 if (genericTypeDefinition == typeof(List<>) 
@@ -408,6 +427,9 @@ namespace LateNightStupidities.XorPersist
                         castedEnumerable = reversed.Cast(type.GetGenericArguments().Single());
                     }
 
+                    // Create an instance of the type.
+                    // All these classes have a constructor that takes
+                    // a typed (generic) IEnumerable as argument.
                     var instance = Activator.CreateInstance(type, castedEnumerable);
                     memberInfo.SetMemberValue(this, instance);
                     return;
@@ -416,6 +438,8 @@ namespace LateNightStupidities.XorPersist
                 if (genericTypeDefinition == typeof(ICollection<>)
                     || genericTypeDefinition == typeof(IList<>))
                 {
+                    // Create the List<T> type from the ICollection<T>/IList<T>,
+                    // then instantiate a list with the IEnumerable<T> constructor.
                     var instance = Activator.CreateInstance(
                         typeof(List<>).MakeGenericType(type.GetGenericArguments()), castedEnumerable);
                     memberInfo.SetMemberValue(this, instance);
@@ -424,6 +448,8 @@ namespace LateNightStupidities.XorPersist
 
                 if (genericTypeDefinition == typeof(ISet<>))
                 {
+                    // Create the HashSet<T> type from the ISet<T>,
+                    // then instantiate a set with the IEnumerable<T> constructor.
                     var instance = Activator.CreateInstance(
                         typeof(HashSet<>).MakeGenericType(type.GetGenericArguments()), castedEnumerable);
                     memberInfo.SetMemberValue(this, instance);
@@ -431,6 +457,7 @@ namespace LateNightStupidities.XorPersist
                 }
             }
 
+            // This is used for IEnumerable and IEnumerable<T>.
             memberInfo.SetMemberValue(this, castedEnumerable);
         }
 
