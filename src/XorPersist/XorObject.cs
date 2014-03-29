@@ -130,19 +130,31 @@ namespace LateNightStupidities.XorPersist
 
             var objectType = controller.GetTypeForName(objectElement.Attribute(XorXsd.ClassName).Value);
 
+            XorObject obj;
+            
             try
             {
-                var obj = (XorObject)Activator.CreateInstance(objectType);
-
-                obj.LoadObjectContents(objectElement, controller);
-                controller.RegisterObject(obj);
-
-                return obj;
+                obj = (XorObject)Activator.CreateInstance(objectType);
             }
             catch (MissingMethodException mme)
             {
-                throw new CtorMissingException(objectType, mme);
+                // If a public parameterless constructor does not exist,
+                // try for static "XorCreate" method.
+                var createMethod = objectType.GetMethod("_XorCreate",
+                    BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static);
+
+                if (createMethod == null)
+                {
+                    throw new CtorMissingException(objectType, mme);
+                }
+
+                obj = (XorObject)createMethod.Invoke(null, null);
             }
+
+            obj.LoadObjectContents(objectElement, controller);
+            controller.RegisterObject(obj);
+
+            return obj;
         }
 
         /// <summary>

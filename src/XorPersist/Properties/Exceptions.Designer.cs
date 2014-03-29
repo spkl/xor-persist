@@ -79,7 +79,7 @@ namespace LateNightStupidities.XorPersist.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Parameterless constructor is missing on type {0}. Define a public parameterless constructor at this type. XorPersist could not instantiate this class..
+        ///   Looks up a localized string similar to Parameterless constructor is missing on type {0}. XorPersist could not instantiate this class. Define a public parameterless constructor at this type. Alternatively, a method with the following signature that returns an instance of the type can be defined: &quot;static object _XorCreate()&quot;..
         /// </summary>
         internal static string CtorMissingException {
             get {
