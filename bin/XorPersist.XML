@@ -410,8 +410,16 @@
         <member name="M:LateNightStupidities.XorPersist.Attributes.XorClassAttribute.#ctor(System.String)">
             <summary>
             Initializes a new instance of the <see cref="T:LateNightStupidities.XorPersist.Attributes.XorClassAttribute"/> class.
+            and uses the supplied name.
             </summary>
             <param name="name">The name.</param>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.Attributes.XorClassAttribute.#ctor(System.Type)">
+            <summary>
+            Initializes a new instance of the <see cref="T:LateNightStupidities.XorPersist.Attributes.XorClassAttribute"/> class
+            and uses the FullName of the supplied Type as name.
+            </summary>
+            <param name="type">The type.</param>
         </member>
         <member name="T:LateNightStupidities.XorPersist.Attributes.XorPropertyAttribute">
             <summary>
@@ -493,7 +501,7 @@
         </member>
         <member name="P:LateNightStupidities.XorPersist.Properties.Exceptions.CtorMissingException">
             <summary>
-              Looks up a localized string similar to Parameterless constructor is missing on type {0}. Define a public parameterless constructor at this type. XorPersist could not instantiate this class..
+              Looks up a localized string similar to Parameterless constructor is missing on type {0}. XorPersist could not instantiate this class. Define a public parameterless constructor at this type. Alternatively, a method with the following signature that returns an instance of the type can be defined: &quot;static object _XorCreate()&quot;..
             </summary>
         </member>
         <member name="P:LateNightStupidities.XorPersist.Properties.Exceptions.DuplicateXorClassNameException">
@@ -682,6 +690,20 @@
               <c>true</c> if the specified element is a property element; otherwise, <c>false</c>.
             </returns>
         </member>
+        <member name="T:LateNightStupidities.XorPersist.Exceptions.DuplicateXorClassNameException">
+            <summary>
+            This exception is thrown if two XorObject classes 
+            define the same name in the XorClass attribute.
+            </summary>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.Exceptions.DuplicateXorClassNameException.#ctor(System.String,System.Type,System.Type)">
+            <summary>
+            Initializes a new instance of the <see cref="T:LateNightStupidities.XorPersist.Exceptions.DuplicateXorClassNameException"/> class.
+            </summary>
+            <param name="xorClassName">Name of the XorClass attribute.</param>
+            <param name="existingType">The type that declared the XorClass name first.</param>
+            <param name="newType">Another type that uses the same XorClass name.</param>
+        </member>
         <member name="T:LateNightStupidities.XorPersist.Exceptions.CouldNotResolveReferenceException">
             <summary>
             This exception is thrown if a reference cannot be resolved when loading the model.
@@ -732,20 +754,6 @@
             </summary>
             <param name="name">The name.</param>
             <param name="multiplicity">The multiplicity.</param>
-        </member>
-        <member name="T:LateNightStupidities.XorPersist.Exceptions.DuplicateXorClassNameException">
-            <summary>
-            This exception is thrown if two XorObject classes 
-            define the same name in the XorClass attribute.
-            </summary>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.Exceptions.DuplicateXorClassNameException.#ctor(System.String,System.Type,System.Type)">
-            <summary>
-            Initializes a new instance of the <see cref="T:LateNightStupidities.XorPersist.Exceptions.DuplicateXorClassNameException"/> class.
-            </summary>
-            <param name="xorClassName">Name of the XorClass attribute.</param>
-            <param name="existingType">The type that declared the XorClass name first.</param>
-            <param name="newType">Another type that uses the same XorClass name.</param>
         </member>
     </members>
 </doc>
