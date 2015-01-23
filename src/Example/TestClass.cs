@@ -15,32 +15,14 @@ namespace LateNightStupidities.XorPersist.Example
         [XorProperty("secret")]
         private string secret;
 
-        public List<ILeafClass> Leaves { get; set; }
-        
         [XorProperty("Leaves", XorMultiplicity.List)]
-        private IEnumerable<ILeafClass> _Leaves
-        {
-            get { return Leaves; }
-            set { Leaves = new List<ILeafClass>(value); }
-        }
-
-        public List<string> Strings { get; set; }
+        public List<ILeafClass> Leaves { get; set; }
 
         [XorProperty("Strings", XorMultiplicity.List)]
-        private IEnumerable<string> _Strings
-        {
-            get { return Strings; }
-            set { Strings = new List<string>(value); }
-        }
-
-        private ISet<uint> Uints { get; set; }
+        public List<string> Strings { get; set; }
 
         [XorProperty("Uints", XorMultiplicity.List)]
-        private IEnumerable<uint> _Uints
-        {
-            get { return Uints; }
-            set { Uints = new HashSet<uint>(value); }
-        }
+        private ISet<uint> Uints { get; set; }
 
         [XorProperty("MainLeaf")]
         public ILeafClass MainLeaf { get; set; }
@@ -54,15 +36,9 @@ namespace LateNightStupidities.XorPersist.Example
         [XorProperty("Value")]
         public decimal Value { get; set; }
 
-        public IEnumerable<ILeafClass> References { get; set; }
-
         [XorReference("References", XorMultiplicity.List)]
-        public IEnumerable<XorObject> _References
-        {
-            get { return References.Cast<XorObject>(); }
-            set { References = new List<ILeafClass>(value.Cast<ILeafClass>()); }
-        }
-
+        public IEnumerable<ILeafClass> References { get; set; }
+        
         [XorReference("Reference")]
         public ILeafClass Reference { get; set; }
 
