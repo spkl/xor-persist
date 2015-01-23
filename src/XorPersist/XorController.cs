@@ -223,7 +223,8 @@ namespace LateNightStupidities.XorPersist
 
                 var settings = new XmlReaderSettings();
                 settings.ValidationType = ValidationType.Schema;
-                settings.ValidationFlags = XmlSchemaValidationFlags.None;
+                settings.ValidationFlags = XmlSchemaValidationFlags.ReportValidationWarnings;
+                settings.ConformanceLevel = ConformanceLevel.Document;
                 settings.Schemas.Add(xmlSchema);
                 settings.Schemas.Add(xorSchema);
                 settings.ValidationEventHandler += SchemaValidationHandler;

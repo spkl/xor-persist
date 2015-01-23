@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XorPersistss xml:space="preserve">
+  <StaticInfo />
+  <Content>
+    <obj cn="RootClass">
+      <prop mn="_XorId">875a845d-0e76-4544-bbda-ab91954e69c9</prop>
+      <prop mn="Duration">PT1M0.0300017S</prop>
+      <xproplist mn="Leaves">
+        <item>
+          <obj cn="LeafClass">
+            <prop mn="_XorId">f3fb0771-0bf8-4f5a-b963-e64a8730bed2</prop>
+            <prop mn="Name">numma 1</prop>
+            <ref mn="LeafOwner">875a845d-0e76-4544-bbda-ab91954e69c9</ref>
+          </obj>
+        </item>
+        <item>
+          <obj cn="LeafClass">
+            <prop mn="_XorId">e78d2965-dad7-4ba1-8bb5-3f5ae338abf8</prop>
+            <prop mn="Name">numma 2</prop>
+            <ref mn="LeafOwner">875a845d-0e76-4544-bbda-ab91954e69c9</ref>
+          </obj>
+        </item>
+      </xproplist>
+      <xprop mn="MainLeaf">
+        <obj cn="LeafClass">
+          <prop mn="_XorId">f1f60d6a-fa4b-48e5-8c43-d297267cab98</prop>
+          <xprop mn="Leaf">
+            <obj cn="LeafClass">
+              <prop mn="_XorId">e2308452-46b6-4922-bc11-4cb11b7c476d</prop>
+              <xprop mn="Leaf">
+                <obj cn="LeafClass">
+                  <prop mn="_XorId">06d198d4-b381-42e4-a3f6-9a154834c750</prop>
+                  <prop mn="Name">leaf111</prop>
+                  <ref mn="LeafOwner">e2308452-46b6-4922-bc11-4cb11b7c476d</ref>
+                </obj>
+              </xprop>
+              <prop mn="Name">leaf11</prop>
+              <ref mn="LeafOwner">f1f60d6a-fa4b-48e5-8c43-d297267cab98</ref>
+            </obj>
+          </xprop>
+          <prop mn="Name">leaf1</prop>
+          <ref mn="LeafOwner">875a845d-0e76-4544-bbda-ab91954e69c9</ref>
+        </obj>
+      </xprop>
+      <prop mn="Rating">3.5555555555555554</prop>
+      <prop mn="secret">&lt;test&gt;§(/%§=98540239485ß032945-#-+ü34-t+4</prop>
+      <proplist mn="Strings">
+        <item>1</item>
+        <null />
+        <item>2</item>
+      </proplist>
+      <prop mn="Timestamp">2015-01-23T22:51:04.2296107+01:00</prop>
+      <proplist mn="Uints">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>5</item>
+      </proplist>
+      <prop mn="Value">0.54444444444444444441</prop>
+      <ref mn="Reference">e78d2965-dad7-4ba1-8bb5-3f5ae338abf8</ref>
+      <reflist mn="References">
+        <item>f3fb0771-0bf8-4f5a-b963-e64a8730bed2</item>
+        <item>e78d2965-dad7-4ba1-8bb5-3f5ae338abf8</item>
+        <null />
+        <item>f3fb0771-0bf8-4f5a-b963-e64a8730bed2</item>
+      </reflist>
+    </obj>
+  </Content>
+</XorPersistss>
