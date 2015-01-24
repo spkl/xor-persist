@@ -3,6 +3,29 @@ xor-persist
 XorPersist is an easy to use XML serialization library for .NET.
 With XorPersist, you can save your object graph to an XML file and restore it again later.
 
+**Table of Contents**
+
+- [Features](#)
+	- [Primitive data type support](#)
+	- [Other supported .NET classes](#)
+	- [Collection support](#)
+- [Usage](#)
+	- [Getting started](#)
+		- [Preparing the data model](#)
+		- [Saving and restoring](#)
+	- [Exceptions](#)
+		- [ClassAttributeMissingException](#)
+		- [CouldNotResolveReferenceException](#)
+		- [CtorMissingException](#)
+		- [DuplicateXorClassNameException](#)
+		- [PropertyTypeNotSupportedException](#)
+		- [Other Exceptions](#)
+		- [SchemaValidationException](#)
+	- [Interface usage](#)
+	- [Custom serialization](#)
+	- [Private or protected parameterless constructor](#)
+- [Limitations](#)
+
 ## Features
 - Native support for most primitive data types and major .NET data and collection classes.
 - Class inheritance and interfaces are fully supported.
@@ -239,3 +262,7 @@ class MyClass : XorObject
 - Line breaks (Carriage return/Line feed) may be different after loading a model from a file. `\r\n` could become `\n` or vice versa.
   - Workaround: Implement a custom serialization property and encode/decode the string with Base64 or a similar format.
 - Generic types might not be fully supported.
+
+
+
+*Table of Contents generated with [DocToc](http://doctoc.herokuapp.com/)*
