@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace LateNightStupidities.XorPersist.Attributes
 {
@@ -27,8 +28,8 @@ namespace LateNightStupidities.XorPersist.Attributes
         /// <summary>
         /// Initializes a new instance of the <see cref="XorReferenceAttribute" /> class with single multiplicity.
         /// </summary>
-        /// <param name="name">The name.</param>
-        public XorReferenceAttribute(string name)
+        /// <param name="name">The name (using a CallerMemberName attribute).</param>
+        public XorReferenceAttribute([CallerMemberName] string name = CallerMemberNameNotAvailable)
             : this(name, XorMultiplicity.Single)
         {
         }
@@ -39,6 +40,18 @@ namespace LateNightStupidities.XorPersist.Attributes
         /// <param name="name">The name.</param>
         /// <param name="multiplicity">The multiplicity.</param>
         public XorReferenceAttribute(string name, XorMultiplicity multiplicity)
+            : base(name)
+        {
+            Multiplicity = multiplicity;
+            ReferencedIds = new List<Guid>();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="XorReferenceAttribute" /> class with the supplied multiplicity.
+        /// </summary>
+        /// <param name="name">The name (using a CallerMemberName attribute).</param>
+        /// <param name="multiplicity">The multiplicity.</param>
+        public XorReferenceAttribute(XorMultiplicity multiplicity, [CallerMemberName] string name = CallerMemberNameNotAvailable)
             : base(name)
         {
             Multiplicity = multiplicity;

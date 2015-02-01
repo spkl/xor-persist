@@ -19,6 +19,7 @@ With XorPersist, you can save your object graph to an XML file and restore it ag
 		- [CtorMissingException](#ctormissingexception)
 		- [DuplicateXorClassNameException](#duplicatexorclassnameexception)
 		- [PropertyTypeNotSupportedException](#propertytypenotsupportedexception)
+        - [InvalidXorAttributeNameException](#invalidxorattributenameexception)
 		- [Other Exceptions](#other-exceptions)
 		- [SchemaValidationException](#schemavalidationexception)
 	- [Interface usage](#interface-usage)
@@ -129,6 +130,25 @@ Like `XorProperty`, the `XorReference` attribute also supports collections:
 public List<Employee> BoardMembers { get; set; }
 ```
 
+When you apply `XorProperty` or `XorReference` to a property, you don't need to specify the name. The name of the property will automatically be used.
+This feature uses the [CallerMemberNameAttribute](https://msdn.microsoft.com/en-us/library/system.runtime.compilerservices.callermembernameattribute(v=vs.110).aspx) that is available since .NET 4.5.
+
+```csharp
+[XorProperty(XorMultiplicity.List)]
+public List<Employee> Employees { get; set; }
+
+[XorReference]
+public Employee CEO { get; set; }
+```
+
+You still need to specify a name for fields. Not specifying a name for a field will result in an exception ([InvalidXorAttributeNameException](#invalidxorattributenameexception)) during runtime:
+
+```csharp
+// This will not work!
+[XorProperty]
+public string TestField;
+```
+
 #### Saving and restoring
 When your data model is prepared for use with XorPersist, you can use the [`XorController`](src/XorPersist/XorController.cs) to load and restore the data.
 
@@ -184,6 +204,16 @@ class CustomConversionExample : XorObject
     }
 }
 ```
+
+##### InvalidXorAttributeNameException
+This Exception is raised, when an invalid name is passed to an `XorAttribute` constructor. Invalid names are:
+- `null`
+- The empty string ("").
+- A whitespace-only string ("  ").
+
+The InvalidXorAttributeNameException is also raised, when you apply an `XorProperty` or `XorReference` attribute to
+a field (not a property) and don't specify a name.
+
 
 ##### Other Exceptions
 This chapter lists a selection of system exceptions that may be raised by XorPersist.

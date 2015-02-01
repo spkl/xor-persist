@@ -9,37 +9,37 @@ namespace LateNightStupidities.XorPersist.Example
     [XorClass("RootClass")]
     class RootClass : XorObject
     {
-        [XorProperty("Rating")]
+        [XorProperty]
         public double Rating { get; set; }
 
         [XorProperty("secret")]
         private string secret;
 
-        [XorProperty("Leaves", XorMultiplicity.List)]
+        [XorProperty(XorMultiplicity.List)]
         public List<ILeafClass> Leaves { get; set; }
 
-        [XorProperty("Strings", XorMultiplicity.List)]
+        [XorProperty(XorMultiplicity.List)]
         public List<string> Strings { get; set; }
 
-        [XorProperty("Uints", XorMultiplicity.List)]
+        [XorProperty(XorMultiplicity.List)]
         private ISet<uint> Uints { get; set; }
 
-        [XorProperty("MainLeaf")]
+        [XorProperty]
         public ILeafClass MainLeaf { get; set; }
 
-        [XorProperty("Timestamp")]
+        [XorProperty]
         public DateTime Timestamp { get; set; }
 
-        [XorProperty("Duration")]
+        [XorProperty]
         public TimeSpan Duration { get; set; }
 
-        [XorProperty("Value")]
+        [XorProperty]
         public decimal Value { get; set; }
 
-        [XorReference("References", XorMultiplicity.List)]
+        [XorReference(XorMultiplicity.List)]
         public IEnumerable<ILeafClass> References { get; set; }
         
-        [XorReference("Reference")]
+        [XorReference]
         public ILeafClass Reference { get; set; }
 
         //[XorProperty("NullableIntIsNull")]
@@ -71,13 +71,13 @@ namespace LateNightStupidities.XorPersist.Example
         }
     }
 
-    [XorClass("LeafClass")]
+    [XorClass(typeof(LeafClass))]
     internal class LeafClass : XorObject, ILeafClass
     {
-        [XorProperty("Leaf")]
+        [XorProperty]
         public ILeafClass Leaf { get; set; }
 
-        [XorProperty("Name")]
+        [XorProperty]
         public string Name { get; set; }
 
         [XorReference("LeafOwner")]

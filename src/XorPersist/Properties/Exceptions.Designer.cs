@@ -97,6 +97,24 @@ namespace LateNightStupidities.XorPersist.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to XorProperty and XorReference attributes use the CallerMemberName when you don&apos;t explicitly specify a name. This does not work when used on field declarations. Specify the name explicitly when using these attributes on field declarations..
+        /// </summary>
+        internal static string InvalidXorAttributeNameExceptionCallerMemberName {
+            get {
+                return ResourceManager.GetString("InvalidXorAttributeNameExceptionCallerMemberName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to null, empty strings or whitespace-only strings are not allowed as XorAttribute names..
+        /// </summary>
+        internal static string InvalidXorAttributeNameExceptionNullEmptyWhitespace {
+            get {
+                return ResourceManager.GetString("InvalidXorAttributeNameExceptionNullEmptyWhitespace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Property type ({0}) is not supported by XorPersist. Class: {1}. Class Property: {3}. XorPersist Property: {2}..
         /// </summary>
         internal static string PropertyTypeNotSupportedException {

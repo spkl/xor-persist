@@ -82,6 +82,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CallerMemberName.cs" />
     <Compile Include="CtorRequirements.cs" />
     <Compile Include="Inheritance.cs" />
     <Compile Include="ListIntegrity.cs" />

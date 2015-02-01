@@ -1,4 +1,5 @@
 ﻿using System;
+using LateNightStupidities.XorPersist.Exceptions;
 
 namespace LateNightStupidities.XorPersist.Attributes
 {
@@ -7,6 +8,11 @@ namespace LateNightStupidities.XorPersist.Attributes
     /// </summary>
     public class XorAttribute : Attribute
     {
+        /// <summary>
+        /// This string is used as default value when a CallerMemberName attribute does not supply a value.
+        /// </summary>
+        internal const string CallerMemberNameNotAvailable = "CallerMemberName/Not/Available";
+
         /// <summary>
         /// The Name of the annotated element in the Xor context.
         /// </summary>
@@ -30,6 +36,16 @@ namespace LateNightStupidities.XorPersist.Attributes
         /// <param name="name">The name.</param>
         protected XorAttribute(string name)
         {
+            if (name == CallerMemberNameNotAvailable)
+            {
+                throw new InvalidXorAttributeNameException(Properties.Exceptions.InvalidXorAttributeNameExceptionCallerMemberName);
+            }
+
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new InvalidXorAttributeNameException(Properties.Exceptions.InvalidXorAttributeNameExceptionNullEmptyWhitespace);
+            }
+
             Name = name;
         }
     }

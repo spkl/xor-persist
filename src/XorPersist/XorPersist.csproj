@@ -65,6 +65,7 @@
     <Compile Include="Exceptions\ClassAttributeMissingException.cs" />
     <Compile Include="Exceptions\CtorMissingException.cs" />
     <Compile Include="Exceptions\DuplicateXorClassNameException.cs" />
+    <Compile Include="Exceptions\InvalidXorAttributeNameException.cs" />
     <Compile Include="Exceptions\PropertyTypeNotSupportedException.cs" />
     <Compile Include="Exceptions\SchemaValidationException.cs" />
     <Compile Include="Properties\Exceptions.Designer.cs">

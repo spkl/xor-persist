@@ -138,4 +138,10 @@
   <data name="PropertyTypeNotSupportedException2" xml:space="preserve">
     <value>Property type ({0}) is not supported by XorPersist. Problem loading value from element '{1}'.</value>
   </data>
+  <data name="InvalidXorAttributeNameExceptionNullEmptyWhitespace" xml:space="preserve">
+    <value>null, empty strings or whitespace-only strings are not allowed as XorAttribute names.</value>
+  </data>
+  <data name="InvalidXorAttributeNameExceptionCallerMemberName" xml:space="preserve">
+    <value>XorProperty and XorReference attributes use the CallerMemberName when you don't explicitly specify a name. This does not work when used on field declarations. Specify the name explicitly when using these attributes on field declarations.</value>
+  </data>
 </root>
