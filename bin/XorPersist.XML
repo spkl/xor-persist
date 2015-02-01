@@ -4,6 +4,58 @@
         <name>XorPersist</name>
     </assembly>
     <members>
+        <member name="T:LateNightStupidities.XorPersist.Attributes.XorAttribute">
+            <summary>
+            Base class for all XorAttributes.
+            </summary>
+        </member>
+        <member name="F:LateNightStupidities.XorPersist.Attributes.XorAttribute.CallerMemberNameNotAvailable">
+            <summary>
+            This string is used as default value when a CallerMemberName attribute does not supply a value.
+            </summary>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.Attributes.XorAttribute.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:LateNightStupidities.XorPersist.Attributes.XorAttribute"/> class.
+            </summary>
+            <param name="name">The name.</param>
+        </member>
+        <member name="P:LateNightStupidities.XorPersist.Attributes.XorAttribute.Name">
+            <summary>
+            The Name of the annotated element in the Xor context.
+            </summary>
+        </member>
+        <member name="P:LateNightStupidities.XorPersist.Attributes.XorAttribute.Multiplicity">
+            <summary>
+            The multiplicity of the property.
+            </summary>
+        </member>
+        <member name="P:LateNightStupidities.XorPersist.Attributes.XorAttribute.ListItemType">
+            <summary>
+            Only for properties with <see cref="P:LateNightStupidities.XorPersist.Attributes.XorAttribute.Multiplicity"/> "<see cref="F:LateNightStupidities.XorPersist.Attributes.XorMultiplicity.List"/>":
+            The type of the list items. This must be a class that is derived from <see cref="T:LateNightStupidities.XorPersist.XorObject"/>, 
+            an interface or (only for property lists, not reference lists) a supported simple type.
+            </summary>
+        </member>
+        <member name="T:LateNightStupidities.XorPersist.Attributes.XorClassAttribute">
+            <summary>
+            Use this to mark XorObject classes.
+            </summary>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.Attributes.XorClassAttribute.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:LateNightStupidities.XorPersist.Attributes.XorClassAttribute"/> class.
+            and uses the supplied name.
+            </summary>
+            <param name="name">The name.</param>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.Attributes.XorClassAttribute.#ctor(System.Type)">
+            <summary>
+            Initializes a new instance of the <see cref="T:LateNightStupidities.XorPersist.Attributes.XorClassAttribute"/> class
+            and uses the FullName of the supplied Type as name.
+            </summary>
+            <param name="type">The type.</param>
+        </member>
         <member name="T:LateNightStupidities.XorPersist.Attributes.XorMultiplicity">
             <summary>
             The multiplicity of an XorProperty or XorReference.
@@ -18,6 +70,559 @@
             <summary>
             Multiple values.
             </summary>
+        </member>
+        <member name="T:LateNightStupidities.XorPersist.Attributes.XorPropertyAttribute">
+            <summary>
+            Use this to mark XorProperties.
+            </summary>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.Attributes.XorPropertyAttribute.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:LateNightStupidities.XorPersist.Attributes.XorPropertyAttribute"/> class with single multiplicity.
+            </summary>
+            <param name="name">The name (using a CallerMemberName attribute).</param>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.Attributes.XorPropertyAttribute.#ctor(System.String,LateNightStupidities.XorPersist.Attributes.XorMultiplicity)">
+            <summary>
+            Initializes a new instance of the <see cref="T:LateNightStupidities.XorPersist.Attributes.XorPropertyAttribute"/> class with the supplied multiplicity.
+            </summary>
+            <param name="name">The name.</param>
+            <param name="multiplicity">The multiplicity.</param>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.Attributes.XorPropertyAttribute.#ctor(LateNightStupidities.XorPersist.Attributes.XorMultiplicity,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:LateNightStupidities.XorPersist.Attributes.XorPropertyAttribute"/> class with the supplied multiplicity.
+            </summary>
+            <param name="name">The name (using a CallerMemberName attribute).</param>
+            <param name="multiplicity">The multiplicity.</param>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.Attributes.XorPropertyAttribute.#ctor(System.String,System.Type)">
+            <summary>
+            Initializes a new instance of the <see cref="T:LateNightStupidities.XorPersist.Attributes.XorPropertyAttribute"/> class with list multiplicity.
+            </summary>
+            <param name="name">The name.</param>
+            <param name="listItemType">Type of the list item.</param>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.Attributes.XorPropertyAttribute.#ctor(System.Type,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:LateNightStupidities.XorPersist.Attributes.XorPropertyAttribute"/> class with list multiplicity.
+            </summary>
+            <param name="name">The name (using a CallerMemberName attribute).</param>
+            <param name="listItemType">Type of the list item.</param>
+        </member>
+        <member name="T:LateNightStupidities.XorPersist.Attributes.XorReferenceAttribute">
+            <summary>
+            Use this to mark XorReferences.
+            </summary>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.Attributes.XorReferenceAttribute.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:LateNightStupidities.XorPersist.Attributes.XorReferenceAttribute"/> class with single multiplicity.
+            </summary>
+            <param name="name">The name (using a CallerMemberName attribute).</param>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.Attributes.XorReferenceAttribute.#ctor(System.String,LateNightStupidities.XorPersist.Attributes.XorMultiplicity)">
+            <summary>
+            Initializes a new instance of the <see cref="T:LateNightStupidities.XorPersist.Attributes.XorReferenceAttribute"/> class with the supplied multiplicity.
+            </summary>
+            <param name="name">The name.</param>
+            <param name="multiplicity">The multiplicity.</param>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.Attributes.XorReferenceAttribute.#ctor(LateNightStupidities.XorPersist.Attributes.XorMultiplicity,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:LateNightStupidities.XorPersist.Attributes.XorReferenceAttribute"/> class with the supplied multiplicity.
+            </summary>
+            <param name="name">The name (using a CallerMemberName attribute).</param>
+            <param name="multiplicity">The multiplicity.</param>
+        </member>
+        <member name="T:LateNightStupidities.XorPersist.Exceptions.ClassAttributeMissingException">
+            <summary>
+            This exception is thrown when encountering a class without 
+            the XorClass attribute while saving the model.
+            </summary>
+        </member>
+        <member name="T:LateNightStupidities.XorPersist.Exceptions.XorPersistException">
+            <summary>
+            Base class for Exceptions thrown be the XorPersist library.
+            </summary>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.Exceptions.XorPersistException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:LateNightStupidities.XorPersist.Exceptions.XorPersistException"/> class
+            with a specified error message.
+            </summary>
+            <param name="message">The message.</param>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.Exceptions.XorPersistException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:LateNightStupidities.XorPersist.Exceptions.XorPersistException"/> class
+            with a specified error message and a reference to the inner exception that
+            is the cause of this exception.
+            </summary>
+            <param name="message">The message.</param>
+            <param name="innerException">The inner exception.</param>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.Exceptions.ClassAttributeMissingException.#ctor(System.Type)">
+            <summary>
+            Initializes a new instance of the <see cref="T:LateNightStupidities.XorPersist.Exceptions.ClassAttributeMissingException"/> class.
+            </summary>
+            <param name="objectType">Type of the object.</param>
+        </member>
+        <member name="T:LateNightStupidities.XorPersist.Exceptions.CtorMissingException">
+            <summary>
+            This exception is thrown if class derived from XorObject 
+            does not declare a public parameterless constructor.
+            </summary>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.Exceptions.CtorMissingException.#ctor(System.Type,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:LateNightStupidities.XorPersist.Exceptions.CtorMissingException"/> class.
+            </summary>
+            <param name="objectType">Type of the object where the constructor is missing.</param>
+            <param name="innerException">The inner exception.</param>
+        </member>
+        <member name="T:LateNightStupidities.XorPersist.Exceptions.DuplicateXorClassNameException">
+            <summary>
+            This exception is thrown if two XorObject classes 
+            define the same name in the XorClass attribute.
+            </summary>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.Exceptions.DuplicateXorClassNameException.#ctor(System.String,System.Type,System.Type)">
+            <summary>
+            Initializes a new instance of the <see cref="T:LateNightStupidities.XorPersist.Exceptions.DuplicateXorClassNameException"/> class.
+            </summary>
+            <param name="xorClassName">Name of the XorClass attribute.</param>
+            <param name="existingType">The type that declared the XorClass name first.</param>
+            <param name="newType">Another type that uses the same XorClass name.</param>
+        </member>
+        <member name="T:LateNightStupidities.XorPersist.Exceptions.InvalidXorAttributeNameException">
+            <summary>
+            This exception is thrown when an invalid name is passed to an <see cref="T:LateNightStupidities.XorPersist.Attributes.XorAttribute"/> constructor.
+            </summary>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.Exceptions.InvalidXorAttributeNameException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:LateNightStupidities.XorPersist.Exceptions.InvalidXorAttributeNameException"/> class.
+            </summary>
+            <param name="message">The message.</param>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.Exceptions.InvalidXorAttributeNameException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:LateNightStupidities.XorPersist.Exceptions.InvalidXorAttributeNameException"/> class.
+            </summary>
+            <param name="message">The message.</param>
+            <param name="innerException">The inner exception.</param>
+        </member>
+        <member name="T:LateNightStupidities.XorPersist.Exceptions.PropertyTypeNotSupportedException">
+            <summary>
+            This exception is thrown if the type of a property is not supported by XorPersist.
+            </summary>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.Exceptions.PropertyTypeNotSupportedException.#ctor(System.Type,System.Type,System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:LateNightStupidities.XorPersist.Exceptions.PropertyTypeNotSupportedException"/> class.
+            </summary>
+            <param name="propertyType">Type of the property.</param>
+            <param name="ownerType">Type where the property is defined.</param>
+            <param name="xorPropertyName">Name of the XorProperty.</param>
+            <param name="classPropertyName">Name of the property at the class.</param>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.Exceptions.PropertyTypeNotSupportedException.#ctor(System.Type,System.Xml.Linq.XElement)">
+            <summary>
+            Initializes a new instance of the <see cref="T:LateNightStupidities.XorPersist.Exceptions.PropertyTypeNotSupportedException"/> class.
+            </summary>
+            <param name="propertyType">Type of the property.</param>
+            <param name="propertyElement">The property element.</param>
+        </member>
+        <member name="T:LateNightStupidities.XorPersist.Exceptions.SchemaValidationException">
+            <summary>
+            This exception is thrown if a file is not valid 
+            according to the XorPersist XSD.
+            </summary>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.Exceptions.SchemaValidationException.#ctor(System.Int32,System.Int32,System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:LateNightStupidities.XorPersist.Exceptions.SchemaValidationException"/> class.
+            </summary>
+            <param name="line">The line.</param>
+            <param name="position">The line position.</param>
+            <param name="message">The XML validation message.</param>
+            <param name="innerException">The inner exception.</param>
+        </member>
+        <member name="T:LateNightStupidities.XorPersist.Properties.Exceptions">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:LateNightStupidities.XorPersist.Properties.Exceptions.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:LateNightStupidities.XorPersist.Properties.Exceptions.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:LateNightStupidities.XorPersist.Properties.Exceptions.ClassAttributeMissingException">
+            <summary>
+              Looks up a localized string similar to The XorClass attribute is missing on type {0}. Add the attribute to the class declaration..
+            </summary>
+        </member>
+        <member name="P:LateNightStupidities.XorPersist.Properties.Exceptions.CouldNotResolveReferenceException">
+            <summary>
+              Looks up a localized string similar to Could not resolve reference at &apos;{0}&apos;. Failed to find object with XorId &apos;{1}&apos;..
+            </summary>
+        </member>
+        <member name="P:LateNightStupidities.XorPersist.Properties.Exceptions.CtorMissingException">
+            <summary>
+              Looks up a localized string similar to Parameterless constructor is missing on type {0}. XorPersist could not instantiate this class. Define a public parameterless constructor at this type. Alternatively, a method with the following signature that returns an instance of the type can be defined: &quot;static object _XorCreate()&quot;..
+            </summary>
+        </member>
+        <member name="P:LateNightStupidities.XorPersist.Properties.Exceptions.DuplicateXorClassNameException">
+            <summary>
+              Looks up a localized string similar to Found duplicate XorClass name &apos;{0}&apos;. Type of existing entry: &apos;{1}, Assembly &lt;{3}&gt;&apos;. Type of duplicate entry: &apos;{2}, Assembly &lt;{4}&gt;&apos;..
+            </summary>
+        </member>
+        <member name="P:LateNightStupidities.XorPersist.Properties.Exceptions.InvalidXorAttributeNameExceptionCallerMemberName">
+            <summary>
+              Looks up a localized string similar to XorProperty and XorReference attributes use the CallerMemberName when you don&apos;t explicitly specify a name. This does not work when used on field declarations. Specify the name explicitly when using these attributes on field declarations..
+            </summary>
+        </member>
+        <member name="P:LateNightStupidities.XorPersist.Properties.Exceptions.InvalidXorAttributeNameExceptionNullEmptyWhitespace">
+            <summary>
+              Looks up a localized string similar to null, empty strings or whitespace-only strings are not allowed as XorAttribute names..
+            </summary>
+        </member>
+        <member name="P:LateNightStupidities.XorPersist.Properties.Exceptions.PropertyTypeNotSupportedException">
+            <summary>
+              Looks up a localized string similar to Property type ({0}) is not supported by XorPersist. Class: {1}. Class Property: {3}. XorPersist Property: {2}..
+            </summary>
+        </member>
+        <member name="P:LateNightStupidities.XorPersist.Properties.Exceptions.PropertyTypeNotSupportedException2">
+            <summary>
+              Looks up a localized string similar to Property type ({0}) is not supported by XorPersist. Problem loading value from element &apos;{1}&apos;..
+            </summary>
+        </member>
+        <member name="P:LateNightStupidities.XorPersist.Properties.Exceptions.SchemaValidationException">
+            <summary>
+              Looks up a localized string similar to The data does not conform to the XorPersist XML schema. Line {0}, Position {1}: {2}.
+            </summary>
+        </member>
+        <member name="T:LateNightStupidities.XorPersist.Exceptions.CouldNotResolveReferenceException">
+            <summary>
+            This exception is thrown if a reference cannot be resolved when loading the model.
+            </summary>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.Exceptions.CouldNotResolveReferenceException.#ctor(System.Reflection.MemberInfo,System.Guid)">
+            <summary>
+            Initializes a new instance of the <see cref="T:LateNightStupidities.XorPersist.Exceptions.CouldNotResolveReferenceException"/> class.
+            </summary>
+            <param name="memberInfo">The member where the reference is located.</param>
+            <param name="xorId">The xor id that could not be found.</param>
+        </member>
+        <member name="T:LateNightStupidities.XorPersist.IXorController">
+            <summary>
+            Controller interface for saving and loading <see cref="T:LateNightStupidities.XorPersist.XorObject"/> data structures.
+            </summary>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.IXorController.Load``1(System.String)">
+            <summary>
+            Loads an <see cref="T:LateNightStupidities.XorPersist.XorObject"/> data structure from the specified file path.
+            </summary>
+            <typeparam name="T">The type of the root object you are loading.</typeparam>
+            <param name="path">The path.</param>
+            <returns>The root object of the loaded data structure.</returns>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.IXorController.Load``1(System.IO.Stream)">
+            <summary>
+            Loads an <see cref="T:LateNightStupidities.XorPersist.XorObject"/> data structure from the specified XML stream.
+            </summary>
+            <typeparam name="T">The type of the root object you are loading.</typeparam>
+            <param name="xmlStream">The XML stream.</param>
+            <returns>The root object of the loaded data structure.</returns>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.IXorController.Load``1(System.Xml.Linq.XDocument)">
+            <summary>
+            Loads an <see cref="T:LateNightStupidities.XorPersist.XorObject"/> data structure from the specified <see cref="T:System.Xml.Linq.XDocument"/>.
+            </summary>
+            <typeparam name="T">The type of the root object your are loading.</typeparam>
+            <param name="xDocument">The <see cref="T:System.Xml.Linq.XDocument"/>.</param>
+            <returns>The root object of the loaded data structure.</returns>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.IXorController.Save(LateNightStupidities.XorPersist.XorObject,System.String)">
+            <summary>
+            Saves the data structure contained in the root <see cref="T:LateNightStupidities.XorPersist.XorObject"/> to the specified file path.
+            </summary>
+            <param name="rootObject">The root object.</param>
+            <param name="path">The file path.</param>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.IXorController.Save(LateNightStupidities.XorPersist.XorObject,System.IO.Stream)">
+            <summary>
+            Saves the data structure contained in the root <see cref="T:LateNightStupidities.XorPersist.XorObject"/> to the specified XML stream.
+            </summary>
+            <param name="rootObject">The root object.</param>
+            <param name="xmlStream">The XML stream.</param>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.IXorController.Validate(System.IO.Stream)">
+            <summary>
+            Validates the specified XML stream with the XorPersist XML schema.
+            </summary>
+            <param name="xmlStream">The XML stream.</param>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.IXorController.Validate(System.Xml.Linq.XDocument)">
+            <summary>
+            Validates the specified XDocument with the XorPersist XML schema.
+            </summary>
+            <param name="xDocument">The XDocument.</param>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.IXorController.Validate(System.String)">
+            <summary>
+            Validates the file with the specified file path with the XorPersist XML schema.
+            </summary>
+            <param name="path">The path.</param>
+        </member>
+        <member name="T:LateNightStupidities.XorPersist.XorController">
+            <summary>
+            Controller class for saving and loading <see cref="T:LateNightStupidities.XorPersist.XorObject"/> data structures.
+            </summary>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.XorController.Get">
+            <summary>
+            Gets a new <see cref="T:LateNightStupidities.XorPersist.IXorController"/> instance.
+            </summary>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.XorController.Load``1(System.String)">
+            <summary>
+            Loads an <see cref="T:LateNightStupidities.XorPersist.XorObject"/> data structure from the specified file path.
+            </summary>
+            <typeparam name="T">The type of the root object you are loading.</typeparam>
+            <param name="path">The path.</param>
+            <returns>The root object of the loaded data structure.</returns>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.XorController.Load``1(System.IO.Stream)">
+            <summary>
+            Loads an <see cref="T:LateNightStupidities.XorPersist.XorObject"/> data structure from the specified XML stream.
+            </summary>
+            <typeparam name="T">The type of the root object you are loading.</typeparam>
+            <param name="xmlStream">The XML stream.</param>
+            <returns>The root object of the loaded data structure.</returns>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.XorController.Load``1(System.Xml.Linq.XDocument,System.IO.Stream)">
+            <summary>
+            Loads an <see cref="T:LateNightStupidities.XorPersist.XorObject"/> data structure from the specified <see cref="T:System.Xml.Linq.XDocument"/>.
+            </summary>
+            <typeparam name="T">The type of the root object your are loading.</typeparam>
+            <param name="xDocument">The <see cref="T:System.Xml.Linq.XDocument"/>.</param>
+            <param name="xmlStream">The XML stream. Optional. Used to speed up validation if available.</param>
+            <returns>The root object of the loaded data structure.</returns>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.XorController.Load``1(System.Xml.Linq.XDocument)">
+            <summary>
+            Loads an <see cref="T:LateNightStupidities.XorPersist.XorObject"/> data structure from the specified <see cref="T:System.Xml.Linq.XDocument"/>.
+            </summary>
+            <typeparam name="T">The type of the root object your are loading.</typeparam>
+            <param name="xDocument">The <see cref="T:System.Xml.Linq.XDocument"/>.</param>
+            <returns>The root object of the loaded data structure.</returns>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.XorController.Save(LateNightStupidities.XorPersist.XorObject,System.String)">
+            <summary>
+            Saves the data structure contained in the root <see cref="T:LateNightStupidities.XorPersist.XorObject"/> to the specified file path.
+            </summary>
+            <param name="rootObject">The root object.</param>
+            <param name="path">The file path.</param>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.XorController.Save(LateNightStupidities.XorPersist.XorObject,System.IO.Stream)">
+            <summary>
+            Saves the data structure contained in the root <see cref="T:LateNightStupidities.XorPersist.XorObject"/> to the specified XML stream.
+            </summary>
+            <param name="rootObject">The root object.</param>
+            <param name="xmlStream">The XML stream.</param>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.XorController.Validate(System.IO.Stream)">
+            <summary>
+            Validates the specified XML stream with the XorPersist XML schema.
+            </summary>
+            <param name="xmlStream">The XML stream.</param>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.XorController.Validate(System.Xml.Linq.XDocument)">
+            <summary>
+            Validates the specified XDocument with the XorPersist XML schema.
+            </summary>
+            <param name="xDocument">The XDocument.</param>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.XorController.Validate(System.String)">
+            <summary>
+            Validates the file with the specified file path with the XorPersist XML schema.
+            </summary>
+            <param name="path">The path.</param>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.XorExtensions.GetXorReferenceMembers(System.Type)">
+            <summary>
+            Gets the XorReference members (fields and properties).
+            </summary>
+            <param name="type">The type.</param>
+            <returns></returns>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.XorExtensions.GetXorPropertyMembers(System.Type)">
+            <summary>
+            Gets the XorProperty members.
+            </summary>
+            <param name="type">The type.</param>
+            <returns></returns>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.XorExtensions.IsSupportedSimpleType(System.Type)">
+            <summary>
+            Determines whether this type is a supported simple type (primitives, string, Guid, DateTime, TimeSpan, decimal).
+            </summary>
+            <param name="type">The type.</param>
+            <returns>
+              <c>true</c> if this is a supported simple type; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.XorExtensions.IsSupportedXorType(System.Type)">
+            <summary>
+            Determines whether this is derived from XorObject.
+            Attention: The type can be an interface that is not supported, 
+            but a class implementing the interface may be supported!
+            </summary>
+            <param name="type">The type.</param>
+            <returns>
+              <c>true</c> if this is derived from XorObject; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.XorExtensions.GetMemberValue(System.Reflection.MemberInfo,System.Object,System.Object[])">
+            <summary>
+            Gets the value of a field or property info from an object.
+            </summary>
+            <param name="memberInfo">The member info.</param>
+            <param name="obj">The object.</param>
+            <param name="index">The index.</param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">Only fields and properties are supported.</exception>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.XorExtensions.SetMemberValue(System.Reflection.MemberInfo,System.Object,System.Object,System.Object[])">
+            <summary>
+            Sets the value of a field or property.
+            </summary>
+            <param name="memberInfo">The member info.</param>
+            <param name="obj">The obj.</param>
+            <param name="value">The value.</param>
+            <param name="index">The index.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException">Only fields and properties are supported.</exception>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.XorExtensions.Cast(System.Collections.IEnumerable,System.Type)">
+            <summary>
+            Casts the specified enumerable to an <see cref="T:System.Collections.Generic.IEnumerable`1"/> of <paramref name="type"/>.
+            </summary>
+            <param name="enumerable">The enumerable.</param>
+            <param name="type">The type.</param>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.XorExtensions.ToObjectList(System.Collections.IEnumerable)">
+            <summary>
+            Creates an object list from an enumerable.
+            </summary>
+            <param name="enumerable">The enumerable.</param>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.XorExtensions.IsEnumerable(System.Type)">
+            <summary>
+            Determines whether the specified type is an <see cref="T:System.Collections.IEnumerable"/>.
+            </summary>
+            <param name="type">The type.</param>
+            <returns>
+              <c>true</c> if the specified type is an <see cref="T:System.Collections.IEnumerable"/>; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.XorExtensions.IsTypedEnumerable(System.Type)">
+            <summary>
+            Determines whether the specified type is an <see cref="T:System.Collections.Generic.IEnumerable`1"/>.
+            </summary>
+            <param name="type">The type.</param>
+            <returns>
+              <c>true</c> if the specified type is an <see cref="T:System.Collections.Generic.IEnumerable`1"/>; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.XorExtensions.GetMemberInfoType(System.Reflection.MemberInfo)">
+            <summary>
+            Gets the type of the member info.
+            </summary>
+            <param name="memberInfo">The member info.</param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">Only fields and properties are supported.</exception>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.XorExtensions.GetListItemType(LateNightStupidities.XorPersist.Attributes.XorPropertyTuple)">
+            <summary>
+            Gets the type of the list item.
+            Tries to get the type from the <see cref="P:LateNightStupidities.XorPersist.Attributes.XorAttribute.ListItemType"/>.
+            If that is not successful, the generic argument of the IEnumerable is extracted.
+            </summary>
+            <param name="member">The member.</param>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.XorExtensions.GetListItemType(LateNightStupidities.XorPersist.Attributes.XorReferenceTuple)">
+            <summary>
+            Gets the type of the list item.
+            Tries to get the type from the <see cref="P:LateNightStupidities.XorPersist.Attributes.XorAttribute.ListItemType"/>.
+            If that is not successful, the generic argument of the IEnumerable is extracted.
+            </summary>
+            <param name="member">The member.</param>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.XorExtensions.GetListItemType(LateNightStupidities.XorPersist.Attributes.XorAttribute,System.Reflection.MemberInfo)">
+            <summary>
+            Gets the type of the list item.
+            Tries to get the type from the <see cref="P:LateNightStupidities.XorPersist.Attributes.XorAttribute.ListItemType"/>.
+            If that is not successful, the generic argument of the IEnumerable is extracted.
+            </summary>
+            <param name="memberAttr">The XorAttribute.</param>
+            <param name="memberInfo">The member info.</param>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.XorExtensions.GetNameAndMultiplicity(System.Xml.Linq.XElement,System.String@,LateNightStupidities.XorPersist.Attributes.XorMultiplicity@)">
+            <summary>
+            Gets the name and multiplicity of a property XElement.
+            </summary>
+            <param name="propertyElement">The property element.</param>
+            <param name="memberName">Name of the member.</param>
+            <param name="multiplicity">The multiplicity.</param>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.XorExtensions.GetMemberName(System.Xml.Linq.XElement)">
+            <summary>
+            Gets the member name of a property XElement.
+            </summary>
+            <param name="propertyElement">The property element.</param>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.XorExtensions.ConvertToType(System.Xml.Linq.XElement,System.Type)">
+            <summary>
+            Converts an XElement to the supplied type.
+            </summary>
+            <param name="propertyElement">The property element.</param>
+            <param name="type">The type.</param>
+            <exception cref="T:System.Exception">Unsupported property type.</exception>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.XorExtensions.IsReferenceElement(System.Xml.Linq.XElement)">
+            <summary>
+            Determines whether the specified element is a reference element.
+            Element names:
+            * <see cref="F:LateNightStupidities.XorPersist.Schema.XorXsd.Reference"/>
+            * <see cref="F:LateNightStupidities.XorPersist.Schema.XorXsd.ReferenceList"/>
+            </summary>
+            <param name="element">The element.</param>
+            <returns>
+              <c>true</c> if the specified element is a reference element; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:LateNightStupidities.XorPersist.XorExtensions.IsPropertyElement(System.Xml.Linq.XElement)">
+            <summary>
+            Determines whether the specified element is a property element.
+            Element names:
+            * <see cref="F:LateNightStupidities.XorPersist.Schema.XorXsd.Property"/>
+            * <see cref="F:LateNightStupidities.XorPersist.Schema.XorXsd.PropertyList"/>
+            * <see cref="F:LateNightStupidities.XorPersist.Schema.XorXsd.XProperty"/>
+            * <see cref="F:LateNightStupidities.XorPersist.Schema.XorXsd.XPropertyList"/>
+            </summary>
+            <param name="element">The element.</param>
+            <returns>
+              <c>true</c> if the specified element is a property element; otherwise, <c>false</c>.
+            </returns>
         </member>
         <member name="T:LateNightStupidities.XorPersist.XorObject">
             <summary>
@@ -203,557 +808,6 @@
             Creates an XElement that stores an XorObject.
             </summary>
             <param name="xorObject">The xor object.</param>
-        </member>
-        <member name="T:LateNightStupidities.XorPersist.Exceptions.XorPersistException">
-            <summary>
-            Base class for Exceptions thrown be the XorPersist library.
-            </summary>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.Exceptions.XorPersistException.#ctor(System.String)">
-            <summary>
-            Initializes a new instance of the <see cref="T:LateNightStupidities.XorPersist.Exceptions.XorPersistException"/> class
-            with a specified error message.
-            </summary>
-            <param name="message">The message.</param>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.Exceptions.XorPersistException.#ctor(System.String,System.Exception)">
-            <summary>
-            Initializes a new instance of the <see cref="T:LateNightStupidities.XorPersist.Exceptions.XorPersistException"/> class
-            with a specified error message and a reference to the inner exception that
-            is the cause of this exception.
-            </summary>
-            <param name="message">The message.</param>
-            <param name="innerException">The inner exception.</param>
-        </member>
-        <member name="T:LateNightStupidities.XorPersist.Attributes.XorAttribute">
-            <summary>
-            Base class for all XorAttributes.
-            </summary>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.Attributes.XorAttribute.#ctor(System.String)">
-            <summary>
-            Initializes a new instance of the <see cref="T:LateNightStupidities.XorPersist.Attributes.XorAttribute"/> class.
-            </summary>
-            <param name="name">The name.</param>
-        </member>
-        <member name="P:LateNightStupidities.XorPersist.Attributes.XorAttribute.Name">
-            <summary>
-            The Name of the annotated element in the Xor context.
-            </summary>
-        </member>
-        <member name="P:LateNightStupidities.XorPersist.Attributes.XorAttribute.Multiplicity">
-            <summary>
-            The multiplicity of the property.
-            </summary>
-        </member>
-        <member name="P:LateNightStupidities.XorPersist.Attributes.XorAttribute.ListItemType">
-            <summary>
-            Only for properties with <see cref="P:LateNightStupidities.XorPersist.Attributes.XorAttribute.Multiplicity"/> "<see cref="F:LateNightStupidities.XorPersist.Attributes.XorMultiplicity.List"/>":
-            The type of the list items. This must be a class that is derived from <see cref="T:LateNightStupidities.XorPersist.XorObject"/>, 
-            an interface or (only for property lists, not reference lists) a supported simple type.
-            </summary>
-        </member>
-        <member name="T:LateNightStupidities.XorPersist.XorController">
-            <summary>
-            Controller class for saving and loading <see cref="T:LateNightStupidities.XorPersist.XorObject"/> data structures.
-            </summary>
-        </member>
-        <member name="T:LateNightStupidities.XorPersist.IXorController">
-            <summary>
-            Controller interface for saving and loading <see cref="T:LateNightStupidities.XorPersist.XorObject"/> data structures.
-            </summary>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.IXorController.Load``1(System.String)">
-            <summary>
-            Loads an <see cref="T:LateNightStupidities.XorPersist.XorObject"/> data structure from the specified file path.
-            </summary>
-            <typeparam name="T">The type of the root object you are loading.</typeparam>
-            <param name="path">The path.</param>
-            <returns>The root object of the loaded data structure.</returns>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.IXorController.Load``1(System.IO.Stream)">
-            <summary>
-            Loads an <see cref="T:LateNightStupidities.XorPersist.XorObject"/> data structure from the specified XML stream.
-            </summary>
-            <typeparam name="T">The type of the root object you are loading.</typeparam>
-            <param name="xmlStream">The XML stream.</param>
-            <returns>The root object of the loaded data structure.</returns>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.IXorController.Load``1(System.Xml.Linq.XDocument)">
-            <summary>
-            Loads an <see cref="T:LateNightStupidities.XorPersist.XorObject"/> data structure from the specified <see cref="T:System.Xml.Linq.XDocument"/>.
-            </summary>
-            <typeparam name="T">The type of the root object your are loading.</typeparam>
-            <param name="xDocument">The <see cref="T:System.Xml.Linq.XDocument"/>.</param>
-            <returns>The root object of the loaded data structure.</returns>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.IXorController.Save(LateNightStupidities.XorPersist.XorObject,System.String)">
-            <summary>
-            Saves the data structure contained in the root <see cref="T:LateNightStupidities.XorPersist.XorObject"/> to the specified file path.
-            </summary>
-            <param name="rootObject">The root object.</param>
-            <param name="path">The file path.</param>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.IXorController.Save(LateNightStupidities.XorPersist.XorObject,System.IO.Stream)">
-            <summary>
-            Saves the data structure contained in the root <see cref="T:LateNightStupidities.XorPersist.XorObject"/> to the specified XML stream.
-            </summary>
-            <param name="rootObject">The root object.</param>
-            <param name="xmlStream">The XML stream.</param>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.IXorController.Validate(System.IO.Stream)">
-            <summary>
-            Validates the specified XML stream with the XorPersist XML schema.
-            </summary>
-            <param name="xmlStream">The XML stream.</param>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.IXorController.Validate(System.Xml.Linq.XDocument)">
-            <summary>
-            Validates the specified XDocument with the XorPersist XML schema.
-            </summary>
-            <param name="xDocument">The XDocument.</param>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.IXorController.Validate(System.String)">
-            <summary>
-            Validates the file with the specified file path with the XorPersist XML schema.
-            </summary>
-            <param name="path">The path.</param>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.XorController.Get">
-            <summary>
-            Gets a new <see cref="T:LateNightStupidities.XorPersist.IXorController"/> instance.
-            </summary>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.XorController.Load``1(System.String)">
-            <summary>
-            Loads an <see cref="T:LateNightStupidities.XorPersist.XorObject"/> data structure from the specified file path.
-            </summary>
-            <typeparam name="T">The type of the root object you are loading.</typeparam>
-            <param name="path">The path.</param>
-            <returns>The root object of the loaded data structure.</returns>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.XorController.Load``1(System.IO.Stream)">
-            <summary>
-            Loads an <see cref="T:LateNightStupidities.XorPersist.XorObject"/> data structure from the specified XML stream.
-            </summary>
-            <typeparam name="T">The type of the root object you are loading.</typeparam>
-            <param name="xmlStream">The XML stream.</param>
-            <returns>The root object of the loaded data structure.</returns>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.XorController.Load``1(System.Xml.Linq.XDocument,System.IO.Stream)">
-            <summary>
-            Loads an <see cref="T:LateNightStupidities.XorPersist.XorObject"/> data structure from the specified <see cref="T:System.Xml.Linq.XDocument"/>.
-            </summary>
-            <typeparam name="T">The type of the root object your are loading.</typeparam>
-            <param name="xDocument">The <see cref="T:System.Xml.Linq.XDocument"/>.</param>
-            <param name="xmlStream">The XML stream. Optional. Used to speed up validation if available.</param>
-            <returns>The root object of the loaded data structure.</returns>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.XorController.Load``1(System.Xml.Linq.XDocument)">
-            <summary>
-            Loads an <see cref="T:LateNightStupidities.XorPersist.XorObject"/> data structure from the specified <see cref="T:System.Xml.Linq.XDocument"/>.
-            </summary>
-            <typeparam name="T">The type of the root object your are loading.</typeparam>
-            <param name="xDocument">The <see cref="T:System.Xml.Linq.XDocument"/>.</param>
-            <returns>The root object of the loaded data structure.</returns>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.XorController.Save(LateNightStupidities.XorPersist.XorObject,System.String)">
-            <summary>
-            Saves the data structure contained in the root <see cref="T:LateNightStupidities.XorPersist.XorObject"/> to the specified file path.
-            </summary>
-            <param name="rootObject">The root object.</param>
-            <param name="path">The file path.</param>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.XorController.Save(LateNightStupidities.XorPersist.XorObject,System.IO.Stream)">
-            <summary>
-            Saves the data structure contained in the root <see cref="T:LateNightStupidities.XorPersist.XorObject"/> to the specified XML stream.
-            </summary>
-            <param name="rootObject">The root object.</param>
-            <param name="xmlStream">The XML stream.</param>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.XorController.Validate(System.IO.Stream)">
-            <summary>
-            Validates the specified XML stream with the XorPersist XML schema.
-            </summary>
-            <param name="xmlStream">The XML stream.</param>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.XorController.Validate(System.Xml.Linq.XDocument)">
-            <summary>
-            Validates the specified XDocument with the XorPersist XML schema.
-            </summary>
-            <param name="xDocument">The XDocument.</param>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.XorController.Validate(System.String)">
-            <summary>
-            Validates the file with the specified file path with the XorPersist XML schema.
-            </summary>
-            <param name="path">The path.</param>
-        </member>
-        <member name="T:LateNightStupidities.XorPersist.Exceptions.CtorMissingException">
-            <summary>
-            This exception is thrown if class derived from XorObject 
-            does not declare a public parameterless constructor.
-            </summary>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.Exceptions.CtorMissingException.#ctor(System.Type,System.Exception)">
-            <summary>
-            Initializes a new instance of the <see cref="T:LateNightStupidities.XorPersist.Exceptions.CtorMissingException"/> class.
-            </summary>
-            <param name="objectType">Type of the object where the constructor is missing.</param>
-            <param name="innerException">The inner exception.</param>
-        </member>
-        <member name="T:LateNightStupidities.XorPersist.Attributes.XorClassAttribute">
-            <summary>
-            Use this to mark XorObject classes.
-            </summary>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.Attributes.XorClassAttribute.#ctor(System.String)">
-            <summary>
-            Initializes a new instance of the <see cref="T:LateNightStupidities.XorPersist.Attributes.XorClassAttribute"/> class.
-            and uses the supplied name.
-            </summary>
-            <param name="name">The name.</param>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.Attributes.XorClassAttribute.#ctor(System.Type)">
-            <summary>
-            Initializes a new instance of the <see cref="T:LateNightStupidities.XorPersist.Attributes.XorClassAttribute"/> class
-            and uses the FullName of the supplied Type as name.
-            </summary>
-            <param name="type">The type.</param>
-        </member>
-        <member name="T:LateNightStupidities.XorPersist.Attributes.XorPropertyAttribute">
-            <summary>
-            Use this to mark XorProperties.
-            </summary>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.Attributes.XorPropertyAttribute.#ctor(System.String)">
-            <summary>
-            Initializes a new instance of the <see cref="T:LateNightStupidities.XorPersist.Attributes.XorPropertyAttribute"/> class with single multiplicity.
-            </summary>
-            <param name="name">The name.</param>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.Attributes.XorPropertyAttribute.#ctor(System.String,LateNightStupidities.XorPersist.Attributes.XorMultiplicity)">
-            <summary>
-            Initializes a new instance of the <see cref="T:LateNightStupidities.XorPersist.Attributes.XorPropertyAttribute"/> class with the supplied multiplicity.
-            </summary>
-            <param name="name">The name.</param>
-            <param name="multiplicity">The multiplicity.</param>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.Attributes.XorPropertyAttribute.#ctor(System.String,System.Type)">
-            <summary>
-            Initializes a new instance of the <see cref="T:LateNightStupidities.XorPersist.Attributes.XorPropertyAttribute"/> class with list multiplicity.
-            </summary>
-            <param name="name">The name.</param>
-            <param name="listItemType">Type of the list item.</param>
-        </member>
-        <member name="T:LateNightStupidities.XorPersist.Exceptions.ClassAttributeMissingException">
-            <summary>
-            This exception is thrown when encountering a class without 
-            the XorClass attribute while saving the model.
-            </summary>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.Exceptions.ClassAttributeMissingException.#ctor(System.Type)">
-            <summary>
-            Initializes a new instance of the <see cref="T:LateNightStupidities.XorPersist.Exceptions.ClassAttributeMissingException"/> class.
-            </summary>
-            <param name="objectType">Type of the object.</param>
-        </member>
-        <member name="T:LateNightStupidities.XorPersist.Exceptions.SchemaValidationException">
-            <summary>
-            This exception is thrown if a file is not valid 
-            according to the XorPersist XSD.
-            </summary>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.Exceptions.SchemaValidationException.#ctor(System.Int32,System.Int32,System.String,System.Exception)">
-            <summary>
-            Initializes a new instance of the <see cref="T:LateNightStupidities.XorPersist.Exceptions.SchemaValidationException"/> class.
-            </summary>
-            <param name="line">The line.</param>
-            <param name="position">The line position.</param>
-            <param name="message">The XML validation message.</param>
-            <param name="innerException">The inner exception.</param>
-        </member>
-        <member name="T:LateNightStupidities.XorPersist.Properties.Exceptions">
-            <summary>
-              A strongly-typed resource class, for looking up localized strings, etc.
-            </summary>
-        </member>
-        <member name="P:LateNightStupidities.XorPersist.Properties.Exceptions.ResourceManager">
-            <summary>
-              Returns the cached ResourceManager instance used by this class.
-            </summary>
-        </member>
-        <member name="P:LateNightStupidities.XorPersist.Properties.Exceptions.Culture">
-            <summary>
-              Overrides the current thread's CurrentUICulture property for all
-              resource lookups using this strongly typed resource class.
-            </summary>
-        </member>
-        <member name="P:LateNightStupidities.XorPersist.Properties.Exceptions.ClassAttributeMissingException">
-            <summary>
-              Looks up a localized string similar to The XorClass attribute is missing on type {0}. Add the attribute to the class declaration..
-            </summary>
-        </member>
-        <member name="P:LateNightStupidities.XorPersist.Properties.Exceptions.CouldNotResolveReferenceException">
-            <summary>
-              Looks up a localized string similar to Could not resolve reference at &apos;{0}&apos;. Failed to find object with XorId &apos;{1}&apos;..
-            </summary>
-        </member>
-        <member name="P:LateNightStupidities.XorPersist.Properties.Exceptions.CtorMissingException">
-            <summary>
-              Looks up a localized string similar to Parameterless constructor is missing on type {0}. XorPersist could not instantiate this class. Define a public parameterless constructor at this type. Alternatively, a method with the following signature that returns an instance of the type can be defined: &quot;static object _XorCreate()&quot;..
-            </summary>
-        </member>
-        <member name="P:LateNightStupidities.XorPersist.Properties.Exceptions.DuplicateXorClassNameException">
-            <summary>
-              Looks up a localized string similar to Found duplicate XorClass name &apos;{0}&apos;. Type of existing entry: &apos;{1}, Assembly &lt;{3}&gt;&apos;. Type of duplicate entry: &apos;{2}, Assembly &lt;{4}&gt;&apos;..
-            </summary>
-        </member>
-        <member name="P:LateNightStupidities.XorPersist.Properties.Exceptions.PropertyTypeNotSupportedException">
-            <summary>
-              Looks up a localized string similar to Property type ({0}) is not supported by XorPersist. Class: {1}. Class Property: {3}. XorPersist Property: {2}..
-            </summary>
-        </member>
-        <member name="P:LateNightStupidities.XorPersist.Properties.Exceptions.PropertyTypeNotSupportedException2">
-            <summary>
-              Looks up a localized string similar to Property type ({0}) is not supported by XorPersist. Problem loading value from element &apos;{1}&apos;..
-            </summary>
-        </member>
-        <member name="P:LateNightStupidities.XorPersist.Properties.Exceptions.SchemaValidationException">
-            <summary>
-              Looks up a localized string similar to The data does not conform to the XorPersist XML schema. Line {0}, Position {1}: {2}.
-            </summary>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.XorExtensions.GetXorReferenceMembers(System.Type)">
-            <summary>
-            Gets the XorReference members (fields and properties).
-            </summary>
-            <param name="type">The type.</param>
-            <returns></returns>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.XorExtensions.GetXorPropertyMembers(System.Type)">
-            <summary>
-            Gets the XorProperty members.
-            </summary>
-            <param name="type">The type.</param>
-            <returns></returns>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.XorExtensions.IsSupportedSimpleType(System.Type)">
-            <summary>
-            Determines whether this type is a supported simple type (primitives, string, Guid, DateTime, TimeSpan, decimal).
-            </summary>
-            <param name="type">The type.</param>
-            <returns>
-              <c>true</c> if this is a supported simple type; otherwise, <c>false</c>.
-            </returns>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.XorExtensions.IsSupportedXorType(System.Type)">
-            <summary>
-            Determines whether this is derived from XorObject.
-            Attention: The type can be an interface that is not supported, 
-            but a class implementing the interface may be supported!
-            </summary>
-            <param name="type">The type.</param>
-            <returns>
-              <c>true</c> if this is derived from XorObject; otherwise, <c>false</c>.
-            </returns>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.XorExtensions.GetMemberValue(System.Reflection.MemberInfo,System.Object,System.Object[])">
-            <summary>
-            Gets the value of a field or property info from an object.
-            </summary>
-            <param name="memberInfo">The member info.</param>
-            <param name="obj">The object.</param>
-            <param name="index">The index.</param>
-            <returns></returns>
-            <exception cref="T:System.ArgumentOutOfRangeException">Only fields and properties are supported.</exception>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.XorExtensions.SetMemberValue(System.Reflection.MemberInfo,System.Object,System.Object,System.Object[])">
-            <summary>
-            Sets the value of a field or property.
-            </summary>
-            <param name="memberInfo">The member info.</param>
-            <param name="obj">The obj.</param>
-            <param name="value">The value.</param>
-            <param name="index">The index.</param>
-            <exception cref="T:System.ArgumentOutOfRangeException">Only fields and properties are supported.</exception>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.XorExtensions.Cast(System.Collections.IEnumerable,System.Type)">
-            <summary>
-            Casts the specified enumerable to an <see cref="T:System.Collections.Generic.IEnumerable`1"/> of <paramref name="type"/>.
-            </summary>
-            <param name="enumerable">The enumerable.</param>
-            <param name="type">The type.</param>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.XorExtensions.ToObjectList(System.Collections.IEnumerable)">
-            <summary>
-            Creates an object list from an enumerable.
-            </summary>
-            <param name="enumerable">The enumerable.</param>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.XorExtensions.IsEnumerable(System.Type)">
-            <summary>
-            Determines whether the specified type is an <see cref="T:System.Collections.IEnumerable"/>.
-            </summary>
-            <param name="type">The type.</param>
-            <returns>
-              <c>true</c> if the specified type is an <see cref="T:System.Collections.IEnumerable"/>; otherwise, <c>false</c>.
-            </returns>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.XorExtensions.IsTypedEnumerable(System.Type)">
-            <summary>
-            Determines whether the specified type is an <see cref="T:System.Collections.Generic.IEnumerable`1"/>.
-            </summary>
-            <param name="type">The type.</param>
-            <returns>
-              <c>true</c> if the specified type is an <see cref="T:System.Collections.Generic.IEnumerable`1"/>; otherwise, <c>false</c>.
-            </returns>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.XorExtensions.GetMemberInfoType(System.Reflection.MemberInfo)">
-            <summary>
-            Gets the type of the member info.
-            </summary>
-            <param name="memberInfo">The member info.</param>
-            <returns></returns>
-            <exception cref="T:System.ArgumentOutOfRangeException">Only fields and properties are supported.</exception>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.XorExtensions.GetListItemType(LateNightStupidities.XorPersist.Attributes.XorPropertyTuple)">
-            <summary>
-            Gets the type of the list item.
-            Tries to get the type from the <see cref="P:LateNightStupidities.XorPersist.Attributes.XorAttribute.ListItemType"/>.
-            If that is not successful, the generic argument of the IEnumerable is extracted.
-            </summary>
-            <param name="member">The member.</param>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.XorExtensions.GetListItemType(LateNightStupidities.XorPersist.Attributes.XorReferenceTuple)">
-            <summary>
-            Gets the type of the list item.
-            Tries to get the type from the <see cref="P:LateNightStupidities.XorPersist.Attributes.XorAttribute.ListItemType"/>.
-            If that is not successful, the generic argument of the IEnumerable is extracted.
-            </summary>
-            <param name="member">The member.</param>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.XorExtensions.GetListItemType(LateNightStupidities.XorPersist.Attributes.XorAttribute,System.Reflection.MemberInfo)">
-            <summary>
-            Gets the type of the list item.
-            Tries to get the type from the <see cref="P:LateNightStupidities.XorPersist.Attributes.XorAttribute.ListItemType"/>.
-            If that is not successful, the generic argument of the IEnumerable is extracted.
-            </summary>
-            <param name="memberAttr">The XorAttribute.</param>
-            <param name="memberInfo">The member info.</param>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.XorExtensions.GetNameAndMultiplicity(System.Xml.Linq.XElement,System.String@,LateNightStupidities.XorPersist.Attributes.XorMultiplicity@)">
-            <summary>
-            Gets the name and multiplicity of a property XElement.
-            </summary>
-            <param name="propertyElement">The property element.</param>
-            <param name="memberName">Name of the member.</param>
-            <param name="multiplicity">The multiplicity.</param>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.XorExtensions.GetMemberName(System.Xml.Linq.XElement)">
-            <summary>
-            Gets the member name of a property XElement.
-            </summary>
-            <param name="propertyElement">The property element.</param>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.XorExtensions.ConvertToType(System.Xml.Linq.XElement,System.Type)">
-            <summary>
-            Converts an XElement to the supplied type.
-            </summary>
-            <param name="propertyElement">The property element.</param>
-            <param name="type">The type.</param>
-            <exception cref="T:System.Exception">Unsupported property type.</exception>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.XorExtensions.IsReferenceElement(System.Xml.Linq.XElement)">
-            <summary>
-            Determines whether the specified element is a reference element.
-            Element names:
-            * <see cref="F:LateNightStupidities.XorPersist.Schema.XorXsd.Reference"/>
-            * <see cref="F:LateNightStupidities.XorPersist.Schema.XorXsd.ReferenceList"/>
-            </summary>
-            <param name="element">The element.</param>
-            <returns>
-              <c>true</c> if the specified element is a reference element; otherwise, <c>false</c>.
-            </returns>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.XorExtensions.IsPropertyElement(System.Xml.Linq.XElement)">
-            <summary>
-            Determines whether the specified element is a property element.
-            Element names:
-            * <see cref="F:LateNightStupidities.XorPersist.Schema.XorXsd.Property"/>
-            * <see cref="F:LateNightStupidities.XorPersist.Schema.XorXsd.PropertyList"/>
-            * <see cref="F:LateNightStupidities.XorPersist.Schema.XorXsd.XProperty"/>
-            * <see cref="F:LateNightStupidities.XorPersist.Schema.XorXsd.XPropertyList"/>
-            </summary>
-            <param name="element">The element.</param>
-            <returns>
-              <c>true</c> if the specified element is a property element; otherwise, <c>false</c>.
-            </returns>
-        </member>
-        <member name="T:LateNightStupidities.XorPersist.Exceptions.DuplicateXorClassNameException">
-            <summary>
-            This exception is thrown if two XorObject classes 
-            define the same name in the XorClass attribute.
-            </summary>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.Exceptions.DuplicateXorClassNameException.#ctor(System.String,System.Type,System.Type)">
-            <summary>
-            Initializes a new instance of the <see cref="T:LateNightStupidities.XorPersist.Exceptions.DuplicateXorClassNameException"/> class.
-            </summary>
-            <param name="xorClassName">Name of the XorClass attribute.</param>
-            <param name="existingType">The type that declared the XorClass name first.</param>
-            <param name="newType">Another type that uses the same XorClass name.</param>
-        </member>
-        <member name="T:LateNightStupidities.XorPersist.Exceptions.CouldNotResolveReferenceException">
-            <summary>
-            This exception is thrown if a reference cannot be resolved when loading the model.
-            </summary>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.Exceptions.CouldNotResolveReferenceException.#ctor(System.Reflection.MemberInfo,System.Guid)">
-            <summary>
-            Initializes a new instance of the <see cref="T:LateNightStupidities.XorPersist.Exceptions.CouldNotResolveReferenceException"/> class.
-            </summary>
-            <param name="memberInfo">The member where the reference is located.</param>
-            <param name="xorId">The xor id that could not be found.</param>
-        </member>
-        <member name="T:LateNightStupidities.XorPersist.Exceptions.PropertyTypeNotSupportedException">
-            <summary>
-            This exception is thrown if the type of a property is not supported by XorPersist.
-            </summary>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.Exceptions.PropertyTypeNotSupportedException.#ctor(System.Type,System.Type,System.String,System.String)">
-            <summary>
-            Initializes a new instance of the <see cref="T:LateNightStupidities.XorPersist.Exceptions.PropertyTypeNotSupportedException"/> class.
-            </summary>
-            <param name="propertyType">Type of the property.</param>
-            <param name="ownerType">Type where the property is defined.</param>
-            <param name="xorPropertyName">Name of the XorProperty.</param>
-            <param name="classPropertyName">Name of the property at the class.</param>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.Exceptions.PropertyTypeNotSupportedException.#ctor(System.Type,System.Xml.Linq.XElement)">
-            <summary>
-            Initializes a new instance of the <see cref="T:LateNightStupidities.XorPersist.Exceptions.PropertyTypeNotSupportedException"/> class.
-            </summary>
-            <param name="propertyType">Type of the property.</param>
-            <param name="propertyElement">The property element.</param>
-        </member>
-        <member name="T:LateNightStupidities.XorPersist.Attributes.XorReferenceAttribute">
-            <summary>
-            Use this to mark XorReferences.
-            </summary>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.Attributes.XorReferenceAttribute.#ctor(System.String)">
-            <summary>
-            Initializes a new instance of the <see cref="T:LateNightStupidities.XorPersist.Attributes.XorReferenceAttribute"/> class with single multiplicity.
-            </summary>
-            <param name="name">The name.</param>
-        </member>
-        <member name="M:LateNightStupidities.XorPersist.Attributes.XorReferenceAttribute.#ctor(System.String,LateNightStupidities.XorPersist.Attributes.XorMultiplicity)">
-            <summary>
-            Initializes a new instance of the <see cref="T:LateNightStupidities.XorPersist.Attributes.XorReferenceAttribute"/> class with the supplied multiplicity.
-            </summary>
-            <param name="name">The name.</param>
-            <param name="multiplicity">The multiplicity.</param>
         </member>
     </members>
 </doc>
