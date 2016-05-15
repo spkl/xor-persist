@@ -8,8 +8,8 @@ namespace LateNightStupidities.XorPersist.Attributes
 {
     internal class XorReferenceTuple : Tuple<MemberInfo, XorReferenceAttribute>
     {
-        public MemberInfo Info { get { return Item1; } }
-        public XorReferenceAttribute Attr { get { return Item2; } }
+        public MemberInfo Info => this.Item1;
+        public XorReferenceAttribute Attr => this.Item2;
 
         public XorReferenceTuple(MemberInfo info, XorReferenceAttribute attribute)
             : base(info, attribute)
@@ -23,7 +23,7 @@ namespace LateNightStupidities.XorPersist.Attributes
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     public class XorReferenceAttribute : XorAttribute
     {
-        private List<Guid> ReferencedIds { get; set; }
+        private List<Guid> ReferencedIds { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="XorReferenceAttribute" /> class with single multiplicity.

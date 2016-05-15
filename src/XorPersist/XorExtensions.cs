@@ -118,7 +118,7 @@ namespace LateNightStupidities.XorPersist
                 case MemberTypes.Property:
                     return ((PropertyInfo) memberInfo).GetValue(obj, index);
                 default:
-                    throw new ArgumentOutOfRangeException("memberInfo", "Only fields and properties are supported.");
+                    throw new ArgumentOutOfRangeException(nameof(memberInfo), "Only fields and properties are supported.");
             }
         }
 
@@ -141,7 +141,7 @@ namespace LateNightStupidities.XorPersist
                     ((PropertyInfo)memberInfo).SetValue(obj, value, index);
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException("memberInfo", "Only fields and properties are supported.");
+                    throw new ArgumentOutOfRangeException(nameof(memberInfo), "Only fields and properties are supported.");
             }
         }
 
@@ -210,7 +210,7 @@ namespace LateNightStupidities.XorPersist
                 case MemberTypes.Property:
                     return ((PropertyInfo)memberInfo).PropertyType;
                 default:
-                    throw new ArgumentOutOfRangeException("memberInfo", "Only fields and properties are supported.");
+                    throw new ArgumentOutOfRangeException(nameof(memberInfo), "Only fields and properties are supported.");
             }
         }
 

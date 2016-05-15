@@ -126,7 +126,7 @@ namespace LateNightStupidities.XorPersist
         internal static XorObject LoadFromElement(XElement objectElement, XorController controller)
         {
             if (objectElement.Name.LocalName != XorXsd.Object)
-                throw new ArgumentException("LoadFromElement: Wrong element name.", "objectElement");
+                throw new ArgumentException("LoadFromElement: Wrong element name.", nameof(objectElement));
 
             var objectType = controller.GetTypeForName(objectElement.Attribute(XorXsd.ClassName).Value);
 

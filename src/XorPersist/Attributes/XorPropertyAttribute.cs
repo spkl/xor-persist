@@ -6,8 +6,8 @@ namespace LateNightStupidities.XorPersist.Attributes
 {
     internal class XorPropertyTuple : Tuple<MemberInfo, XorPropertyAttribute>
     {
-        public MemberInfo Info { get { return Item1; } }
-        public XorPropertyAttribute Attr { get { return Item2; } }
+        public MemberInfo Info => this.Item1;
+        public XorPropertyAttribute Attr => this.Item2;
 
         public XorPropertyTuple(MemberInfo info, XorPropertyAttribute attribute)
             : base(info, attribute)
