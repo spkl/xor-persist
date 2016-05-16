@@ -379,7 +379,8 @@ namespace LateNightStupidities.XorPersist
             }
             if (type == typeof(string))
             {
-                return (string)propertyElement;
+                // String is saved as base64 representation to rescue CR/LF.
+                return ((string)propertyElement).FromBase64();
             }
             if (type == typeof(Guid))
             {
@@ -451,6 +452,28 @@ namespace LateNightStupidities.XorPersist
                 default:
                     return false;
             }
+        }
+
+        public static string ToBase64(this string str)
+        {
+            if (str == null)
+            {
+                return null;
+            }
+
+            byte[] bytes = Encoding.UTF8.GetBytes(str);
+            return Convert.ToBase64String(bytes, Base64FormattingOptions.InsertLineBreaks);
+        }
+
+        public static string FromBase64(this string base64)
+        {
+            if (base64 == null)
+            {
+                return null;
+            }
+
+            byte[] bytes = Convert.FromBase64String(base64);
+            return Encoding.UTF8.GetString(bytes);
         }
     }
 }

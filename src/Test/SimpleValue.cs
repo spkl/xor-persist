@@ -330,14 +330,13 @@ namespace Test
         }
 
         [Test]
-        public void IntegrityString([Values("Test", ":)", "\n", "\n\n", "\t", " leading and trailing whitespace ")] String vString)
+        public void IntegrityString([Values("Test", ":)", "\n", "\n\n", "\t", " leading and trailing whitespace ", null, "", " ", "  ")] String vString)
         {
             this.simpleClass.String = vString;
             var obj = TestHelper.SaveAndLoad(this.simpleClass);
             Assert.AreEqual(this.simpleClass.String, obj.String);
         }
 
-        [Ignore]
         [Test]
         public void IntegrityStringCrLfLineBreaks([Values("\r\n\r\n", "\r\n", "This is a test\n:)\\<~>\r\n\t\t\r\n.")] String vString)
         {

@@ -653,6 +653,11 @@ namespace LateNightStupidities.XorPersist
                 // => Save as integer.
                 propertyContent = (int)(char)propertyContent;
             }
+            else if (propertyContent is string)
+            {
+                // Save string as base64 representation to rescue CR/LF.
+                propertyContent = ((string)propertyContent).ToBase64();
+            }
 
             var propertyElement = new XElement(XorXsd.Property, propertyContent);
             propertyElement.SetAttributeValue(XorXsd.MemberName, member.Attr.Name);
@@ -709,6 +714,11 @@ namespace LateNightStupidities.XorPersist
                 // Not all char values are supported by XElement.
                 // => Save as integer.
                 simpleTypeValue = (int)(char)simpleTypeValue;
+            }
+            else if (simpleTypeValue is string)
+            {
+                // Save string as base64 representation to rescue CR/LF.
+                simpleTypeValue = ((string)simpleTypeValue).ToBase64();
             }
 
             XElement listItemElement = simpleTypeValue != null 
