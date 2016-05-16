@@ -12,7 +12,7 @@ namespace LateNightStupidities.XorPersist.Example
         [XorProperty]
         public double Rating { get; set; }
 
-        [XorProperty("secret")]
+        [XorProperty(nameof(secret))]
 #pragma warning disable 414
         private string secret;
 #pragma warning restore 414
@@ -82,7 +82,7 @@ namespace LateNightStupidities.XorPersist.Example
         [XorProperty]
         public string Name { get; set; }
 
-        [XorReference("LeafOwner")]
+        [XorReference(nameof(leafOwner))]
         private XorObject leafOwner;
 
         public LeafClass()
