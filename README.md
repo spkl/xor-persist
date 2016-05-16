@@ -36,7 +36,7 @@ With XorPersist, you can save your object graph to an XML file and restore it ag
 - Classes without a public constructor are supported.
 
 ### Primitive data type support
-Supports `sbyte`, `byte`, `short`, `ushort`, `int`, `uint`, `long`, `ulong`, `float`, `double`, `decimal`, `bool` and `string`.
+Supports `sbyte`, `byte`, `short`, `ushort`, `int`, `uint`, `long`, `ulong`, `float`, `double`, `decimal`, `bool`, `char` and `string`.
 
 ### Other supported .NET classes
 - `System.Guid`
