@@ -623,6 +623,13 @@ namespace LateNightStupidities.XorPersist
         /// <param name="member">The member.</param>
         private static XElement CreateSimplePropertyElement(object propertyContent, XorPropertyTuple member)
         {
+            if (propertyContent is char)
+            {
+                // Not all char values are supported by XElement.
+                // => Save as integer.
+                propertyContent = (int)(char)propertyContent;
+            }
+
             var propertyElement = new XElement(XorXsd.Property, propertyContent);
             propertyElement.SetAttributeValue(XorXsd.MemberName, member.Attr.Name);
 
@@ -673,6 +680,13 @@ namespace LateNightStupidities.XorPersist
         /// <param name="simpleTypeValue">The simple type value.</param>
         private static XElement CreateSimpleListItemElement(object simpleTypeValue)
         {
+            if (simpleTypeValue is char)
+            {
+                // Not all char values are supported by XElement.
+                // => Save as integer.
+                simpleTypeValue = (int)(char)simpleTypeValue;
+            }
+
             XElement listItemElement = simpleTypeValue != null 
                 ? new XElement(XorXsd.ListItemNonNull, simpleTypeValue) 
                 : new XElement(XorXsd.ListItemNull);

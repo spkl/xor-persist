@@ -13,7 +13,9 @@ namespace LateNightStupidities.XorPersist.Example
         public double Rating { get; set; }
 
         [XorProperty("secret")]
+#pragma warning disable 414
         private string secret;
+#pragma warning restore 414
 
         [XorProperty(XorMultiplicity.List)]
         public List<ILeafClass> Leaves { get; set; }

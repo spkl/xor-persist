@@ -189,7 +189,7 @@ namespace LateNightStupidities.XorPersist
         {
             if (type.IsEnumerable() && type.IsGenericType)
             {
-                return type.GetGenericArguments().Count() == 1;
+                return type.GetGenericArguments().Length == 1;
             }
 
             return false;
@@ -351,6 +351,12 @@ namespace LateNightStupidities.XorPersist
             if (type == typeof(Double))
             {
                 return (double)propertyElement;
+            }
+            if (type == typeof(char))
+            {
+                // Not all char values are supported by XElement.
+                // => Load as integer.
+                return (char)(int)propertyElement;
             }
             if (type == typeof(string))
             {

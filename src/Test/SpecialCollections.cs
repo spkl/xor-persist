@@ -58,6 +58,11 @@ namespace Test
             return new[] { -100, -10, 0, 10, 100, 1234567 };
         }
 
+        private static char[] GetChars()
+        {
+            return new[] { char.MinValue, char.MaxValue, 'a', 'A', 'ö', 'Ö', 'ß', ' ' };
+        }
+
         // ReSharper disable InconsistentNaming
 
         #region IEnumerable
@@ -67,6 +72,9 @@ namespace Test
         {
             [XorProperty("Ints", typeof(int))]
             public IEnumerable Ints;
+
+            [XorProperty("Chars", typeof(char))]
+            public IEnumerable Chars;
 
             [XorProperty("Objects", typeof(SpecialListItem))]
             public IEnumerable Objects;
@@ -78,11 +86,12 @@ namespace Test
         [Test]
         public void SupportsIEnumerable()
         {
-            var listHolder = new IEnumerables { Ints = GetInts(), Objects = GetObjects() };
+            var listHolder = new IEnumerables { Ints = GetInts(), Chars = GetChars(), Objects = GetObjects() };
             listHolder.ObjectReferences = listHolder.Objects;
             var copy = TestHelper.SaveAndLoad(listHolder);
 
             CollectionAssert.AreEqual(listHolder.Ints, copy.Ints);
+            CollectionAssert.AreEqual(listHolder.Chars, copy.Chars);
             CollectionAssert.AreEqual(listHolder.Objects, copy.Objects);
             CollectionAssert.AreEqual(listHolder.ObjectReferences, copy.ObjectReferences);
 
@@ -99,6 +108,9 @@ namespace Test
             [XorProperty("Ints", XorMultiplicity.List)]
             public int[] Ints;
 
+            [XorProperty("Chars", XorMultiplicity.List)]
+            public char[] Chars;
+
             [XorProperty("Objects", XorMultiplicity.List)]
             public SpecialListItem[] Objects;
 
@@ -109,11 +121,12 @@ namespace Test
         [Test]
         public void SupportsArray()
         {
-            var listHolder = new Arrays { Ints = GetInts(), Objects = GetObjects() };
+            var listHolder = new Arrays { Ints = GetInts(), Chars = GetChars(), Objects = GetObjects() };
             listHolder.ObjectReferences = listHolder.Objects.ToArray();
             var copy = TestHelper.SaveAndLoad(listHolder);
 
             CollectionAssert.AreEqual(listHolder.Ints, copy.Ints);
+            CollectionAssert.AreEqual(listHolder.Chars, copy.Chars);
             CollectionAssert.AreEqual(listHolder.Objects, copy.Objects);
             CollectionAssert.AreEqual(listHolder.ObjectReferences, copy.ObjectReferences);
 
@@ -130,6 +143,9 @@ namespace Test
             [XorProperty("Ints", typeof(int))]
             public ArrayList Ints;
 
+            [XorProperty("Chars", typeof(char))]
+            public ArrayList Chars;
+
             [XorProperty("Objects", typeof(SpecialListItem))]
             public ArrayList Objects;
 
@@ -140,11 +156,12 @@ namespace Test
         [Test]
         public void SupportsArrayList()
         {
-            var listHolder = new ArrayLists {Ints = new ArrayList(GetInts()), Objects = new ArrayList(GetObjects())};
+            var listHolder = new ArrayLists {Ints = new ArrayList(GetInts()), Chars = new ArrayList(GetChars()), Objects = new ArrayList(GetObjects())};
             listHolder.ObjectReferences = new ArrayList(listHolder.Objects);
             var copy = TestHelper.SaveAndLoad(listHolder);
 
             CollectionAssert.AreEqual(listHolder.Ints, copy.Ints);
+            CollectionAssert.AreEqual(listHolder.Chars, copy.Chars);
             CollectionAssert.AreEqual(listHolder.Objects, copy.Objects);
             CollectionAssert.AreEqual(listHolder.ObjectReferences, copy.ObjectReferences);
 
@@ -161,6 +178,9 @@ namespace Test
             [XorProperty("Ints", typeof(int))]
             public ICollection Ints;
 
+            [XorProperty("Chars", typeof(char))]
+            public ICollection Chars;
+
             [XorProperty("Objects", typeof(SpecialListItem))]
             public ICollection Objects;
 
@@ -171,11 +191,12 @@ namespace Test
         [Test]
         public void SupportsICollection()
         {
-            var listHolder = new ICollections {Ints = new ArrayList(GetInts()), Objects = new ArrayList(GetObjects())};
+            var listHolder = new ICollections {Ints = new ArrayList(GetInts()), Chars = new ArrayList(GetChars()), Objects = new ArrayList(GetObjects())};
             listHolder.ObjectReferences = new ArrayList(listHolder.Objects);
             var copy = TestHelper.SaveAndLoad(listHolder);
 
             CollectionAssert.AreEqual(listHolder.Ints, copy.Ints);
+            CollectionAssert.AreEqual(listHolder.Chars, copy.Chars);
             CollectionAssert.AreEqual(listHolder.Objects, copy.Objects);
             CollectionAssert.AreEqual(listHolder.ObjectReferences, copy.ObjectReferences);
 
@@ -192,6 +213,9 @@ namespace Test
             [XorProperty("Ints", typeof(int))]
             public IList Ints;
 
+            [XorProperty("Chars", typeof(char))]
+            public IList Chars;
+
             [XorProperty("Objects", typeof(SpecialListItem))]
             public IList Objects;
 
@@ -202,11 +226,12 @@ namespace Test
         [Test]
         public void SupportsIList()
         {
-            var listHolder = new ILists {Ints = new ArrayList(GetInts()), Objects = new ArrayList(GetObjects())};
+            var listHolder = new ILists {Ints = new ArrayList(GetInts()), Chars = new ArrayList(GetChars()), Objects = new ArrayList(GetObjects())};
             listHolder.ObjectReferences = new ArrayList(listHolder.Objects);
             var copy = TestHelper.SaveAndLoad(listHolder);
 
             CollectionAssert.AreEqual(listHolder.Ints, copy.Ints);
+            CollectionAssert.AreEqual(listHolder.Chars, copy.Chars);
             CollectionAssert.AreEqual(listHolder.Objects, copy.Objects);
             CollectionAssert.AreEqual(listHolder.ObjectReferences, copy.ObjectReferences);
 
@@ -223,6 +248,9 @@ namespace Test
             [XorProperty("Ints", XorMultiplicity.List)]
             public HashSet<int> Ints;
 
+            [XorProperty("Chars", XorMultiplicity.List)]
+            public HashSet<char> Chars;
+
             [XorProperty("Objects", XorMultiplicity.List)]
             public HashSet<SpecialListItem> Objects;
 
@@ -233,11 +261,12 @@ namespace Test
         [Test]
         public void SupportsHashSet()
         {
-            var listHolder = new HashSets { Ints = new HashSet<int>(GetInts()), Objects = new HashSet<SpecialListItem>(GetObjects()) };
+            var listHolder = new HashSets { Ints = new HashSet<int>(GetInts()), Chars = new HashSet<char>(GetChars()), Objects = new HashSet<SpecialListItem>(GetObjects()) };
             listHolder.ObjectReferences = new HashSet<SpecialListItem>(listHolder.Objects);
             var copy = TestHelper.SaveAndLoad(listHolder);
 
             CollectionAssert.AreEquivalent(listHolder.Ints, copy.Ints);
+            CollectionAssert.AreEquivalent(listHolder.Chars, copy.Chars);
             CollectionAssert.AreEquivalent(listHolder.Objects, copy.Objects);
             CollectionAssert.AreEquivalent(listHolder.ObjectReferences, copy.ObjectReferences);
 
@@ -254,6 +283,9 @@ namespace Test
             [XorProperty("Ints", XorMultiplicity.List)]
             public List<int> Ints;
 
+            [XorProperty("Chars", XorMultiplicity.List)]
+            public List<char> Chars;
+
             [XorProperty("Objects", XorMultiplicity.List)]
             public List<SpecialListItem> Objects;
 
@@ -264,11 +296,12 @@ namespace Test
         [Test]
         public void SupportsList()
         {
-            var listHolder = new ListTs { Ints = new List<int>(GetInts()), Objects = new List<SpecialListItem>(GetObjects()) };
+            var listHolder = new ListTs { Ints = new List<int>(GetInts()), Chars = new List<char>(GetChars()), Objects = new List<SpecialListItem>(GetObjects()) };
             listHolder.ObjectReferences = new List<SpecialListItem>(listHolder.Objects);
             var copy = TestHelper.SaveAndLoad(listHolder);
 
             CollectionAssert.AreEqual(listHolder.Ints, copy.Ints);
+            CollectionAssert.AreEqual(listHolder.Chars, copy.Chars);
             CollectionAssert.AreEqual(listHolder.Objects, copy.Objects);
             CollectionAssert.AreEqual(listHolder.ObjectReferences, copy.ObjectReferences);
 
@@ -285,6 +318,9 @@ namespace Test
             [XorProperty("Ints", XorMultiplicity.List)]
             public SortedSet<int> Ints;
 
+            [XorProperty("Chars", XorMultiplicity.List)]
+            public SortedSet<char> Chars;
+
             [XorProperty("Objects", XorMultiplicity.List)]
             public SortedSet<SpecialListItem> Objects;
 
@@ -295,11 +331,12 @@ namespace Test
         [Test]
         public void SupportsSortedSet()
         {
-            var listHolder = new SortedSets { Ints = new SortedSet<int>(GetInts()), Objects = new SortedSet<SpecialListItem>(GetObjects()) };
+            var listHolder = new SortedSets { Ints = new SortedSet<int>(GetInts()), Chars = new SortedSet<char>(GetChars()), Objects = new SortedSet<SpecialListItem>(GetObjects()) };
             listHolder.ObjectReferences = new SortedSet<SpecialListItem>(listHolder.Objects);
             var copy = TestHelper.SaveAndLoad(listHolder);
 
             CollectionAssert.AreEqual(listHolder.Ints, copy.Ints);
+            CollectionAssert.AreEqual(listHolder.Chars, copy.Chars);
             CollectionAssert.AreEqual(listHolder.Objects, copy.Objects);
             CollectionAssert.AreEqual(listHolder.ObjectReferences, copy.ObjectReferences);
 
@@ -316,6 +353,9 @@ namespace Test
             [XorProperty("Ints", XorMultiplicity.List)]
             public ICollection<int> Ints;
 
+            [XorProperty("Chars", XorMultiplicity.List)]
+            public ICollection<char> Chars;
+
             [XorProperty("Objects", XorMultiplicity.List)]
             public ICollection<SpecialListItem> Objects;
 
@@ -326,11 +366,12 @@ namespace Test
         [Test]
         public void SupportsICollectionT()
         {
-            var listHolder = new ICollectionTs { Ints = new List<int>(GetInts()), Objects = new List<SpecialListItem>(GetObjects()) };
+            var listHolder = new ICollectionTs { Ints = new List<int>(GetInts()), Chars = new List<char>(GetChars()), Objects = new List<SpecialListItem>(GetObjects()) };
             listHolder.ObjectReferences = new List<SpecialListItem>(listHolder.Objects);
             var copy = TestHelper.SaveAndLoad(listHolder);
 
             CollectionAssert.AreEqual(listHolder.Ints, copy.Ints);
+            CollectionAssert.AreEqual(listHolder.Chars, copy.Chars);
             CollectionAssert.AreEqual(listHolder.Objects, copy.Objects);
             CollectionAssert.AreEqual(listHolder.ObjectReferences, copy.ObjectReferences);
 
@@ -347,6 +388,9 @@ namespace Test
             [XorProperty("Ints", XorMultiplicity.List)]
             public IList<int> Ints;
 
+            [XorProperty("Chars", XorMultiplicity.List)]
+            public IList<char> Chars;
+
             [XorProperty("Objects", XorMultiplicity.List)]
             public IList<SpecialListItem> Objects;
 
@@ -357,11 +401,12 @@ namespace Test
         [Test]
         public void SupportsIListT()
         {
-            var listHolder = new IListTs { Ints = new List<int>(GetInts()), Objects = new List<SpecialListItem>(GetObjects()) };
+            var listHolder = new IListTs { Ints = new List<int>(GetInts()), Chars = new List<char>(GetChars()), Objects = new List<SpecialListItem>(GetObjects()) };
             listHolder.ObjectReferences = new List<SpecialListItem>(listHolder.Objects);
             var copy = TestHelper.SaveAndLoad(listHolder);
 
             CollectionAssert.AreEqual(listHolder.Ints, copy.Ints);
+            CollectionAssert.AreEqual(listHolder.Chars, copy.Chars);
             CollectionAssert.AreEqual(listHolder.Objects, copy.Objects);
             CollectionAssert.AreEqual(listHolder.ObjectReferences, copy.ObjectReferences);
 
@@ -378,6 +423,9 @@ namespace Test
             [XorProperty("Ints", XorMultiplicity.List)]
             public ISet<int> Ints;
 
+            [XorProperty("Chars", XorMultiplicity.List)]
+            public ISet<char> Chars;
+
             [XorProperty("Objects", XorMultiplicity.List)]
             public ISet<SpecialListItem> Objects;
 
@@ -388,11 +436,12 @@ namespace Test
         [Test]
         public void SupportsISet()
         {
-            var listHolder = new ISets { Ints = new HashSet<int>(GetInts()), Objects = new HashSet<SpecialListItem>(GetObjects()) };
+            var listHolder = new ISets { Ints = new HashSet<int>(GetInts()), Chars = new HashSet<char>(GetChars()), Objects = new HashSet<SpecialListItem>(GetObjects()) };
             listHolder.ObjectReferences = new HashSet<SpecialListItem>(listHolder.Objects);
             var copy = TestHelper.SaveAndLoad(listHolder);
 
             CollectionAssert.AreEquivalent(listHolder.Ints, copy.Ints);
+            CollectionAssert.AreEquivalent(listHolder.Chars, copy.Chars);
             CollectionAssert.AreEquivalent(listHolder.Objects, copy.Objects);
             CollectionAssert.AreEquivalent(listHolder.ObjectReferences, copy.ObjectReferences);
 
@@ -409,6 +458,9 @@ namespace Test
             [XorProperty("Ints", typeof(int))]
             public Queue Ints;
 
+            [XorProperty("Chars", typeof(char))]
+            public Queue Chars;
+
             [XorProperty("Objects", typeof(SpecialListItem))]
             public Queue Objects;
 
@@ -419,11 +471,12 @@ namespace Test
         [Test]
         public void SupportsQueue()
         {
-            var listHolder = new Queues { Ints = new Queue(GetInts()), Objects = new Queue(GetObjects()) };
+            var listHolder = new Queues { Ints = new Queue(GetInts()), Chars = new Queue(GetChars()), Objects = new Queue(GetObjects()) };
             listHolder.ObjectReferences = new Queue(listHolder.Objects);
             var copy = TestHelper.SaveAndLoad(listHolder);
 
             CollectionAssert.AreEqual(listHolder.Ints, copy.Ints);
+            CollectionAssert.AreEqual(listHolder.Chars, copy.Chars);
             CollectionAssert.AreEqual(listHolder.Objects, copy.Objects);
             CollectionAssert.AreEqual(listHolder.ObjectReferences, copy.ObjectReferences);
 
@@ -440,6 +493,9 @@ namespace Test
             [XorProperty("Ints", typeof(int))]
             public Stack Ints;
 
+            [XorProperty("Chars", typeof(char))]
+            public Stack Chars;
+
             [XorProperty("Objects", typeof(SpecialListItem))]
             public Stack Objects;
 
@@ -450,11 +506,12 @@ namespace Test
         [Test]
         public void SupportsStack()
         {
-            var listHolder = new Stacks { Ints = new Stack(GetInts()), Objects = new Stack(GetObjects()) };
+            var listHolder = new Stacks { Ints = new Stack(GetInts()), Chars = new Stack(GetChars()), Objects = new Stack(GetObjects()) };
             listHolder.ObjectReferences = new Stack(listHolder.Objects);
             var copy = TestHelper.SaveAndLoad(listHolder);
 
             CollectionAssert.AreEqual(listHolder.Ints, copy.Ints);
+            CollectionAssert.AreEqual(listHolder.Chars, copy.Chars);
             CollectionAssert.AreEqual(listHolder.Objects, copy.Objects);
             CollectionAssert.AreEqual(listHolder.ObjectReferences, copy.ObjectReferences);
 
@@ -471,6 +528,9 @@ namespace Test
             [XorProperty("Ints", XorMultiplicity.List)]
             public LinkedList<int> Ints;
 
+            [XorProperty("Chars", XorMultiplicity.List)]
+            public LinkedList<char> Chars;
+
             [XorProperty("Objects", XorMultiplicity.List)]
             public LinkedList<SpecialListItem> Objects;
 
@@ -481,11 +541,12 @@ namespace Test
         [Test]
         public void SupportsLinkedListT()
         {
-            var listHolder = new LinkedListTs { Ints = new LinkedList<int>(GetInts()), Objects = new LinkedList<SpecialListItem>(GetObjects()) };
+            var listHolder = new LinkedListTs { Ints = new LinkedList<int>(GetInts()), Chars = new LinkedList<char>(GetChars()), Objects = new LinkedList<SpecialListItem>(GetObjects()) };
             listHolder.ObjectReferences = new LinkedList<SpecialListItem>(listHolder.Objects);
             var copy = TestHelper.SaveAndLoad(listHolder);
 
             CollectionAssert.AreEqual(listHolder.Ints, copy.Ints);
+            CollectionAssert.AreEqual(listHolder.Chars, copy.Chars);
             CollectionAssert.AreEqual(listHolder.Objects, copy.Objects);
             CollectionAssert.AreEqual(listHolder.ObjectReferences, copy.ObjectReferences);
 
@@ -502,6 +563,9 @@ namespace Test
             [XorProperty("Ints", XorMultiplicity.List)]
             public Queue<int> Ints;
 
+            [XorProperty("Chars", XorMultiplicity.List)]
+            public Queue<char> Chars;
+
             [XorProperty("Objects", XorMultiplicity.List)]
             public Queue<SpecialListItem> Objects;
 
@@ -512,11 +576,12 @@ namespace Test
         [Test]
         public void SupportsQueueT()
         {
-            var listHolder = new QueueTs { Ints = new Queue<int>(GetInts()), Objects = new Queue<SpecialListItem>(GetObjects()) };
+            var listHolder = new QueueTs { Ints = new Queue<int>(GetInts()), Chars = new Queue<char>(GetChars()), Objects = new Queue<SpecialListItem>(GetObjects()) };
             listHolder.ObjectReferences = new Queue<SpecialListItem>(listHolder.Objects);
             var copy = TestHelper.SaveAndLoad(listHolder);
 
             CollectionAssert.AreEqual(listHolder.Ints, copy.Ints);
+            CollectionAssert.AreEqual(listHolder.Chars, copy.Chars);
             CollectionAssert.AreEqual(listHolder.Objects, copy.Objects);
             CollectionAssert.AreEqual(listHolder.ObjectReferences, copy.ObjectReferences);
 
@@ -533,6 +598,9 @@ namespace Test
             [XorProperty("Ints", XorMultiplicity.List)]
             public Stack<int> Ints;
 
+            [XorProperty("Chars", XorMultiplicity.List)]
+            public Stack<char> Chars;
+
             [XorProperty("Objects", XorMultiplicity.List)]
             public Stack<SpecialListItem> Objects;
 
@@ -543,11 +611,12 @@ namespace Test
         [Test]
         public void SupportsStackT()
         {
-            var listHolder = new StackTs { Ints = new Stack<int>(GetInts()), Objects = new Stack<SpecialListItem>(GetObjects()) };
+            var listHolder = new StackTs { Ints = new Stack<int>(GetInts()), Chars = new Stack<char>(GetChars()), Objects = new Stack<SpecialListItem>(GetObjects()) };
             listHolder.ObjectReferences = new Stack<SpecialListItem>(listHolder.Objects);
             var copy = TestHelper.SaveAndLoad(listHolder);
 
             CollectionAssert.AreEqual(listHolder.Ints, copy.Ints);
+            CollectionAssert.AreEqual(listHolder.Chars, copy.Chars);
             CollectionAssert.AreEqual(listHolder.Objects, copy.Objects);
             CollectionAssert.AreEqual(listHolder.ObjectReferences, copy.ObjectReferences);
 

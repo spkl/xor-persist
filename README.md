@@ -285,8 +285,6 @@ class MyClass : XorObject
 ```
 
 ## Limitations
-- `char` is not seamlessly supported.
-  - Workaround: Serialize as `int` or `string`.
 - Dictionaries are not seamlessly supported.
   - Workaround: Serialize the key and value collections separately.
 - Line breaks (Carriage return/Line feed) may be different after loading a model from a file. `\r\n` could become `\n` or vice versa.
