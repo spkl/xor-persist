@@ -88,6 +88,25 @@ namespace LateNightStupidities.XorPersist
         }
 
         /// <summary>
+        /// Determines whether this type is a supported nullable simple type.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>
+        ///   <c>true</c> if this is a supported nullable simple type; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsSupportedNullableSimpleType(this Type type)
+        {
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+            {
+                Type subType = type.GetGenericArguments()[0];
+                return subType.IsSupportedSimpleType();
+            }
+
+            return false;
+        }
+
+
+        /// <summary>
         /// Determines whether this is derived from XorObject.
         /// Attention: The type can be an interface that is not supported, 
         /// but a class implementing the interface may be supported!
@@ -305,7 +324,7 @@ namespace LateNightStupidities.XorPersist
         /// </summary>
         /// <param name="propertyElement">The property element.</param>
         /// <param name="type">The type.</param>
-        /// <exception cref="System.Exception">Unsupported property type.</exception>
+        /// <exception cref="PropertyTypeNotSupportedException">Unsupported property type.</exception>
         public static object ConvertToType(this XElement propertyElement, Type type)
         {
             if (type == typeof(Boolean))
@@ -377,6 +396,10 @@ namespace LateNightStupidities.XorPersist
             if (type == typeof(decimal))
             {
                 return (decimal)propertyElement;
+            }
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+            {
+                return ConvertToType(propertyElement, type.GetGenericArguments()[0]);
             }
 
             throw new PropertyTypeNotSupportedException(type, propertyElement);

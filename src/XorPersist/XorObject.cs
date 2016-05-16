@@ -532,11 +532,11 @@ namespace LateNightStupidities.XorPersist
                     var propertyType = member.Info.GetMemberInfoType();
                     XElement propertyElement;
 
-                    if (propertyType.IsSupportedSimpleType())
+                    if (propertyType.IsSupportedSimpleType() || propertyType.IsSupportedNullableSimpleType())
                     {
                         propertyElement = CreateSimplePropertyElement(memberValue, member);
                     }
-                    else if (propertyType.IsSupportedXorType() || (memberValue.GetType().IsSupportedXorType()))
+                    else if (propertyType.IsSupportedXorType() || memberValue.GetType().IsSupportedXorType())
                     {
                         propertyElement = CreateXorTypePropertyElement((XorObject)memberValue, member);
                     }
@@ -555,7 +555,7 @@ namespace LateNightStupidities.XorPersist
 
                     var listItemType = member.GetListItemType();
 
-                    bool supportedSimpleType = listItemType.IsSupportedSimpleType();
+                    bool supportedSimpleType = listItemType.IsSupportedSimpleType() || listItemType.IsSupportedNullableSimpleType();
                     bool supportedXorType = !supportedSimpleType && (listItemType.IsSupportedXorType() || listItemType.IsInterface);
                     
                     XElement listElement;
