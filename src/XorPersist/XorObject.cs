@@ -165,35 +165,50 @@ namespace LateNightStupidities.XorPersist
         /// <param name="controller">The controller.</param>
         private void LoadObjectContents(XElement objectElement, XorController controller)
         {
+            XorPropertyTuple[] xorPropertyMembers = this.GetType().GetXorPropertyMembers().ToArray();
+            ISet<string> setProperties = new HashSet<string>();
             foreach (var propertyElement in objectElement.Elements().Where(XorExtensions.IsPropertyElement))
             {
                 string memberName = propertyElement.GetMemberName();
 
-                var member = GetType().GetXorPropertyMembers().Single(tuple => tuple.Attr.Name == memberName);
+                var member = xorPropertyMembers.Single(tuple => tuple.Attr.Name == memberName);
                 // TODO Exception: Multiple properties with same name.
 
                 switch (propertyElement.Name.LocalName)
                 {
                     case XorXsd.Property:
-                        LoadSimpleProperty(propertyElement, member);
+                        this.LoadSimpleProperty(propertyElement, member);
                         break;
                     case XorXsd.XProperty:
-                        LoadXorTypeProperty(propertyElement, member, controller);
+                        this.LoadXorTypeProperty(propertyElement, member, controller);
                         break;
                     case XorXsd.PropertyList:
-                        LoadSimplePropertyList(propertyElement, member);
+                        this.LoadSimplePropertyList(propertyElement, member);
                         break;
                     case XorXsd.XPropertyList:
-                        LoadXorTypePropertyList(propertyElement, member, controller);
+                        this.LoadXorTypePropertyList(propertyElement, member, controller);
                         break;
+                }
+
+                setProperties.Add(member.Attr.Name);
+            }
+
+            foreach (XorPropertyTuple member in xorPropertyMembers)
+            {
+                if (!setProperties.Contains(member.Attr.Name))
+                {
+                    member.Info.SetMemberValue(this, null);
                 }
             }
 
+            XorReferenceTuple[] xorReferenceMembers = this.GetType().GetXorReferenceMembers().ToArray();
+            ISet<string> setReferences = new HashSet<string>();
             foreach (var referenceElement in objectElement.Elements().Where(XorExtensions.IsReferenceElement))
             {
                 string memberName = referenceElement.GetMemberName();
 
-                var member = GetType().GetXorReferenceMembers().Single(tuple => tuple.Attr.Name == memberName);
+                var member = xorReferenceMembers.Single(tuple => tuple.Attr.Name == memberName);
+                // TODO Exception: Multiple references with same name.
 
                 switch (referenceElement.Name.LocalName)
                 {
@@ -206,6 +221,15 @@ namespace LateNightStupidities.XorPersist
                 }
 
                 this.referenceInformation.Add(member);
+                setReferences.Add(member.Attr.Name);
+            }
+
+            foreach (XorReferenceTuple member in xorReferenceMembers)
+            {
+                if (!setReferences.Contains(member.Attr.Name))
+                {
+                    member.Info.SetMemberValue(this, null);
+                }
             }
         }
 

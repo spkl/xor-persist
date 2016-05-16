@@ -87,6 +87,7 @@
     <Compile Include="Inheritance.cs" />
     <Compile Include="ListIntegrity.cs" />
     <Compile Include="LoadSaveMechanism.cs" />
+    <Compile Include="OverwriteInitValues.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReferenceIntegrity.cs" />
     <Compile Include="FileInputValidation.cs" />
