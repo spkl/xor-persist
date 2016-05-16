@@ -8,6 +8,7 @@ With XorPersist, you can save your object graph to an XML file and restore it ag
 - [Features](#features)
 	- [Primitive data type support](#primitive-data-type-support)
 	- [Other supported .NET classes](#other-supported-net-classes)
+	- [Nullables](#nullables)
 	- [Collection support](#collection-support)
 - [Usage](#usage)
 	- [Getting started](#getting-started)
@@ -42,6 +43,9 @@ Supports `sbyte`, `byte`, `short`, `ushort`, `int`, `uint`, `long`, `ulong`, `fl
 - `System.Guid`
 - `System.DateTime`
 - `System.TimeSpan`
+
+### Nullables
+All types mentioned in the previous two sections are also supported when used as T for `System.Nullable<T>`.
 
 ### Collection support
 - `System.Collections.ArrayList`
