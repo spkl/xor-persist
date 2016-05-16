@@ -291,8 +291,6 @@ class MyClass : XorObject
 ## Limitations
 - Dictionaries are not seamlessly supported.
   - Workaround: Serialize the key and value collections separately.
-- Line breaks (Carriage return/Line feed) may be different after loading a model from a file. `\r\n` could become `\n` or vice versa.
-  - Workaround: Implement a custom serialization property and encode/decode the string with Base64 or a similar format.
 - Generic types might not be fully supported.
 
 
